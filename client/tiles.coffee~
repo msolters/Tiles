@@ -1,0 +1,69 @@
+#   Template helpers, events, et cetera for the client.
+
+#
+#   Template.category:
+#
+Template.category.rendered = ->
+  @setWidth = =>
+    _h = 0
+    _w = 312
+    container_height = $("#tile-container").height()
+    tiles = $(@find('.category')).find('.tile')
+    for tile in tiles
+      console.log tile
+      tile_height = $(tile).outerHeight()
+      console.log tile_height
+      _h += tile_height + 20
+      console.log "#{_h}/#{container_height}"
+      if _h > container_height
+        _w += 312
+        _h = tile_height
+    $(@find('.category')).css "width": "#{_w}px"
+  @setWidth()   
+  $(window).resize => @setWidth()
+
+#
+#   Template.tileEdit:
+#
+Template.tileEdit.helpers
+  # This helper is used to hide/show delete button which
+  # is unnecessary for the "new tile" card.
+  isNotNew: ->
+    if @._id?
+      return true
+    else
+      return false
+
+Template.tileEdit.events
+  'submit form.tile-form': (event, template) ->
+    title = template.find('.tile-title')
+    category = template.find('.tile-category')
+    content = template.find('.tile-content')
+    
+    feedback = template.find '.tile-edit-feedback'
+    
+    # Next let's validate that shit!
+    if title.value.length is 0
+      feedback.innerHTML = "Please enter a valid <b>title</b> for this tile!"
+      return false
+    if category.value.length is 0
+      feedback.innerHTML = "Please enter a valid <b>category</b> for this tile!"
+      return false
+    
+    # Create a new Tile object to upsert to the DB!
+    new_tile =
+      title: title.value
+      content: content.value
+      category: category.value
+    
+    # Save that shit!
+    Meteor.call "saveTile", new_tile, @._id
+    if !@._id? #  This tile is a "new tile" -- let's clear it!
+      title.value = ""
+      category.value = ""
+      content.value = ""
+    return false
+  'input .text-input': (event, template) ->
+    $(template.find('.save-tile')).show()
+  'click button.delete-tile': ->
+    Meteor.call "deleteTile", @._id

@@ -1,0 +1,164 @@
+<head>
+  <title>tiles</title>
+</head>
+
+<body>
+  {{> loginButtons}}
+</body>
+
+<template name="allTiles">
+    {{#if currentUser}}
+      {{> categoryEditList }}
+      {{> deleteTileConfirmation }}
+    {{else}}
+      {{#each categories}}
+        {{> category}}
+      {{/each}}
+      {{> tileViewModal }}
+    {{/if}}
+</template>
+
+<template name="category">
+  <div class="category row">
+    <div class="category-title" style="color: {{color}};">
+      {{title}}
+    </div>
+    {{#each tiles}}
+      {{#if currentUser}}
+        {{> tileEdit color=../color tile=this}}
+      {{else}}
+        {{> tile color=../color tile=this}}
+      {{/if}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="tile">
+  <div class="card tile" style="border-color: {{color}};">
+    <div class="card-image waves-effect waves-block waves-light">
+      <img class="activator" src="">
+    </div>
+    <div class="card-content">
+      <span class="card-title activator grey-text text-darken-4">{{tile.title}} <i class="mdi-navigation-more-vert right"></i></span>
+      <p><a class="tile-read-more" href="#{{tile._id}}">read more</a></p>
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4">{{tile.title}} <i class="mdi-navigation-close right"></i></span>
+      <p>{{tile.content}}</p>
+    </div>
+  </div>
+</template>
+
+<template name="tileViewModal">
+  <div id="tile-view-modal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Close</a>
+    </div>
+  </div>
+</template>
+
+<template name="categoryEditList">
+  <h2>Tile Categories</h2>
+  <ul id="category-edit-list" class="collapsible">
+    {{#each ../categories}}
+      {{> categoryEdit}}
+    {{/each}}
+    {{> categoryEdit}}
+  </ul>
+</template>
+
+<template name="categoryEdit">
+  <li>
+    <div class="collapsible-header row">
+      <form class="category-form">
+        {{#if title}}
+          <input id="category-title" type="text" class="category-list-text-input col s6" value="{{title}}"/>
+        {{else}}
+          <input id="category-title" type="text" class="category-list-text-input col s6" placeholder="New Category"/>
+        {{/if}}
+
+        <button type="submit" class="save-category btn waves-effect waves-light blue-btn">
+          SAVE<i class="mdi-content-send right"></i>
+        </button>
+      </form>
+    </div>
+    <div class="collapsible-body">
+      {{#each tiles}}
+        {{> tileEdit }}
+      {{/each}}
+    </div>
+  </li>
+</template>
+
+<template name="tileEdit">
+  <div class="row">
+    <p>{{title}}</p>
+    <button type="button" class="delete-tile btn waves-effect waves-light red-btn">
+      <i class="fa fa-fw fa-trash-o"></i>
+    </button>
+  </div>
+</template>
+
+<template name="tileEditModal">
+  <div id="tile-edit-modal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Agree</a>
+    </div>
+  </div>
+</template>
+
+<!--
+
+  <div class="tile">
+    <form class="tile-form">
+      <div class="tile-buttons">
+        {{#if isNotNew}}
+          <button type="button" class="delete-tile btn waves-effect waves-light red-btn">
+            <i class="fa fa-fw fa-trash-o"></i>
+          </button>
+        {{/if}}
+        <button type="submit" class="save-tile btn waves-effect waves-light blue-btn">
+          SAVE<i class="mdi-content-send right"></i>
+        </button>
+        <div style="clear: both;"></div>
+      </div>
+      <div class="title">
+        <div class="input-field">
+          <input id="tileTitle" type="text" class="tile-title validate" value="{{title}}">
+          <label for="tileTitle">Title</label>
+        </div>
+        <div class="input-field">
+          <input id="tile-category" type="text" class="tile-category validate" value="{{category}}">
+          <label for="tile-category">Category</label>
+        </div>
+      </div>
+      <div class="content">
+        <div class="input-field">
+          <textarea id="tile-content" class="materialize-textarea tile-content">{{content}}</textarea>
+          <label for="tile-content">Content</label>
+        </div>
+      </div>
+    </form>
+  </div>
+</template>
+-->
+
+<template name="deleteTileConfirmation">
+  <!-- Modal Structure -->
+  <div id="delete-tile-confirmation" class="modal modal-fixed-footer">
+   <div class="modal-content">
+     <h4>Delete Tile?</h4>
+     p>
+   </div>
+   <div class="modal-footer">
+     <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Delete</a>
+   </div>
+  </div>
+</template>

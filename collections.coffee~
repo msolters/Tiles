@@ -1,0 +1,2 @@
+#@Categories = new Mongo.Collection 'Categories'
+@Tiles = new Mongo.Collection 'Tiles'

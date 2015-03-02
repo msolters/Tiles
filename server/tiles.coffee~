@@ -1,0 +1,22 @@
+Meteor.publish 'Tiles', ->
+  return Tiles.find()
+Meteor.publish 'Users', ->
+  return Meteor.users.find()
+
+Meteor.startup ->
+
+Meteor.methods
+  saveTile: (_tile, _id=null) ->
+    Tiles.upsert(
+      {_id: _id}
+      $set: _tile
+    )
+  deleteTile: (_id) ->
+    Tiles.remove(_id: _id)
+  # getNumberUsers is used to disable the registration button if a
+  # User has already been created!
+  getNumberUsers: ->
+    if Meteor.users.find().count() > 0
+      return true
+    else
+      return false
