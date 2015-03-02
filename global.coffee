@@ -1,6 +1,6 @@
 @Tiles = new Mongo.Collection 'Tiles'
 
-#   Read a tile in detail:
+#   Open a modal to view a Tile in detail:
 @tileViewModal = (tile) ->
   modal = $('#tile-view-modal')
   modal.find('.modal-content').html "<h3>#{tile.title}</h3><p>#{tile.content}</p>"
@@ -9,6 +9,59 @@
       Router.go "#{window.location.pathname}"
   Router.go "#{window.location.pathname}##{tile._id}"
 
+#   Open a modal to edit a Tile in detail:
+@openTileEditModal = (tile=null) ->
+  modal = $('#tile-edit-modal')
+  if tile is null
+    tile =
+      _id: null
+      title: ''
+      category: ''
+      content: ''
+  Session.set "currentlyEditing", tile._id
+  modal_html = "<div class='title'>
+    <div class='input-field'>
+      <input id='tile-title' type='text' class='tile-title validate' value='#{tile.title}'>
+      <label for='tile-title'"
+
+  if tile.title.length > 0
+    modal_html += "class='active'"
+
+  modal_html += ">Title</label>
+    </div>
+    <div class='input-field'>
+      <input id='tile-category' type='text' class='tile-category validate' value='#{tile.category}'>
+      <label for='tile-category'"
+
+  if tile.category.length > 0
+    modal_html += "class='active'"
+
+  modal_html += ">Category</label>
+    </div>
+    </div>
+    <div class='content'>
+    <div class='input-field'>
+      <textarea id='tile-content' class='materialize-textarea tile-content'>#{tile.content}</textarea>
+      <label for='tile-content'"
+
+  if tile.content.length > 0
+    modal_html += "class='active'"
+
+  modal_html += ">Content</label>
+    </div>
+    </div>"
+
+  modal.find('.modal-content').html modal_html
+  modal.openModal
+    complete: ->
+      #Router.go "#{window.location.pathname}"
+  #Router.go "#{window.location.pathname}##{tile._id}"
+
+@closeTileEditModal = ->
+  modal = $('#tile-edit-modal')
+  modal.closeModal()
+  modal.find('.progress').hide()
+  modal.find('input, textarea').val ""
 
 #   To disable the user registration or not...
 Meteor.call "getNumberUsers", (error, response) ->

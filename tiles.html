@@ -3,19 +3,21 @@
 </head>
 
 <body>
-  {{> loginButtons}}
 </body>
 
 <template name="allTiles">
+  {{> navbar}}
+  <div id="tile-container">
+    {{#each categories}}
+      {{> category}}
+    {{/each}}
+    {{> tileViewModal }}
     {{#if currentUser}}
-      {{> categoryEditList }}
+      <!--{{> categoryEditList }}-->
+      {{> tileEditModal }}
       {{> deleteTileConfirmation }}
-    {{else}}
-      {{#each categories}}
-        {{> category}}
-      {{/each}}
-      {{> tileViewModal }}
     {{/if}}
+  </div>
 </template>
 
 <template name="category">
@@ -24,22 +26,21 @@
       {{title}}
     </div>
     {{#each tiles}}
-      {{#if currentUser}}
-        {{> tileEdit color=../color tile=this}}
-      {{else}}
-        {{> tile color=../color tile=this}}
-      {{/if}}
+      {{> tile color=../color tile=this}}
     {{/each}}
   </div>
 </template>
 
 <template name="tile">
   <div class="card tile" style="border-color: {{color}};">
-    <div class="card-image waves-effect waves-block waves-light">
-      <img class="activator" src="">
-    </div>
+    <!--<div class="card-image waves-effect waves-block waves-light">
+      <img class="activator" src="https://d2jmvrsizmvf4x.cloudfront.net/Jti2TThQQ2xmOMK3o0NN_hell-001-hydrogen-no-label.svg">
+    </div>-->
     <div class="card-content">
       <span class="card-title activator grey-text text-darken-4">{{tile.title}} <i class="mdi-navigation-more-vert right"></i></span>
+      {{#if currentUser}}
+        <p><a class="tile-edit" href="#{{tile._id}}">edit</a></p>
+      {{/if}}
       <p><a class="tile-read-more" href="#{{tile._id}}">read more</a></p>
     </div>
     <div class="card-reveal">
@@ -61,12 +62,11 @@
 </template>
 
 <template name="categoryEditList">
-  <h2>Tile Categories</h2>
+  <h2>My Tiles</h2>
   <ul id="category-edit-list" class="collapsible">
     {{#each ../categories}}
       {{> categoryEdit}}
     {{/each}}
-    {{> categoryEdit}}
   </ul>
 </template>
 
@@ -95,8 +95,11 @@
 
 <template name="tileEdit">
   <div class="row">
-    <p>{{title}}</p>
-    <button type="button" class="delete-tile btn waves-effect waves-light red-btn">
+    <p class="col s6">{{title}}</p>
+    <button type="button" class="edit-tile btn waves-effect waves-light blue-btn">
+      <i class="fa fa-fw fa-pencil-square-o"></i>
+    </button>
+    <button type="button" class="delete-tile btn waves-effect waves-red red-btn">
       <i class="fa fa-fw fa-trash-o"></i>
     </button>
   </div>
@@ -104,13 +107,14 @@
 
 <template name="tileEditModal">
   <div id="tile-edit-modal" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
-    </div>
-    <div class="modal-footer">
-      <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Agree</a>
-    </div>
+      <div class="modal-content"></div>
+      <div class="modal-footer">
+        <button id="save-tile-edit" type="submit" class="btn waves-effect waves-green modal-action">Save</button>
+        <button id="cancel-tile-edit" type="button" class="waves-effect waves-teal btn-flat modal-action modal-close">Cancel</button>
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
+      </div>
   </div>
 </template>
 
@@ -161,4 +165,24 @@
      <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Delete</a>
    </div>
   </div>
+</template>
+
+<template name="navbar">
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo">Mark Solters</a>
+      <ul class="right hide-on-med-and-down">
+        {{#if currentUser}}
+          <li><a class="add-new-tile"><i class="mdi-content-add"></i></a></li>
+        {{/if}}
+        <li>{{> loginButtons align="right"}}</li>
+      </ul>
+      <ul id="slide-out" class="side-nav">
+        {{#if currentUser}}
+          <li><a class="add-new-tile"><i class="mdi-content-add left">New Tile</i></a></li>
+        {{/if}}
+      </ul>
+      <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+    </div>
+  </nav>
 </template>

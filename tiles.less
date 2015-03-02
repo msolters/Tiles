@@ -63,19 +63,14 @@ html {
   padding-right: 10px;
   border-radius: 5px;
 }
-button.delete-tile {
-  float: left;
+button.save-category,
+button.delete-tile,
+button.edit-tile {
+  float: right;
 }
+button.save-category,
 button.save-tile {
   display: none;
-  float: right;
-}
-button.delete-category {
-  float: right;
-}
-button.save-category {
-  display: none;
-  float: right;
 }
 .text-input {
   border: none;
@@ -90,10 +85,29 @@ button.save-category {
 
 
 /*  Structure-specific styling    */
-#tile-container {
-
+nav .brand-logo {
+  padding-left: 15px;
+}
+nav ul,
+nav ul li {
+  height: 100%;
+}
+nav ul li {
+  cursor: pointer;
+}
+.button-collapse {
+  float: right !important;
+  padding-right: 5px;
 }
 
+#tile-container {
+  position: relative;
+  top: 16px;
+}
+#category-edit-list {
+  margin-left: 10%;
+  margin-right: 10%;
+}
 .category {
   padding: 10px;
   padding-top: 30px;
@@ -113,7 +127,6 @@ button.save-category {
   width: 280px;
   height: 280px;
   margin: 5px;
-  padding: 10px;
   border: 10px solid;
   border-radius: 10px;
   display: inline-block;
@@ -128,6 +141,28 @@ button.save-category {
   height: 100%;
 }
 
+/*    Modal styles    */
+.modal {
+  padding: 0;
+}
+.modal-content {
+  padding: 20px;
+  max-height: calc(~"100% - 70px");
+  overflow-y: scroll;
+}
 .modal-footer {
+  width: 100%;
+  height: 45px;
   text-align: right;
+  position: fixed;
+  bottom: 0;
+}
+.progress {
+  margin: 0;
+  margin-top: 5px;
+  display: none;
+}
+#tile-edit-modal {
+  width: 80%;
+  height: 80%;
 }
