@@ -1,7 +1,0 @@
-@Tiles = new Mongo.Collection 'Tiles'
-
-# To disable the user registration or not...
-Meteor.call "getNumberUsers", (error, response) ->
-  console.log response
-  Accounts.config
-    forbidClientAccountCreation: response
