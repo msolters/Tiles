@@ -23,6 +23,11 @@
     {{#if userExists}}
       {{> navbar}}
       {{> yield region="tiles"}}
+      {{#if currentUser}}
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
+      {{/if}}
     {{/if}}
     {{#if noUsers}}
       <div id="register-form-container" class="valign-wrapper">

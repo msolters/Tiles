@@ -27,25 +27,28 @@ Meteor.methods
       $set: {}
     _updateRemove =
       $unset: {}
-    # If one or both dates are
-    if _tile.dates.dateOne is null
-      _updateRemove['$unset']['dates.dateOne'] = ''
-      delete _tile.dates.dateOne
-    if _tile.dates.dateTwo is null
-      _updateRemove['$unset']['dates.dateTwo'] = ''
-      delete _tile.dates.dateTwo
-    if (d for d,v of _tile.dates).length is 0
-      delete _tile.dates
+
+    if _tile.dates? #  If one or both dates are null, remove them from the DB
+      if _tile.dates.dateOne is null
+        _updateRemove['$unset']['dates.dateOne'] = ''
+        delete _tile.dates.dateOne
+      if _tile.dates.dateTwo is null
+        _updateRemove['$unset']['dates.dateTwo'] = ''
+        delete _tile.dates.dateTwo
+      if (d for d,v of _tile.dates).length is 0
+        delete _tile.dates
     _updateAdd['$set'] = _tile
-    console.log _updateAdd
-    console.log _updateRemove
+    #console.log _updateAdd
+    #console.log _updateRemove
     Tiles.upsert(
       {_id: _id}
       _updateAdd
+      {multi: true}
     )
     Tiles.update(
       {_id: _id}
       _updateRemove
+      {multi: true}
     )
   # Removes a tile specified by _id from the Tiles collection:
   deleteTile: (_id) ->

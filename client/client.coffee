@@ -38,6 +38,67 @@ Template.registerHelper 'currentlyViewing', ->
 Template.allTiles.rendered = ->
   data = Template.currentData()
   @autorun =>
+    console.log "hi"
+    if Meteor.userId()
+      @categorySortable = new Sortable $("#tile-container")[0],
+        group: "categorySortable"  # or { name: "...", pull: [true, false, clone], put: [true, false, array] }
+        sort: true  # sorting inside list
+        disabled: false # Disables the sortable if set to true.
+        store: null  # @see Store
+        animation: 150  # ms, animation speed moving items when sorting, `0` — without animation
+        #handle: ".tile-action-row"  # Drag handle selector within list items
+        filter: ".tile"  # Selectors that do not lead to dragging (String or Function)
+        draggable: ".category-title"  # Specifies which items inside the element should be sortable
+        ghostClass: "tile-placeholder"  # Class name for the drop placeholder
+        scroll: true # or HTMLElement
+        scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.
+        scrollSpeed: 10 # px
+        # Changed sorting within list
+        onUpdate: (evt) ->
+          $("#pusher-container > .progress").show()
+          categoryPositions = {}
+          index = 0
+          for category in $('#tile-container > .category-title')
+            title = Blaze.getData($(category)[0]).title
+            categoryPositions[title] = index++
+          for category in data.categories
+            tile_ids = (tile._id for tile in category.tiles)
+            categoryPosition = categoryPositions[category.title]
+            Meteor.call "saveTile", {"pos.category": categoryPosition}, {$in: tile_ids}
+          $("#pusher-container > .progress").hide()
+      ###
+      @tileSortable = new Sortable $("#tile-container")[0],
+        group: "tileSortable"  # or { name: "...", pull: [true, false, clone], put: [true, false, array] }
+        sort: true  # sorting inside list
+        disabled: false # Disables the sortable if set to true.
+        store: null  # @see Store
+        animation: 150  # ms, animation speed moving items when sorting, `0` — without animation
+        #handle: ".tile-action-row"  # Drag handle selector within list items
+        filter: ".category-title"  # Selectors that do not lead to dragging (String or Function)
+        draggable: ".tile"  # Specifies which items inside the element should be sortable
+        ghostClass: "tile-placeholder"  # Class name for the drop placeholder
+        scroll: true # or HTMLElement
+        scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.
+        scrollSpeed: 10 # px
+        # Changed sorting within list
+        onUpdate: (evt) ->
+          $("#pusher-container > .progress").show()
+          tileData = Blaze.getData(evt.item)
+          newCategory = Blaze.getData($(evt.item).prevAll('.category-title:first')[0]).title
+          _tile =
+            category: newCategory
+          Meteor.call "saveTile", _tile, tileData.tile._id
+          index = 0
+          for tile in $('#tile-container > .tile')
+            id = Blaze.getData($(tile)[0]).tile._id
+            Tiles.update(
+              {_id: id}
+              $set:
+                pos:
+                  tile: index++
+            )
+          $("#pusher-container > .progress").hide()
+      ###
     if data.categories.length is 0
       if Meteor.userId()
         toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
@@ -45,6 +106,7 @@ Template.allTiles.rendered = ->
       else
         toast "Looks like you need to add some content.<br>Sign in using the menu in the top right!", 15000, "info"
         $('#right-menu').sidebar 'show'
+
   if data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
     for category in data.categories
       for tile in category.tiles
@@ -69,11 +131,6 @@ Template.tile.events
     Session.set "setToDelete", data.tile._id
     modal = $('#delete-tile-confirmation')
     modal.openModal()
-
-
-Template.tileViewModal.rendered = ->
-  console.log "hi"
-  Session.setDefault "currentlyViewing", null
 
 
 #
@@ -137,6 +194,9 @@ Template.rightMenu.events
   'click a[data-logout]': ->
     $('#right-menu').sidebar 'hide'
     Meteor.logout()
+    $("#tile-container").sortable
+      disabled: true
+    .enableSelection()
     $('.toast').remove()
     toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
 

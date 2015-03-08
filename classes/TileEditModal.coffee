@@ -27,11 +27,12 @@ class @TileEditModal
   setData: (tile) ->
     Session.set "currentlyEditing", tile
     if tile?
-      @datePickerOne.set "select", tile.dates.dateOne if tile.dates.dateOne?
-      @datePickerTwo.set "select", tile.dates.dateTwo if tile.dates.dateTwo?
-    else
-      @datePickerOne.clear()
-      @datePickerTwo.clear()
+      if tile.dates?
+        @datePickerOne.set "select", tile.dates.dateOne if tile.dates.dateOne?
+        @datePickerTwo.set "select", tile.dates.dateTwo if tile.dates.dateTwo?
+        return
+    @datePickerOne.clear()
+    @datePickerTwo.clear()
 
   # Return either a JSON representation of the tile values as
   # entered by the user, or a list of errors to be shown such
