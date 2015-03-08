@@ -1,10 +1,12 @@
 Router.map ->
   @route 'Home',
     path: '/'
-    template: 'allTiles'
+    layoutTemplate: 'masterLayout'
     waitOn: ->
-      Meteor.subscribe 'Tiles'
-      Meteor.subscribe 'Users'
+      return [
+        Meteor.subscribe 'Tiles'
+        Meteor.subscribe 'Users'
+      ]
     data: ->
       return unless @ready() is true  # Only do this stuff once the data is available:
       context = {}
@@ -27,12 +29,23 @@ Router.map ->
       delta_hue = 360/numCategories
       hue = 0
       for title, cat of categories
+        colour = "hsl(#{hue}, 65%, 50%)"
+        for tile in cat.tiles
+          tile['colour'] = colour
         category_list.push
           title: title
           tiles: cat.tiles
-          color: "hsl(#{hue}, 65%, 50%)"
+          color: colour
         hue += delta_hue
       context['categories'] = category_list
+      context['userExists'] = userExists()
+      context['noUsers'] = !userExists()
 
       # (3) Pass that shit to the template engine!
       return context
+    action: ->
+      if @ready() is true
+        @render 'allTiles',
+          to: "tiles"
+
+#Router.configure
