@@ -4,12 +4,6 @@
 Accounts.config
   forbidClientAccountCreation: true
 
-@userExists = ->
-  if Meteor.users.find().count() > 0
-    return true
-  else
-    return false
-
 #   Open a modal to view a Tile in detail:
 @tileViewModal = (tile) ->
   modal = $('#tile-view-modal')

@@ -1,8 +1,9 @@
 #   Template helpers, events, et cetera for the client.
 
 Template.registerHelper 'profileName', ->
-  user = Meteor.users.findOne()
-  name = user.profile.name if user?
+  url = Router.current().params.publicURL
+  db_user = Meteor.users.findOne({public_url: url})
+  name = db_user.profile.name if db_user?
   return name if name?
 Template.registerHelper 'hasDates', (tile) ->
   if tile?
@@ -31,15 +32,24 @@ Template.registerHelper 'currentlyEditing', ->
   return Session.get "currentlyEditing"
 Template.registerHelper 'currentlyViewing', ->
   return Session.get "currentlyViewing"
+Template.registerHelper 'verify', (user) ->
+  url = Router.current().params.publicURL
+  db_url = Meteor.user().public_url
+  if db_url?
+    if url is db_url
+      return true
+  return false
 
 #
 #   Template.allTiles
 #
 Template.allTiles.rendered = ->
   data = Template.currentData()
+
   @autorun =>
-    console.log "hi"
-    if Meteor.userId()
+    #console.log "hi"
+
+    if Meteor.user().public_url is data.public_url
       @categorySortable = new Sortable $("#tile-container")[0],
         group: "categorySortable"  # or { name: "...", pull: [true, false, clone], put: [true, false, array] }
         sort: true  # sorting inside list
@@ -100,7 +110,7 @@ Template.allTiles.rendered = ->
           $("#pusher-container > .progress").hide()
       ###
     if data.categories.length is 0
-      if Meteor.userId()
+      if Meteor.user().public_url is data.public_url
         toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
         $('#right-menu').sidebar 'show'
       else
@@ -216,29 +226,43 @@ Template.register.events
     email = template.find('input#user-email').value
     password = template.find('input#user-password').value
     passwordConfirm = template.find('input#user-password-confirm').value
+    url = template.find('input#user-url').value.toLowerCase()
     if name.length is 0
       toast "Please enter a name!  Seriously, this is going to be your website.  That's your name up there.  Don't you even care?", 5000, "danger"
       return false
     if email.length is 0
       toast "Please enter a valid e-mail address!", 5000, "danger"
       return false
-    if password.length < 6
+    if password.length <= 6
       toast "Password must be 6 characters or more.", 5000, "danger"
       return false
     else
       if password isnt passwordConfirm
         toast "Those passwords don't match!", 5000, "danger"
         return false
-    Meteor.call "createNewUser", email, password, name, (error, response) ->
+    if url.length is 0
+      toast "Please enter a profile URL!", 5000, "danger"
+      return false
+    Meteor.call "verifyURL", url, (error, response) ->
       if error
         toast "Ya fucked up now!  #{error}", 5000, "danger"
       else
-        Meteor.loginWithPassword email, password
-        $(".toast").remove()
-        toast "Nice work, bone daddy!  Can I call you #{name.split(' ')[0]}?", 20000, "success"
-        setTimeout =>
-          toast "(Simply click or swipe these messages to dismiss)", 20000, "info"
-        , 1500
+        if response is true
+          Meteor.call "createNewUser", email, password, name, url, (error, response) ->
+            if error
+              toast "Ya fucked up now!  #{error}", 5000, "danger"
+            else
+              Meteor.loginWithPassword email, password
+              $(".toast").remove()
+              Deps.autorun =>
+                if Meteor.userId()?
+                  Router.go "/#{url}"
+              toast "Nice work, bone daddy!  Can I call you #{name.split(' ')[0]}?", 15000, "success"
+              setTimeout =>
+                toast "(Simply click or swipe these messages to dismiss)", 15000, "info"
+              , 1500
+        else
+          toast "That URL is already taken!  Please choose another.", 6500, "danger"
     return false
 
 

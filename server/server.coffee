@@ -1,20 +1,43 @@
-Meteor.publish 'Tiles', ->
-  return Tiles.find()
-Meteor.publish 'Users', ->
-  return Meteor.users.find()
+Meteor.publish 'Tiles', (slug={}) ->
+  return Tiles.find(slug)
+Meteor.publish 'Users', (slug={}) ->
+  console.log slug
+  users = Meteor.users.find(slug)
+  console.log users.fetch()
+  return users
 
 Meteor.startup ->
 
 Meteor.methods
+  # Given a currentUser from a template context, and the URL of
+  # the client's current route, determine if the currentUser is
+  # authorized to manipulate the page at that URL.
+  verifyUser: (user, url) ->
+    db_user = Meteor.users.findOne({public_url: url})
+    if user? and db_user?
+      if user._id is db_user._id
+        return true
+    return false
+  # Check that the provided URL is not in use by another user already.:
+  verifyURL: (url) ->
+    if Meteor.users.find({public_url: url}).count() is 0
+      return true
+    else
+      return false
   # Create a user (the only user) who can create/edit tiles
   # This is only used if the user wants to specify their own
   # e-mail and password (i.e. not Google, FB, etc.)
-  createNewUser: (email, password, name) ->
-    Accounts.createUser
+  createNewUser: (email, password, name, url) ->
+    userId = Accounts.createUser
       email: email
       password: password
       profile:
         name: name
+    Meteor.users.update(
+      {_id: userId}
+      $set:
+        public_url: url
+    )
   updateUser: (userId, _user) ->
     Meteor.users.update(
       {_id: userId}

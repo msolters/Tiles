@@ -8,30 +8,20 @@
     yooooooo
 </template>
 
-<template name="masterLayout">
-  {{#if userExists}}
-    {{> rightMenu}}
-    {{#if currentUser}}
-      {{> tileEditModal }}
-      {{> deleteTileConfirmation }}
-    {{else}}
-      {{> login }}
-    {{/if}}
-    {{> tileViewModal }}
+<template name="appLayout">
+  {{> rightMenu}}
+  {{#if verify currentUser}}
+    {{> tileEditModal }}
+    {{> deleteTileConfirmation }}
+  {{else}}
+    {{> login }}
   {{/if}}
+  {{> tileViewModal }}
   <div id="pusher-container" class="pusher">
-    {{#if userExists}}
-      {{> navbar}}
-      {{> yield region="tiles"}}
-      {{#if currentUser}}
-        <div class="progress">
-          <div class="indeterminate"></div>
-        </div>
-      {{/if}}
-    {{/if}}
-    {{#if noUsers}}
-      <div id="register-form-container" class="valign-wrapper">
-        {{> register}}
+    {{> yield }}
+    {{#if verify currentUser}}
+      <div class="progress">
+        <div class="indeterminate"></div>
       </div>
     {{/if}}
   </div>
@@ -40,7 +30,7 @@
 <template name="navbar">
   <nav>
     <div class="nav-wrapper">
-      {{#if currentUser}}
+      {{#if verify currentUser}}
         <div class='input-field'>
           <i class="mdi-social-person prefix"></i>
           <input type="text" id="user-profile-name" class="text-input user-name" placeholder="Your Name" value="{{profileName}}"/>
@@ -59,7 +49,7 @@
       <li>
         <a href="#" id="brand-top-right"><i class="mdi-action-view-module"> TilesJS</i></a>
       </li>
-    {{#if currentUser}}
+    {{#if verify currentUser}}
       <li>
         <a class="add-new-tile"><i class="mdi-content-add-box left"> New Tile</i></a>
       </li>
@@ -67,40 +57,45 @@
         <a data-logout><i class="mdi-action-done-all left"> Done</i></a>
       </li>
     {{else}}
-      {{#if userExists}}
-        <li>
-          <a data-login><i class="mdi-action-exit-to-app left"> Sign In</i></a>
-        </li>
-      {{/if}}
+      <li>
+        <a data-login><i class="mdi-action-exit-to-app left"> Sign In</i></a>
+      </li>
     {{/if}}
     </ul>
   </div>
 </template>
 
 <template name="register">
-  <form id="register-form">
-    <div class="input-field">
-      <i class="mdi-social-person prefix"></i>
-      <input id="user-profile-name" type="text"/>
-      <label for="user-profile-name">Your Name</label>
-    </div>
-    <div class="input-field">
-      <i class="mdi-communication-email prefix"></i>
-      <input id="user-email" type="email"  />
-      <label for="user-email">E-mail</label>
-    </div>
-    <div class="input-field">
-      <i class="mdi-action-lock prefix"></i>
-      <input id="user-password" type="password"/>
-      <label for="user-password">Password</label>
-    </div>
-    <div class="input-field">
-      <i class="mdi-action-lock prefix"></i>
-      <input id="user-password-confirm" type="password"/>
-      <label for="user-password-confirm">Confirm Password</label>
-    </div>
-    <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign Up</button>
-  </form>
+  <div id="register-form-container" class="valign-wrapper">
+    <form id="register-form">
+      <div class="input-field">
+        <i class="mdi-social-person prefix"></i>
+        <input id="user-profile-name" type="text"/>
+        <label for="user-profile-name">Your Name</label>
+      </div>
+      <div class="input-field">
+        <i class="mdi-communication-email prefix"></i>
+        <input id="user-email" type="email"  />
+        <label for="user-email">E-mail</label>
+      </div>
+      <div class="input-field">
+        <i class="mdi-action-lock prefix"></i>
+        <input id="user-password" type="password"/>
+        <label for="user-password">Password</label>
+      </div>
+      <div class="input-field">
+        <i class="mdi-action-lock prefix"></i>
+        <input id="user-password-confirm" type="password"/>
+        <label for="user-password-confirm">Confirm Password</label>
+      </div>
+      <div class="input-field">
+        <i class="mdi-social-public prefix"></i>
+        <input id="user-url" type="text"/>
+        <label for="user-url">Public URL</label>
+      </div>
+      <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign Up</button>
+    </form>
+  </div>
 </template>
 
 <template name="login">
@@ -131,6 +126,7 @@
 </template>
 
 <template name="allTiles">
+  {{> navbar }}
   <div id="tile-container" class="flex-column">
     {{#each categories}}
       {{> category}}
