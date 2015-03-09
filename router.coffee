@@ -15,8 +15,11 @@ Router.map ->
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
     data: ->
       return unless @ready() is true  # Only do this stuff once the data is available:
-      if Meteor.users.find().count() is 0
+      if Meteor.users.find({public_url: @params.publicURL}).count() is 0
         @redirect '/loading'
+      else
+        user = Meteor.users.findOne({public_url: @params.publicURL})
+
       context =
         public_url: @params.publicURL
 
@@ -26,7 +29,7 @@ Router.map ->
 
       # (2) Now lets construct a data object containing cat/tile info:
       categories = {}
-      for tile in Tiles.find({}, {'sort': {'pos.category': 1, 'pos.tile': 1}}).fetch()
+      for tile in Tiles.find({user_id: user._id}, {'sort': {'pos.category': 1, 'pos.tile': 1}}).fetch()
         category = tile.category
         if !categories[category]?
           categories[category] =
