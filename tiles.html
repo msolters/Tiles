@@ -54,7 +54,16 @@
         <a class="add-new-tile"><i class="mdi-content-add-box left"> New Tile</i></a>
       </li>
       <li>
-        <a data-logout><i class="mdi-action-done-all left"> Done</i></a>
+        <a data-sort-tiles>
+          {{#if tileSortActive}}
+            <i class="mdi-action-done left"> Done</i>
+          {{else}}
+            <i class="mdi-content-sort left"> Sort Tiles</i>
+          {{/if}}
+        </a>
+      </li>
+      <li>
+        <a data-logout><i class="mdi-action-done-all left"> Sign Out</i></a>
       </li>
     {{else}}
       <li>
@@ -144,7 +153,7 @@
 </template>
 
 <template name="tile">
-  <div class="card tile" style="border-color: {{color}}; background-color: {{color}};">
+  <div data-id="{{tile._id}}" class="card tile" style="border-color: {{color}}; background-color: {{color}};">
     <div class="tile-content">
       <div class="tile-title">{{tile.title}}</div>
       {{#if hasDates tile}}

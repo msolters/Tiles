@@ -29,7 +29,11 @@ Template.registerHelper 'activeOrNot', (value) ->
 Template.registerHelper 'textToHTML', (text) ->
   text.replace(/(\r\n\r\n|\n\n|\r\r)/gm,"<br/><br/>") if text?
 Template.registerHelper 'currentlyEditing', ->
-  return Session.get "currentlyEditing"
+  _tile = Session.get("currentlyEditing")
+  if !_tile?
+    return _tile
+  else
+    return null
 Template.registerHelper 'currentlyViewing', ->
   return Session.get "currentlyViewing"
 Template.registerHelper 'verify', (user) ->
@@ -45,11 +49,12 @@ Template.registerHelper 'verify', (user) ->
 #
 Template.allTiles.rendered = ->
   data = Template.currentData()
-
+  #if Meteor.user().public_url is data.public_url # user is verified
+  ###
   @autorun =>
-    #console.log "hi"
+    data = Template.currentData()
+    console.log "hi"
 
-    if Meteor.user().public_url is data.public_url
       @categorySortable = new Sortable $("#tile-container")[0],
         group: "categorySortable"  # or { name: "...", pull: [true, false, clone], put: [true, false, array] }
         sort: true  # sorting inside list
@@ -71,51 +76,22 @@ Template.allTiles.rendered = ->
           for category in $('#tile-container > .category-title')
             title = Blaze.getData($(category)[0]).title
             categoryPositions[title] = index++
+          console.log data.categories
           for category in data.categories
             tile_ids = (tile._id for tile in category.tiles)
             categoryPosition = categoryPositions[category.title]
-            Meteor.call "saveTile", {"pos.category": categoryPosition}, {$in: tile_ids}
+            #console.log "#{categoryPosition}: #{JSON.stringify(tile_ids)}"
+            Meteor.call "saveTile", Meteor.userId(), {"pos.category": categoryPosition}, {$in: tile_ids}
           $("#pusher-container > .progress").hide()
-      ###
-      @tileSortable = new Sortable $("#tile-container")[0],
-        group: "tileSortable"  # or { name: "...", pull: [true, false, clone], put: [true, false, array] }
-        sort: true  # sorting inside list
-        disabled: false # Disables the sortable if set to true.
-        store: null  # @see Store
-        animation: 150  # ms, animation speed moving items when sorting, `0` — without animation
-        #handle: ".tile-action-row"  # Drag handle selector within list items
-        filter: ".category-title"  # Selectors that do not lead to dragging (String or Function)
-        draggable: ".tile"  # Specifies which items inside the element should be sortable
-        ghostClass: "tile-placeholder"  # Class name for the drop placeholder
-        scroll: true # or HTMLElement
-        scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.
-        scrollSpeed: 10 # px
-        # Changed sorting within list
-        onUpdate: (evt) ->
-          $("#pusher-container > .progress").show()
-          tileData = Blaze.getData(evt.item)
-          newCategory = Blaze.getData($(evt.item).prevAll('.category-title:first')[0]).title
-          _tile =
-            category: newCategory
-          Meteor.call "saveTile", _tile, tileData.tile._id
-          index = 0
-          for tile in $('#tile-container > .tile')
-            id = Blaze.getData($(tile)[0]).tile._id
-            Tiles.update(
-              {_id: id}
-              $set:
-                pos:
-                  tile: index++
-            )
-          $("#pusher-container > .progress").hide()
-      ###
-    if data.categories.length is 0
-      if Meteor.user().public_url is data.public_url
-        toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
-        $('#right-menu').sidebar 'show'
-      else
-        toast "Looks like you need to add some content.<br>Sign in using the menu in the top right!", 15000, "info"
-        $('#right-menu').sidebar 'show'
+
+  ###
+  if data.categories.length is 0
+    if Meteor.user().public_url is data.public_url
+      toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
+      $('#right-menu').sidebar 'show'
+    else
+      toast "Looks like you need to add some content.<br>Sign in using the menu in the top right!", 15000, "info"
+      $('#right-menu').sidebar 'show'
 
   if data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
     for category in data.categories
@@ -151,13 +127,27 @@ Template.tileEditModal.rendered = ->
 Template.tileEditModal.events
   'click #save-tile-edit': (event, template) ->
     tileEditModal.showLoading()
-
-    _tile = tileEditModal.getTile()
+    _tile = tileEditModal.getTile() # get user's changes
     if _tile.errors?  #Something critical like a title or category is missing!  Abort save.
       for e in _tile.errors
         toast e, 6500, "danger"
       return false
     else # Save that shit!
+      if !_tile._id?  # tile is new!
+        pos = {}
+        k = 0
+        for cat, i in @categories
+          if cat.title is _tile.category
+            _tile.pos =
+              category: i
+              tile: cat.tiles.length
+            break
+          else
+            k++
+        if !_tile.pos? # no matching category!  add tile in last category, first tile position.
+          _tile.pos =
+            category: k
+            tile: 0
       _id = _tile._id
       delete _tile['_id']
       Meteor.call "saveTile", _tile, _id, (error, response) ->
@@ -193,6 +183,13 @@ Template.navbar.events
 Template.rightMenu.rendered = ->
   $('#right-menu').sidebar 'setting', 'transition', 'overlay'
 
+Template.rightMenu.helpers
+  'tileSortActive': ->
+    if Session.get("tileSortableDisabled")?
+      return !Session.get("tileSortableDisabled")
+    else
+      return false
+
 Template.rightMenu.events
   'click a.add-new-tile': ->
     $('#right-menu').sidebar 'hide'
@@ -204,11 +201,87 @@ Template.rightMenu.events
   'click a[data-logout]': ->
     $('#right-menu').sidebar 'hide'
     Meteor.logout()
+    ###
     $("#tile-container").sortable
       disabled: true
     .enableSelection()
+    ###
     $('.toast').remove()
     toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
+  'click a[data-sort-tiles]': (event, template) ->
+    $('#right-menu').sidebar 'hide'
+    if !template.tileSortable? # if sortable hasn't been instantiated, instantiate it!
+      template.tileSortable = new Sortable $("#tile-container")[0],
+        group: "tileSortable"  # or { name: "...", pull: [true, false, clone], put: [true, false, array] }
+        sort: true  # sorting inside list
+        disabled: true # Disables the sortable if set to true.
+        store: null  # @see Store
+        animation: 150  # ms, animation speed moving items when sorting, `0` — without animation
+        #handle: ".tile-action-row"  # Drag handle selector within list items
+        filter: ".category-title"  # Selectors that do not lead to dragging (String or Function)
+        draggable: ".tile"  # Specifies which items inside the element should be sortable
+        ghostClass: "tile-placeholder"  # Class name for the drop placeholder
+        scroll: true # or HTMLElement
+        scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.
+        scrollSpeed: 10 # px
+    tileSortableDisabled = !template.tileSortable.option "disabled"
+    template.tileSortable.option "disabled", tileSortableDisabled
+    Session.set "tileSortableDisabled", tileSortableDisabled
+    if tileSortableDisabled is false  #sorting enabled
+      toast "Drag n' drop tiles to change their order.  Make sure to click Done to save your changes!", 7500, "success"
+    else  # sorting disabled, time to save
+      toast "Saving changes...", 3000, "info"
+      $("#pusher-container > .progress").show()
+      tilePositions = {}
+      currentCat = null
+      for child in $('#tile-container').children()
+        $child = $ child
+        if $child.is(".category-title")
+          currentCat = Blaze.getData(child).title
+          tilePositions[currentCat] = []
+        if $child.is(".tile")
+          tilePositions[currentCat].push Blaze.getData(child).tile._id
+      k = 0
+      pending = 0
+      for cat, tileList of tilePositions
+        pending += tileList.length
+      #Session.set "pendingOps", pending
+      for cat, tileList of tilePositions
+        for _id, i in tileList
+          _tile =
+            category: cat
+            pos:
+              tile: i
+              category: k
+          Meteor.call "saveTile", _tile, _id, (err, resp) ->
+            if !err?
+              pending -= 1
+              console.log pending
+              if pending is 0
+                toast "New arrangement committed to database successfully!", 4000, "success"
+                $("#pusher-container > .progress").hide()
+        k++
+
+      ###
+      tileData = Blaze.getData(evt.item)
+      newCategory = Blaze.getData($(evt.item).prevAll('.category-title:first')[0]).title
+      _tile =
+        category: newCategory
+      Meteor.call "saveTile", Meteor.userId(), _tile, tileData.tile._id
+      index = 0
+      for tile in $('#tile-container > .tile')
+        id = Blaze.getData($(tile)[0]).tile._id
+        Tiles.update(
+          {_id: id}
+          $set:
+            pos:
+              tile: index++
+        )
+      ###
+
+    ###
+    onUpdate: (evt) ->
+    ###
 
 
 #

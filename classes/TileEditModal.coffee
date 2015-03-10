@@ -63,7 +63,6 @@ class @TileEditModal
         dateTwo = moment(@datePickerTwo.get()).toDate()
       tile =
         _id: _id
-        user_id: Meteor.userId()
         title: @title.val()
         category: @category.val()
         content: @content.val()

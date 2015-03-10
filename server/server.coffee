@@ -1,9 +1,9 @@
 Meteor.publish 'Tiles', (slug={}) ->
   return Tiles.find(slug)
 Meteor.publish 'Users', (slug={}) ->
-  console.log slug
+  #console.log slug
   users = Meteor.users.find(slug)
-  console.log users.fetch()
+  #console.log users.fetch()
   return users
 
 Meteor.startup ->
@@ -38,9 +38,9 @@ Meteor.methods
       $set:
         public_url: url
     )
-  updateUser: (userId, _user) ->
+  updateUser: (_user) ->
     Meteor.users.update(
-      {_id: userId}
+      {_id: Meteor.userId()}
       $set: _user
     )
   # Inserts or updates a tile specified by _id with the data in
@@ -50,7 +50,6 @@ Meteor.methods
       $set: {}
     _updateRemove =
       $unset: {}
-
     if _tile.dates? #  If one or both dates are null, remove them from the DB
       if _tile.dates.dateOne is null
         _updateRemove['$unset']['dates.dateOne'] = ''
@@ -60,28 +59,33 @@ Meteor.methods
         delete _tile.dates.dateTwo
       if (d for d,v of _tile.dates).length is 0
         delete _tile.dates
-    _updateAdd['$set'] = _tile
-    #console.log _updateAdd
-    #console.log _updateRemove
-    Tiles.upsert(
-      {_id: _id}
-      _updateAdd
-      {multi: true}
-    )
-    Tiles.update(
-      {_id: _id}
-      _updateRemove
-      {multi: true}
-    )
+        
+    if !_id?
+      _tile.owner = Meteor.userId()
+      Tiles.insert(
+        _tile
+      )
+    else
+      _q =
+        _id: _id
+        owner: Meteor.userId()
+      _updateAdd['$set'] = _tile
+      console.log _updateAdd
+      #console.log _updateRemove
+      #console.log '\n'
+      Tiles.upsert(
+        _q,
+        _updateAdd,
+        {multi: true}
+      )
+      Tiles.update(
+        _q
+        _updateRemove
+        {multi: true}
+      )
   # Removes a tile specified by _id from the Tiles collection:
   deleteTile: (_id) ->
-    Tiles.remove(_id: _id)
-  # Renames all Tiles of category 'category' to '_category':
-  saveCategory: (category, _category) ->
-    console.log "#{category} -> #{_category}"
-    Tiles.update(
-      {category: category},
-      {$set:
-        category: _category},
-      {multi: true}
+    Tiles.remove(
+      _id: _id
+      owner: Meteor.userId()
     )
