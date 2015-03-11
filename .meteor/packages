@@ -12,7 +12,7 @@ accounts-password
 fortawesome:fontawesome
 velocityjs:velocityjs
 chriswessels:hammer
-materialize:materialize-meteor
+d0minikk:materialize-meteor
 accounts-ui-unstyled
 accounts-base
 semantic:ui-sidebar

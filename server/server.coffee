@@ -36,7 +36,7 @@ Meteor.methods
         query.$or.push q
     query.$or.push
       'emails.address': email
-    if Meteor.users.find(query)?
+    if Meteor.users.findOne(query)?
       throw new Meteor.Error 500, 'Could not create new user.', 'E-mail already taken.'
     userId = Accounts.createUser
       email: email

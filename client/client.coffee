@@ -55,9 +55,10 @@ Template.allTiles.rendered = ->
       $('#right-menu').sidebar 'show'
     else
       @autorun ->
-        if Meteor.user().public_url is data.public_url
-          toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
-          $('#right-menu').sidebar 'show'
+        if Meteor.user()?
+          if Meteor.user().public_url is data.public_url
+            toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
+            $('#right-menu').sidebar 'show'
 
   @autorun =>
     data=Template.currentData()
@@ -317,8 +318,14 @@ Template.register.rendered = ->
 Template.register.events
   'focus input#user-url': (event, template) ->
     if !Session.get("urlExplained")?
-      toast "This will be the URL you can access your page from, i.e. <b>http://#{window.location.hostname}/mypagehere</b>", 3500, "info"
+      toast "This will be the URL you can access your page from, i.e. http://#{window.location.hostname}/<b>mypagehere</b>", 3500, "info"
       Session.set("urlExplained", true)
+  'input input#user-url': (event, template) ->
+    clearTimeout template.urlTimer if template.urlTimer?
+    _url = event.currentTarget.value
+    template.urlTimer = setTimeout =>
+      toast "Your URL will be http://#{window.location.hostname}/#{_url}!", 3000
+    , 400
   'submit form#register-form': (event, template) ->
     name = template.find('input#user-profile-name').value
     email = template.find('input#user-email').value
@@ -344,7 +351,7 @@ Template.register.events
     else
       url_encoded = encodeURIComponent url
       if url isnt url_encoded
-        toast "People would have to type <b>http://#{window.location.hostname}/#{url_encoded}</b> to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
+        toast "People would have to type http://#{window.location.hostname}/#{url_encoded} to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
         return false
       else
         url = url_encoded
@@ -355,6 +362,7 @@ Template.register.events
         if response is true
           Meteor.call "createNewUser", email, password, name, url, (error, response) ->
             if error?
+              console.log error
               toast "Ya fucked up now!  #{error}", 5000, "danger"
             else
               if response.success is true
@@ -417,7 +425,7 @@ Template.socialLogin.events
         else
           url_encoded = encodeURIComponent url
           if url isnt url_encoded
-            toast "People would have to type <b>http://#{window.location.hostname}/#{url_encoded}</b> to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
+            toast "People would have to type http://#{window.location.hostname}/#{url_encoded} to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
             return false
           else
             url = url_encoded
@@ -463,7 +471,7 @@ Template.socialLogin.events
         else
           url_encoded = encodeURIComponent url
           if url isnt url_encoded
-            toast "People would have to type <b>http://#{window.location.hostname}/#{url_encoded}</b> to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
+            toast "People would have to type http://#{window.location.hostname}/#{url_encoded} to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
             return false
           else
             url = url_encoded
