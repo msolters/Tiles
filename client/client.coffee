@@ -266,6 +266,7 @@ Template.rightMenu.events
       , 350
     else                      # sorting disabled, time to save
       $('#right-menu').sidebar 'hide'
+      $('.tile').show()
       toast "Saving changes...", 3000, "info"
       $("#pusher-container > .progress").show()
       categoryPositions = (Blaze.getData(child).title for child in $('#tile-container').find('.category-title'))
