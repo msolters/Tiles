@@ -100,28 +100,32 @@
         {{/unless}}
       {{/unless}}
       {{#if categories}}
-        {{#unless categorySortActive}}
-          <li>
-            <a data-sort-tiles>
-              {{#if tileSortActive}}
-                <i class="mdi-action-done left"> Done</i>
-              {{else}}
-                <i class="mdi-content-sort left"> Sort Tiles</i>
-              {{/if}}
-            </a>
-          </li>
-        {{/unless}}
-        {{#unless tileSortActive}}
-          <li>
-            <a data-sort-categories>
-              {{#if categorySortActive}}
-                <i class="mdi-action-done left"> Done</i>
-              {{else}}
-                <i class="mdi-content-sort left"> Sort Categories</i>
-              {{/if}}
-            </a>
-          </li>
-        {{/unless}}
+        {{#if tileSortable}}
+          {{#unless categorySortActive}}
+            <li>
+              <a data-sort-tiles>
+                {{#if tileSortActive}}
+                  <i class="mdi-action-done left"> Done</i>
+                {{else}}
+                  <i class="mdi-content-sort left"> Sort Tiles</i>
+                {{/if}}
+              </a>
+            </li>
+          {{/unless}}
+        {{/if}}
+        {{#if categorySortable}}
+          {{#unless tileSortActive}}
+            <li>
+              <a data-sort-categories>
+                {{#if categorySortActive}}
+                  <i class="mdi-action-done left"> Done</i>
+                {{else}}
+                  <i class="mdi-content-sort left"> Sort Categories</i>
+                {{/if}}
+              </a>
+            </li>
+          {{/unless}}
+        {{/if}}
       {{/if}}
       <li>
         <a data-logout><i class="mdi-action-done-all left"> Sign Out</i></a>

@@ -49,18 +49,21 @@ Template.registerHelper 'verify', (user) ->
 #
 Template.allTiles.rendered = ->
   data = @data
+  if data.categories.length is 0
+    if !Meteor.user()?
+      toast "Looks like you need to add some content.<br>Sign in using the menu in the top right!", 15000, "info"
+      $('#right-menu').sidebar 'show'
+    else
+      @autorun ->
+        if Meteor.user().public_url is data.public_url
+          toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
+          $('#right-menu').sidebar 'show'
+
   @autorun =>
     data=Template.currentData()
     if $("#tile-container-inner")[0]?
       Blaze.remove(Blaze.getView($("#tile-container-inner")[0]))
     Blaze.renderWithData Template.categories, data, @find("#tile-container")
-  if data.categories.length is 0
-    if Meteor.user().public_url is data.public_url
-      toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
-      $('#right-menu').sidebar 'show'
-    else
-      toast "Looks like you need to add some content.<br>Sign in using the menu in the top right!", 15000, "info"
-      $('#right-menu').sidebar 'show'
 
   if data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
     for category in data.categories
@@ -153,6 +156,18 @@ Template.rightMenu.rendered = ->
   $('#right-menu').sidebar 'setting', 'transition', 'overlay'
 
 Template.rightMenu.helpers
+  'tileSortable': ->
+    t = 0
+    for cat in @categories
+      for tile in cat.tiles
+        t++
+        if t > 1
+          return true
+    return false
+  'categorySortable': ->
+    if @categories.length > 1
+      return true
+    return false
   'tileSortActive': ->
     if Session.get("tileSortableDisabled")?
       return !Session.get("tileSortableDisabled")
