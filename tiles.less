@@ -473,6 +473,7 @@ nav .nav-wrapper i {
 #register-form-container {
   margin-top: 10%;
   text-align: center;
+  flex-direction: column;
 }
 #register-form {
   min-width: 300px;
@@ -497,9 +498,26 @@ nav .nav-wrapper i {
 #login-modal .modal-content {
   overflow-y: auto;
 }
+#login-form {
+  margin-bottom: 100px;
+}
 #login-form button {
   float: right;
   margin: 5px;
+}
+#social-login-container {
+  z-index: 1001;
+}
+#social-login-container > button {
+  margin: 5px;
+}
+.or-divider {
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: @darkGrey;
 }
 
 i.right {

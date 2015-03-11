@@ -63,6 +63,15 @@
         </a>
       </li>
       <li>
+        <a data-sort-categories>
+          {{#if categorySortActive}}
+            <i class="mdi-action-done left"> Done</i>
+          {{else}}
+            <i class="mdi-content-sort left"> Sort Categories</i>
+          {{/if}}
+        </a>
+      </li>
+      <li>
         <a data-logout><i class="mdi-action-done-all left"> Sign Out</i></a>
       </li>
     {{else}}
@@ -71,6 +80,14 @@
       </li>
     {{/if}}
     </ul>
+  </div>
+</template>
+
+<template name="socialLogin">
+  <div id="social-login-container">
+    <button id="google-account" type="button" class="btn waves-effect waves-light red"><i class="fa fa-fw fa-google-plus-square"></i> Google</button>
+    <button id="facebook-account" type="button" class="btn waves-effect waves-light blue"><i class="fa fa-fw fa-facebook-square"></i> Facebook</button>
+    <!--<button id="google-account" type="button" class="btn waves-effect waves-light red"><i class="fa fa-fw fa-google-plus-square"></i> Google</button>-->
   </div>
 </template>
 
@@ -104,6 +121,8 @@
       </div>
       <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign Up</button>
     </form>
+    <div class="or-divider">or</div>
+    {{> socialLogin action="register" }}
   </div>
 </template>
 
@@ -125,22 +144,23 @@
           <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign In</button>
           <button id="cancel-tile-edit" type="button" class="btn waves-effect waves-grey modal-action modal-close grey">Cancel</button>
         </form>
-      </div>
-      <!--<div class="modal-footer">
-        <div class="progress">
-          <div class="indeterminate"></div>
+        <div class="center">
+          {{> socialLogin action="login" }}
         </div>
-      </div>-->
+      </div>
   </div>
 </template>
 
 <template name="allTiles">
   {{> navbar }}
-  <div id="tile-container" class="flex-column">
-    {{#each categories}}
-      {{> category}}
-    {{/each}}
-  </div>
+  <div id="tile-container" class="flex-column"></div>
+</template>
+
+<template name="categories">
+  {{#each categories}}
+    {{> category}}
+  {{/each}}
+  <div id="tile-container-inner"></div>
 </template>
 
 <template name="category">

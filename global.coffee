@@ -88,6 +88,7 @@ Accounts.config
   container = $('#toast-container')
   newToast = createToast(message)
   container.append newToast
+  # Limit # of toasts on screen to at most 3:
   toasts = container.find('.toast')
   if toasts.length >= 4
     for toast in [0..(toasts.length-4)]

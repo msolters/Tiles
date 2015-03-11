@@ -1,22 +1,26 @@
 Router.map ->
-  @route 'loading',
+  @route 'Home',
+    path: '/'
+    template: 'register'
+
+  @route 'Loading',
     path: '/loading'
     template: 'loading'
 
-  @route 'Signup',
+  @route 'Register',
     path: '/register'
     template: 'register'
 
   @route 'Render User',
     path: '/:publicURL'
+    template: 'allTiles'
     waitOn: ->
-      # deal with null or non-existant userIds???
       Meteor.subscribe 'Tiles'
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
     data: ->
       return unless @ready() is true  # Only do this stuff once the data is available:
       if Meteor.users.find({public_url: @params.publicURL}).count() is 0
-        @redirect '/loading'
+        @redirect '/'
       else
         user = Meteor.users.findOne({public_url: @params.publicURL})
 
@@ -51,11 +55,10 @@ Router.map ->
         hue += delta_hue
       context['categories'] = category_list
 
+      console.log context
+
       # (3) Pass that shit to the template engine!
       return context
-    action: ->
-      if @ready() is true
-        @render 'allTiles'
 
 Router.configure
   loadingTemplate: 'loading'

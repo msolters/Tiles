@@ -1,5 +1,4 @@
 #   Template helpers, events, et cetera for the client.
-
 Template.registerHelper 'profileName', ->
   url = Router.current().params.publicURL
   db_user = Meteor.users.findOne({public_url: url})
@@ -30,7 +29,7 @@ Template.registerHelper 'textToHTML', (text) ->
   text.replace(/(\r\n\r\n|\n\n|\r\r)/gm,"<br/><br/>") if text?
 Template.registerHelper 'currentlyEditing', ->
   _tile = Session.get("currentlyEditing")
-  if !_tile?
+  if _tile?
     return _tile
   else
     return null
@@ -38,53 +37,23 @@ Template.registerHelper 'currentlyViewing', ->
   return Session.get "currentlyViewing"
 Template.registerHelper 'verify', (user) ->
   url = Router.current().params.publicURL
-  db_url = Meteor.user().public_url
-  if db_url?
-    if url is db_url
-      return true
+  if Meteor.user()?
+    db_url = Meteor.user().public_url
+    if db_url?
+      if url is db_url
+        return true
   return false
 
 #
 #   Template.allTiles
 #
 Template.allTiles.rendered = ->
-  data = Template.currentData()
-  #if Meteor.user().public_url is data.public_url # user is verified
-  ###
+  data = @data
   @autorun =>
-    data = Template.currentData()
-    console.log "hi"
-
-      @categorySortable = new Sortable $("#tile-container")[0],
-        group: "categorySortable"  # or { name: "...", pull: [true, false, clone], put: [true, false, array] }
-        sort: true  # sorting inside list
-        disabled: false # Disables the sortable if set to true.
-        store: null  # @see Store
-        animation: 150  # ms, animation speed moving items when sorting, `0` — without animation
-        #handle: ".tile-action-row"  # Drag handle selector within list items
-        filter: ".tile"  # Selectors that do not lead to dragging (String or Function)
-        draggable: ".category-title"  # Specifies which items inside the element should be sortable
-        ghostClass: "tile-placeholder"  # Class name for the drop placeholder
-        scroll: true # or HTMLElement
-        scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.
-        scrollSpeed: 10 # px
-        # Changed sorting within list
-        onUpdate: (evt) ->
-          $("#pusher-container > .progress").show()
-          categoryPositions = {}
-          index = 0
-          for category in $('#tile-container > .category-title')
-            title = Blaze.getData($(category)[0]).title
-            categoryPositions[title] = index++
-          console.log data.categories
-          for category in data.categories
-            tile_ids = (tile._id for tile in category.tiles)
-            categoryPosition = categoryPositions[category.title]
-            #console.log "#{categoryPosition}: #{JSON.stringify(tile_ids)}"
-            Meteor.call "saveTile", Meteor.userId(), {"pos.category": categoryPosition}, {$in: tile_ids}
-          $("#pusher-container > .progress").hide()
-
-  ###
+    data=Template.currentData()
+    if $("#tile-container-inner")[0]?
+      Blaze.remove(Blaze.getView($("#tile-container-inner")[0]))
+    Blaze.renderWithData Template.categories, data, @find("#tile-container")
   if data.categories.length is 0
     if Meteor.user().public_url is data.public_url
       toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
@@ -189,6 +158,11 @@ Template.rightMenu.helpers
       return !Session.get("tileSortableDisabled")
     else
       return false
+  'categorySortActive': ->
+    if Session.get("categorySortableDisabled")?
+      return !Session.get("categorySortableDisabled")
+    else
+      return false
 
 Template.rightMenu.events
   'click a.add-new-tile': ->
@@ -201,15 +175,9 @@ Template.rightMenu.events
   'click a[data-logout]': ->
     $('#right-menu').sidebar 'hide'
     Meteor.logout()
-    ###
-    $("#tile-container").sortable
-      disabled: true
-    .enableSelection()
-    ###
     $('.toast').remove()
     toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
   'click a[data-sort-tiles]': (event, template) ->
-    $('#right-menu').sidebar 'hide'
     if !template.tileSortable? # if sortable hasn't been instantiated, instantiate it!
       template.tileSortable = new Sortable $("#tile-container")[0],
         group: "tileSortable"  # or { name: "...", pull: [true, false, clone], put: [true, false, array] }
@@ -228,8 +196,12 @@ Template.rightMenu.events
     template.tileSortable.option "disabled", tileSortableDisabled
     Session.set "tileSortableDisabled", tileSortableDisabled
     if tileSortableDisabled is false  #sorting enabled
-      toast "Drag n' drop tiles to change their order.  Make sure to click Done to save your changes!", 7500, "success"
+      toast "Drag n' drop tiles to change their order.  Make sure to click Done to save your changes!", 3500, "success"
+      setTimeout ->
+        $('#right-menu').sidebar('hide')
+      , 350
     else  # sorting disabled, time to save
+      $('#right-menu').sidebar 'hide'
       toast "Saving changes...", 3000, "info"
       $("#pusher-container > .progress").show()
       tilePositions = {}
@@ -245,7 +217,7 @@ Template.rightMenu.events
       pending = 0
       for cat, tileList of tilePositions
         pending += tileList.length
-      #Session.set "pendingOps", pending
+
       for cat, tileList of tilePositions
         for _id, i in tileList
           _tile =
@@ -254,34 +226,66 @@ Template.rightMenu.events
               tile: i
               category: k
           Meteor.call "saveTile", _tile, _id, (err, resp) ->
-            if !err?
+            if err?
+              pending -= 1
+              toast "Problem saving new position of tile #{_id}!  Skipping...", 4000, "danger"
+            else
               pending -= 1
               console.log pending
               if pending is 0
                 toast "New arrangement committed to database successfully!", 4000, "success"
                 $("#pusher-container > .progress").hide()
         k++
+  'click a[data-sort-categories]': (event, template) ->
+    if !template.categorySortable? # if sortable hasn't been instantiated, instantiate it!
+      template.categorySortable = new Sortable $("#tile-container")[0],
+        group: "categorySortable"  # or { name: "...", pull: [true, false, clone], put: [true, false, array] }
+        sort: true  # sorting inside list
+        disabled: true # Disables the sortable if set to true.
+        store: null  # @see Store
+        animation: 150  # ms, animation speed moving items when sorting, `0` — without animation
+        #handle: ".tile-action-row"  # Drag handle selector within list items
+        filter: ".tile"  # Selectors that do not lead to dragging (String or Function)
+        draggable: ".category-title"  # Specifies which items inside the element should be sortable
+        ghostClass: "tile-placeholder"  # Class name for the drop placeholder
+        scroll: true # or HTMLElement
+        scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.
+        scrollSpeed: 10 # px
 
-      ###
-      tileData = Blaze.getData(evt.item)
-      newCategory = Blaze.getData($(evt.item).prevAll('.category-title:first')[0]).title
-      _tile =
-        category: newCategory
-      Meteor.call "saveTile", Meteor.userId(), _tile, tileData.tile._id
-      index = 0
-      for tile in $('#tile-container > .tile')
-        id = Blaze.getData($(tile)[0]).tile._id
-        Tiles.update(
-          {_id: id}
-          $set:
-            pos:
-              tile: index++
-        )
-      ###
+    # (1) we toggle the disabled value!
+    categorySortableDisabled = !template.categorySortable.option "disabled"
+    template.categorySortable.option "disabled", categorySortableDisabled
+    Session.set "categorySortableDisabled", categorySortableDisabled
 
-    ###
-    onUpdate: (evt) ->
-    ###
+    # (2) process those values!
+    if categorySortableDisabled is false  #sorting enabled
+      $('.tile').hide()
+      toast "Drag n' drop categories to change their order.  Make sure to click Done to save your changes!", 3500, "success"
+      setTimeout ->
+        $('#right-menu').sidebar('hide')
+      , 350
+    else                      # sorting disabled, time to save
+      $('#right-menu').sidebar 'hide'
+      toast "Saving changes...", 3000, "info"
+      $("#pusher-container > .progress").show()
+      categoryPositions = (Blaze.getData(child).title for child in $('#tile-container').find('.category-title'))
+      pending = categoryPositions.length
+      for category, pos in categoryPositions
+        _query =
+          category: category
+        _update =
+          "pos.category": pos
+        Meteor.call "updateTiles", _query, _update, (err, resp) ->
+          if err?
+            pending -= 1
+            toast "Problem saving new position of category #{category}!  Skipping...", 4000, "danger"
+          else
+            pending -= 1
+            console.log pending
+            if pending is 0
+              toast "New arrangement committed to database successfully!", 4000, "success"
+              $('.tiles').show()
+              $("#pusher-container > .progress").hide()
 
 
 #
@@ -289,11 +293,16 @@ Template.rightMenu.events
 #
 Template.register.rendered = ->
   toast "Welcome to TilesJS!", 20000, "success"
+  $("input#user-profile-name").focus()
   setTimeout ->
       toast "Create an account to get started.", 20000, "info"
     , 900
 
 Template.register.events
+  'focus input#user-url': (event, template) ->
+    if !Session.get("urlExplained")?
+      toast "This will be the URL you can access your page from, i.e. <b>http://#{window.location.hostname}/mypagehere</b>", 3500, "info"
+      Session.set("urlExplained", true)
   'submit form#register-form': (event, template) ->
     name = template.find('input#user-profile-name').value
     email = template.find('input#user-email').value
@@ -316,24 +325,34 @@ Template.register.events
     if url.length is 0
       toast "Please enter a profile URL!", 5000, "danger"
       return false
+    else
+      url_encoded = encodeURIComponent url
+      if url isnt url_encoded
+        toast "People would have to type <b>http://#{window.location.hostname}/#{url_encoded}</b> to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
+        return false
+      else
+        url = url_encoded
     Meteor.call "verifyURL", url, (error, response) ->
       if error
         toast "Ya fucked up now!  #{error}", 5000, "danger"
       else
         if response is true
           Meteor.call "createNewUser", email, password, name, url, (error, response) ->
-            if error
+            if error?
               toast "Ya fucked up now!  #{error}", 5000, "danger"
             else
-              Meteor.loginWithPassword email, password
-              $(".toast").remove()
-              Deps.autorun =>
-                if Meteor.userId()?
-                  Router.go "/#{url}"
-              toast "Nice work, bone daddy!  Can I call you #{name.split(' ')[0]}?", 15000, "success"
-              setTimeout =>
-                toast "(Simply click or swipe these messages to dismiss)", 15000, "info"
-              , 1500
+              if response.success is true
+                Meteor.loginWithPassword email, password
+                $(".toast").remove()
+                Deps.autorun =>
+                  if Meteor.userId()?
+                    Router.go "/#{url}"
+                toast "Nice work, bone daddy!  Can I call you #{name.split(' ')[0]}?", 15000, "success"
+                setTimeout =>
+                  toast "(Simply click or swipe these messages to dismiss)", 15000, "info"
+                , 1500
+              else
+                toast response.msg, 6500, "danger"
         else
           toast "That URL is already taken!  Please choose another.", 6500, "danger"
     return false
@@ -366,6 +385,103 @@ Template.login.events
         $(template.find('#login-modal')).closeModal()
     return false
 
+
+#
+#     Template.socialLogin
+#
+Template.socialLogin.events
+  'click button#facebook-account': (event, template) ->
+    switch @action
+      when "register"
+        url = $("#user-url").val()
+        if url.length is 0
+          toast "Please enter a profile URL above!", 5000, "danger"
+          $("#user-url").focus()
+          return false
+        else
+          url_encoded = encodeURIComponent url
+          if url isnt url_encoded
+            toast "People would have to type <b>http://#{window.location.hostname}/#{url_encoded}</b> to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
+            return false
+          else
+            url = url_encoded
+        Meteor.call "verifyURL", url, (error, response) ->
+          if error
+            toast "Ya fucked up now!  #{error}", 5000, "danger"
+          else
+            if response is true
+              Meteor.loginWithFacebook()
+              template.facebookWaiter.stop() if template.facebookWaiter?
+              template.facebookWaiter = Deps.autorun =>
+                if Meteor.userId()?
+                  Meteor.call "updateUser", {public_url: url}, (err, response) ->
+                    if !err?
+                      Router.go "/#{url}"
+                      toast "Nice work, bone daddy!  Can I call you #{Meteor.user().profile.name.split(' ')[0]}?", 15000, "success"
+                      setTimeout =>
+                        toast "(Simply click or swipe these messages to dismiss)", 15000, "info"
+                      , 1500
+            else
+              toast "That URL is already taken!  Please choose another.", 6500, "danger"
+      when "login"
+        Meteor.loginWithFacebook()
+        template.facebookWaiter.stop() if template.facebookWaiter?
+        template.facebookWaiter = Deps.autorun =>
+          if Meteor.userId()?
+            given_name = "Asshole"
+            if Meteor.user().profile?
+              if Meteor.user().profile.name?
+                given_name = Meteor.user().profile.name.split(' ')[0] if Meteor.user().profile.name.split(' ')[0].length > 0
+            toast "Welcome back, #{given_name}!", 7000, "success"
+            if given_name is "Asshole"
+              toast "Hey you should probably fill in your name (top left).", 7000, "info"
+            $('#login-modal').closeModal()
+  'click button#google-account': (event, template) ->
+    switch @action
+      when "register"
+        url = $("#user-url").val()
+        if url.length is 0
+          toast "Please enter a profile URL above!", 5000, "danger"
+          $("#user-url").focus()
+          return false
+        else
+          url_encoded = encodeURIComponent url
+          if url isnt url_encoded
+            toast "People would have to type <b>http://#{window.location.hostname}/#{url_encoded}</b> to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
+            return false
+          else
+            url = url_encoded
+        Meteor.call "verifyURL", url, (error, response) ->
+          if error
+            toast "Ya fucked up now!  #{error}", 5000, "danger"
+          else
+            if response is true
+              Meteor.loginWithGoogle()
+              template.googleWaiter.stop() if template.googleWaiter?
+              template.googleWaiter = Deps.autorun =>
+                if Meteor.userId()?
+                  Meteor.call "updateUser", {public_url: url}, (err, response) ->
+                    if !err?
+                      Router.go "/#{url}"
+                      toast "Nice work, bone daddy!  Can I call you #{Meteor.user().profile.name.split(' ')[0]}?", 15000, "success"
+                      setTimeout =>
+                        toast "(Simply click or swipe these messages to dismiss)", 15000, "info"
+                      , 1500
+            else
+              toast "That URL is already taken!  Please choose another.", 6500, "danger"
+      when "login"
+        Meteor.loginWithGoogle()
+        template.googleWaiter.stop() if template.googleWaiter?
+        template.googleWaiter = Deps.autorun =>
+          if Meteor.userId()?
+            given_name = "Asshole"
+            if Meteor.user().profile?
+              if Meteor.user().profile.name?
+                given_name = Meteor.user().profile.name.split(' ')[0] if Meteor.user().profile.name.split(' ')[0].length > 0
+            toast "Welcome back, #{given_name}!", 7000, "success"
+            if given_name is "Asshole"
+              toast "Hey you should probably fill in your name (top left).", 7000, "info"
+            $('#login-modal').closeModal()
 
 #
 #     Template.deleteTileConfirmation

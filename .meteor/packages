@@ -19,3 +19,7 @@ semantic:ui-sidebar
 momentjs:moment
 rubaxa:sortable
 simple:reactive-method
+accounts-google
+accounts-facebook
+accounts-twitter
+service-configuration
