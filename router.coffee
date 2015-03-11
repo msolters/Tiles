@@ -3,10 +3,6 @@ Router.map ->
     path: '/'
     template: 'register'
 
-  @route 'Loading',
-    path: '/loading'
-    template: 'loading'
-
   @route 'Register',
     path: '/register'
     template: 'register'
@@ -55,7 +51,7 @@ Router.map ->
         hue += delta_hue
       context['categories'] = category_list
 
-      console.log context
+      #console.log context
 
       # (3) Pass that shit to the template engine!
       return context
@@ -63,3 +59,5 @@ Router.map ->
 Router.configure
   loadingTemplate: 'loading'
   layoutTemplate: 'appLayout'
+
+Router.onBeforeAction 'loading'
