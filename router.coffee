@@ -7,6 +7,9 @@ Router.map ->
     path: '/register'
     template: 'register'
 
+  @route 'Loading',
+    path: '/loading'
+
   @route 'Render User',
     path: '/:publicURL'
     template: 'allTiles'
@@ -15,10 +18,10 @@ Router.map ->
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
     data: ->
       return unless @ready() is true  # Only do this stuff once the data is available:
-      if Meteor.users.find({public_url: @params.publicURL}).count() is 0
+      if Meteor.users.find({"profile.public_url": @params.publicURL}).count() is 0
         @redirect '/'
       else
-        user = Meteor.users.findOne({public_url: @params.publicURL})
+        user = Meteor.users.findOne({"profile.public_url": @params.publicURL})
 
       context =
         public_url: @params.publicURL

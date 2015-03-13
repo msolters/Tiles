@@ -12,7 +12,6 @@ accounts-password
 fortawesome:fontawesome
 velocityjs:velocityjs
 chriswessels:hammer
-d0minikk:materialize-meteor
 accounts-ui-unstyled
 accounts-base
 semantic:ui-sidebar
@@ -23,3 +22,4 @@ accounts-google
 accounts-facebook
 accounts-twitter
 service-configuration
+materialize:materialize

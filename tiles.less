@@ -216,6 +216,9 @@ html {
 .loading-container {
   height: 100%;
 }
+.loading-container > .preloader-wrapper {
+  margin: 0 auto;
+}
 .danger {
   background-color: @lightRed;
 }
@@ -473,21 +476,6 @@ nav .nav-wrapper i {
 }
 
 
-/*  registration styles */
-#register-form-container {
-  margin-top: 10%;
-  text-align: center;
-  flex-direction: column;
-}
-#register-form {
-  min-width: 300px;
-}
-#register-form button {
-  margin: 5px;
-  margin-right: 0;
-  float: right;
-}
-
 /*  login styles    */
 #login-modal {
   max-width: 500px;
@@ -523,6 +511,43 @@ nav .nav-wrapper i {
   text-transform: uppercase;
   color: @darkGrey;
 }
+
+
+/*  registration styles */
+#register-form-container {
+  margin-top: 10%;
+  text-align: center;
+  flex-direction: column;
+}
+#register-options {
+  min-width: 500px;
+  position: relative;
+}
+#register-options > .left {
+  text-align: center;
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  padding-bottom: 50px;
+}
+#register-options > .right {
+  width: 50%;
+  padding-left: 10px;
+  border-left: 1px solid @darkishGrey;
+}
+#register-options > .left > #social-login-container {
+  width: 100%;
+}
+#register-options > .left button {
+  display: block;
+}
+#register-form {
+  min-width: 300px;
+}
+#register-form button {
+  margin: 15px auto;
+}
+
 
 i.right {
   margin-left: 5px;

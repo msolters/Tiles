@@ -151,34 +151,40 @@
   <div id="register-form-container" class="valign-wrapper">
     <form id="register-form">
       <div class="input-field">
-        <i class="mdi-social-person prefix"></i>
-        <input id="user-profile-name" type="text"/>
-        <label for="user-profile-name">Your Name</label>
-      </div>
-      <div class="input-field">
-        <i class="mdi-communication-email prefix"></i>
-        <input id="user-email" type="email"  />
-        <label for="user-email">E-mail</label>
-      </div>
-      <div class="input-field">
-        <i class="mdi-action-lock prefix"></i>
-        <input id="user-password" type="password"/>
-        <label for="user-password">Password</label>
-      </div>
-      <div class="input-field">
-        <i class="mdi-action-lock prefix"></i>
-        <input id="user-password-confirm" type="password"/>
-        <label for="user-password-confirm">Confirm Password</label>
-      </div>
-      <div class="input-field">
         <i class="mdi-social-public prefix"></i>
         <input id="user-url" type="text"/>
         <label for="user-url">Public URL</label>
       </div>
-      <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign Up</button>
+      <div id="register-options">
+        <div class="left valign-wrapper">
+          {{> socialLogin action="register" }}
+        </div>
+        <div class="right">
+          <div class="input-field">
+            <i class="mdi-social-person prefix"></i>
+            <input id="user-profile-name" type="text"/>
+            <label for="user-profile-name">Your Name</label>
+          </div>
+          <div class="input-field">
+            <i class="mdi-communication-email prefix"></i>
+            <input id="user-email" type="email"  />
+            <label for="user-email">E-mail</label>
+          </div>
+          <div class="input-field">
+            <i class="mdi-action-lock prefix"></i>
+            <input id="user-password" type="password"/>
+            <label for="user-password">Password</label>
+          </div>
+          <div class="input-field">
+            <i class="mdi-action-lock prefix"></i>
+            <input id="user-password-confirm" type="password"/>
+            <label for="user-password-confirm">Confirm Password</label>
+          </div>
+          <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign Up</button>
+        </div>
+        <div style="clear: both"></div>
+      </div>
     </form>
-    <div class="or-divider">or</div>
-    {{> socialLogin action="register" }}
   </div>
 </template>
 

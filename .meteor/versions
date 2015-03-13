@@ -17,7 +17,6 @@ callback-hook@1.0.2
 check@1.0.4
 chriswessels:hammer@2.0.4_3
 coffeescript@1.0.5
-d0minikk:materialize-meteor@1.95.1
 dburles:mongo-collection-instances@0.2.6
 ddp@1.0.14
 deps@1.0.6
@@ -48,6 +47,7 @@ less@1.0.12
 livedata@1.0.12
 localstorage@1.0.2
 logging@1.0.6
+materialize:materialize@0.95.3
 meteor@1.1.4
 meteor-platform@1.2.1
 minifiers@1.1.3

@@ -1,7 +1,7 @@
 #   Template helpers, events, et cetera for the client.
 Template.registerHelper 'profileName', ->
   url = Router.current().params.publicURL
-  db_user = Meteor.users.findOne({public_url: url})
+  db_user = Meteor.users.findOne({"profile.public_url": url})
   name = db_user.profile.name if db_user?
   return name if name?
 Template.registerHelper 'hasDates', (tile) ->
@@ -38,7 +38,7 @@ Template.registerHelper 'currentlyViewing', ->
 Template.registerHelper 'verify', (user) ->
   url = Router.current().params.publicURL
   if Meteor.user()?
-    db_url = Meteor.user().public_url
+    db_url = Meteor.user().profile.public_url
     if db_url?
       if url is db_url
         return true
@@ -56,7 +56,7 @@ Template.allTiles.rendered = ->
     else
       @autorun ->
         if Meteor.user()?
-          if Meteor.user().public_url is data.public_url
+          if Meteor.user().profile.public_url is data.public_url
             toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
             $('#right-menu').sidebar 'show'
 
@@ -324,7 +324,7 @@ Template.register.events
     clearTimeout template.urlTimer if template.urlTimer?
     _url = event.currentTarget.value
     template.urlTimer = setTimeout =>
-      toast "Your URL will be http://#{window.location.hostname}/#{_url}!", 3000
+      toast "Your URL will be http://#{window.location.hostname}/#{_url}", 3000
     , 400
   'submit form#register-form': (event, template) ->
     name = template.find('input#user-profile-name').value
@@ -349,6 +349,9 @@ Template.register.events
       toast "Please enter a profile URL!", 5000, "danger"
       return false
     else
+      if RegExp(/[\\/]/).test url is true
+        toast "Sorry, no slashes!", 6500, "danger"
+        return false
       url_encoded = encodeURIComponent url
       if url isnt url_encoded
         toast "People would have to type http://#{window.location.hostname}/#{url_encoded} to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
@@ -357,13 +360,13 @@ Template.register.events
         url = url_encoded
     Meteor.call "verifyURL", url, (error, response) ->
       if error
-        toast "Ya fucked up now!  #{error}", 5000, "danger"
+        toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
       else
         if response is true
           Meteor.call "createNewUser", email, password, name, url, (error, response) ->
             if error?
               console.log error
-              toast "Ya fucked up now!  #{error}", 5000, "danger"
+              toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
             else
               if response.success is true
                 Meteor.loginWithPassword email, password
@@ -397,7 +400,7 @@ Template.login.events
       return false
     Meteor.loginWithPassword email, password, (error) ->
       if error
-        toast "Ya fucked up now!  #{error}", 5000, "danger"
+        toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
       else
         given_name = "Asshole"
         if Meteor.user().profile?
@@ -413,8 +416,12 @@ Template.login.events
 #
 #     Template.socialLogin
 #
+Template.socialLogin.created = ->
+  @data.waiters = {}
+
 Template.socialLogin.events
   'click button#facebook-account': (event, template) ->
+    console.log template
     switch @action
       when "register"
         url = $("#user-url").val()
@@ -431,14 +438,14 @@ Template.socialLogin.events
             url = url_encoded
         Meteor.call "verifyURL", url, (error, response) ->
           if error
-            toast "Ya fucked up now!  #{error}", 5000, "danger"
+            toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
           else
             if response is true
               Meteor.loginWithFacebook()
-              template.facebookWaiter.stop() if template.facebookWaiter?
-              template.facebookWaiter = Deps.autorun =>
+              waiter.stop() for waiter in template.data.waiters
+              template.data.waiters.facebook = Deps.autorun =>
                 if Meteor.userId()?
-                  Meteor.call "updateUser", {public_url: url}, (err, response) ->
+                  Meteor.call "updateUser", {"profile.public_url": url}, (err, response) ->
                     if !err?
                       Router.go "/#{url}"
                       toast "Nice work, bone daddy!  Can I call you #{Meteor.user().profile.name.split(' ')[0]}?", 15000, "success"
@@ -448,9 +455,14 @@ Template.socialLogin.events
             else
               toast "That URL is already taken!  Please choose another.", 6500, "danger"
       when "login"
-        Meteor.loginWithFacebook()
-        template.facebookWaiter.stop() if template.facebookWaiter?
-        template.facebookWaiter = Deps.autorun =>
+        Meteor.loginWithFacebook {}, (err) ->
+          if err?
+            toast "#{err.reason}", 4000, "danger"
+            if err.error is 505
+              $('#login-modal').closeModal()
+              Router.go 'Register'
+        waiter.stop() for waiter in template.data.waiters
+        template.data.waiters.facebook = Deps.autorun =>
           if Meteor.userId()?
             given_name = "Asshole"
             if Meteor.user().profile?
@@ -477,14 +489,14 @@ Template.socialLogin.events
             url = url_encoded
         Meteor.call "verifyURL", url, (error, response) ->
           if error
-            toast "Ya fucked up now!  #{error}", 5000, "danger"
+            toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
           else
             if response is true
               Meteor.loginWithGoogle()
-              template.googleWaiter.stop() if template.googleWaiter?
-              template.googleWaiter = Deps.autorun =>
+              waiter.stop() for waiter in template.data.waiters
+              template.data.waiters.google = Deps.autorun =>
                 if Meteor.userId()?
-                  Meteor.call "updateUser", {public_url: url}, (err, response) ->
+                  Meteor.call "updateUser", {"profile.public_url": url}, (err, response) ->
                     if !err?
                       Router.go "/#{url}"
                       toast "Nice work, bone daddy!  Can I call you #{Meteor.user().profile.name.split(' ')[0]}?", 15000, "success"
@@ -494,9 +506,14 @@ Template.socialLogin.events
             else
               toast "That URL is already taken!  Please choose another.", 6500, "danger"
       when "login"
-        Meteor.loginWithGoogle()
-        template.googleWaiter.stop() if template.googleWaiter?
-        template.googleWaiter = Deps.autorun =>
+        Meteor.loginWithGoogle {}, (err) ->
+          if err?
+            toast "#{err.reason}", 4000, "danger"
+            if err.error is 505
+              $('#login-modal').closeModal()
+              Router.go 'Register'
+        waiter.stop() for waiter in template.data.waiters
+        template.data.waiters.google = Deps.autorun =>
           if Meteor.userId()?
             given_name = "Asshole"
             if Meteor.user().profile?

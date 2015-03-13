@@ -5,19 +5,33 @@ Meteor.publish 'Users', (slug={}) ->
 
 Meteor.startup ->
 
+Accounts.validateNewUser (user) ->
+  if !user.profile.public_url?
+    throw new Meteor.Error 505, 'Could not login!  User is not registered.', 'User is not registered.'
+  else
+    return true
+
+###
+Accounts.onCreateUser (options, user) ->
+  console.log "onCreateNewUser:"
+  console.log options
+  console.log '\n'
+  console.log user
+###
+
 Meteor.methods
   # Given a currentUser from a template context, and the URL of
   # the client's current route, determine if the currentUser is
   # authorized to manipulate the page at that URL.
   verifyUser: (user, url) ->
-    db_user = Meteor.users.findOne({public_url: url})
+    db_user = Meteor.users.findOne({"profile.public_url": url})
     if user? and db_user?
       if user._id is db_user._id
         return true
     return false
   # Check that the provided URL is not in use by another user already.:
   verifyURL: (url) ->
-    if Meteor.users.find({public_url: url}).count() is 0
+    if Meteor.users.find({"profile.public_url": url}).count() is 0
       return true
     else
       return false
@@ -37,17 +51,20 @@ Meteor.methods
     query.$or.push
       'emails.address': email
     if Meteor.users.findOne(query)?
-      throw new Meteor.Error 500, 'Could not create new user.', 'E-mail already taken.'
+      throw new Meteor.Error 500, 'Could not create new user.  E-mail is already in use!', 'E-mail already taken.'
     userId = Accounts.createUser
       email: email
       password: password
       profile:
         name: name
+        public_url: url
+    ###
     Meteor.users.update(
       {_id: userId}
       $set:
         public_url: url
     )
+    ###
     return {success: true}
   updateUser: (_user) ->
     Meteor.users.update(
