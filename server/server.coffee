@@ -5,13 +5,13 @@ Meteor.publish 'Users', (slug={}) ->
 
 Meteor.startup ->
 
+###
 Accounts.validateNewUser (user) ->
   if !user.profile.public_url?
     throw new Meteor.Error 505, 'Could not login!  User is not registered.', 'User is not registered.'
   else
     return true
 
-###
 Accounts.onCreateUser (options, user) ->
   console.log "onCreateNewUser:"
   console.log options

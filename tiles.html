@@ -147,19 +147,25 @@
   </div>
 </template>
 
+<template name="establishURL">
+  <form id="verify-url">
+    <div class="input-field">
+      <i class="mdi-social-public prefix"></i>
+      <input id="user-url" type="text"/>
+      <label for="user-url">Public URL</label>
+    </div>
+  </form>
+</template>
+
 <template name="register">
   <div id="register-form-container" class="valign-wrapper">
-    <form id="register-form">
-      <div class="input-field">
-        <i class="mdi-social-public prefix"></i>
-        <input id="user-url" type="text"/>
-        <label for="user-url">Public URL</label>
+    {{> establishURL}}
+    <div id="register-options">
+      <div class="left valign-wrapper">
+        {{> socialLogin action="register" }}
       </div>
-      <div id="register-options">
-        <div class="left valign-wrapper">
-          {{> socialLogin action="register" }}
-        </div>
-        <div class="right">
+      <div class="right">
+        <form id="register-form">
           <div class="input-field">
             <i class="mdi-social-person prefix"></i>
             <input id="user-profile-name" type="text"/>
@@ -181,10 +187,10 @@
             <label for="user-password-confirm">Confirm Password</label>
           </div>
           <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign Up</button>
-        </div>
-        <div style="clear: both"></div>
+        </form>
       </div>
-    </form>
+      <div style="clear: both"></div>
+    </div>
   </div>
 </template>
 

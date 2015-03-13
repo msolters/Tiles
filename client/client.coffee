@@ -306,16 +306,12 @@ Template.rightMenu.events
 
 
 #
-#     Template.register
+#     Template.establishURL
 #
-Template.register.rendered = ->
-  toast "Welcome to TilesJS!", 20000, "success"
-  $("input#user-profile-name").focus()
-  setTimeout ->
-      toast "Create an account to get started.", 20000, "info"
-    , 900
+Template.establishURL.rendered = ->
+  $("input#user-url").focus()
 
-Template.register.events
+Template.establishURL.events
   'focus input#user-url': (event, template) ->
     if !Session.get("urlExplained")?
       toast "This will be the URL you can access your page from, i.e. http://#{window.location.hostname}/<b>mypagehere</b>", 3500, "info"
@@ -326,6 +322,21 @@ Template.register.events
     template.urlTimer = setTimeout =>
       toast "Your URL will be http://#{window.location.hostname}/#{_url}", 3000
     , 400
+  'submit form#verify-url': ->
+    return unless @updateUser is true
+    
+
+
+#
+#     Template.register
+#
+Template.register.rendered = ->
+  toast "Welcome to TilesJS!", 20000, "success"
+  setTimeout ->
+      toast "Create an account to get started.", 20000, "info"
+    , 900
+
+Template.register.events
   'submit form#register-form': (event, template) ->
     name = template.find('input#user-profile-name').value
     email = template.find('input#user-email').value
