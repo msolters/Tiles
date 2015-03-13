@@ -10,6 +10,12 @@ Router.map ->
   @route 'Loading',
     path: '/loading'
 
+  @route 'Setup',
+    path: '/setup'
+    template: 'establishURL'
+    data: ->
+      return {forceUpdate: true}
+
   @route 'Render User',
     path: '/:publicURL'
     template: 'allTiles'
@@ -18,10 +24,13 @@ Router.map ->
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
     data: ->
       return unless @ready() is true  # Only do this stuff once the data is available:
-      if Meteor.users.find({"profile.public_url": @params.publicURL}).count() is 0
-        @redirect '/'
-      else
-        user = Meteor.users.findOne({"profile.public_url": @params.publicURL})
+      user = Meteor.users.findOne({"profile.public_url": @params.publicURL})
+      if !user?
+        @redirect '/' #this isn't a valid url!  should be a not found screen
+
+      if Meteor.user()?
+        if !Meteor.user().profile.public_url?
+          @redirect '/setup'
 
       context =
         public_url: @params.publicURL

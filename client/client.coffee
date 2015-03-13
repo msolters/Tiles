@@ -323,8 +323,36 @@ Template.establishURL.events
       toast "Your URL will be http://#{window.location.hostname}/#{_url}", 3000
     , 400
   'submit form#verify-url': ->
-    return unless @updateUser is true
-    
+    return unless @forceUpdate is true
+    url = $("input#user-url").val()
+    if url.length is 0
+      toast "Please enter a URL!", 5000, "danger"
+      return false
+    else
+      if RegExp(/[\\/]/).test url is true
+        toast "Sorry, no slashes!", 6500, "danger"
+        return false
+      url_encoded = encodeURIComponent url
+      if url isnt url_encoded
+        toast "People would have to type http://#{window.location.hostname}/#{url_encoded} to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
+        return false
+      else
+        url = url_encoded
+      Meteor.call "verifyURL", url, (error, response) ->
+        if error
+          toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
+          return false
+        else
+          if response is true
+            Meteor.call "updateUser", {"profile.public_url": url}, (error, response) ->
+              if error?
+                console.log error
+                toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
+              else
+                if response.success is true
+                  Router.go "/#{url}"
+    return false
+
 
 
 #

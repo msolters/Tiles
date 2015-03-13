@@ -89,7 +89,11 @@
   <div id="right-menu" class="ui right vertical inverted labeled icon sidebar menu">
     <ul>
       <li>
-        <a href="#" id="brand-top-right"><i class="mdi-action-view-module"> TilesJS</i></a>
+        {{#if currentUser}}
+          <a href="{{currentUser.profile.public_url}}" id="brand-top-right"><i class="mdi-social-person"> {{currentUser.profile.name}}</i><i id="go-to-mypage" class="mdi-navigation-chevron-right right"></i></a>
+        {{else}}
+          <a href="#" id="brand-top-right"><i class="mdi-action-view-module"> TilesJS</i></a>
+        {{/if}}
       </li>
     {{#if verify currentUser}}
       {{#unless tileSortActive}}
@@ -127,8 +131,10 @@
           {{/unless}}
         {{/if}}
       {{/if}}
+    {{/if}}
+    {{#if currentUser}}
       <li>
-        <a data-logout><i class="mdi-action-done-all left"> Sign Out</i></a>
+        <a data-logout><i class="mdi-action-exit-to-app left"> Sign Out</i></a>
       </li>
     {{else}}
       <li>
@@ -254,7 +260,7 @@
       </div>
     </div>
     <div class="tile-action row">
-      {{#if currentUser}}
+      {{#if verify currentUser}}
         <p class="delete-tile">
           <a class="tile-delete" href="#"><i class="mdi-action-delete"></i></a>
         </p>
