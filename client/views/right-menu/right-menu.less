@@ -1,0 +1,47 @@
+@import "global-less";
+
+#right-menu-collapse {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 70px;
+  text-align: center;
+  color: @lightRed;
+}
+#right-menu-collapse:hover {
+  color: #fff;
+  background-color: @darkRed;
+}
+#right-menu {
+  background: #eee;
+  z-index: 1002;
+}
+#brand-top-right {
+  box-sizing: border-box;
+  border-bottom: 2px solid;
+}
+#right-menu ul {
+  height: 100%;
+  margin: 0;
+}
+#right-menu ul li {
+  cursor: pointer;
+  height: @navbarHeight;
+  font-size: 18px;
+}
+#right-menu ul li:hover {
+  background-color: @hoverGrey;
+}
+#right-menu ul li a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  padding: 19px;
+  color: @darkRed;
+}
+#go-to-mypage {
+  display: none;
+}
+#right-menu ul li:first-of-type:hover > a > #go-to-mypage {
+  display: block;
+}

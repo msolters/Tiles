@@ -1,0 +1,79 @@
+<template name="socialLogin">
+  <div id="social-login-container">
+    <button id="google-account" type="button" class="btn waves-effect waves-light red"><i class="fa fa-fw fa-google-plus-square"></i> Google</button>
+    <button id="facebook-account" type="button" class="btn waves-effect waves-light blue"><i class="fa fa-fw fa-facebook-square"></i> Facebook</button>
+    <!--<button id="google-account" type="button" class="btn waves-effect waves-light red"><i class="fa fa-fw fa-google-plus-square"></i> Google</button>-->
+  </div>
+</template>
+
+<template name="establishURL">
+  <form id="verify-url">
+    <div class="input-field">
+      <i class="mdi-social-public left prefix">http://{{hostname}}/</i>
+      <input id="user-url" type="text"/>
+      <label for="user-url">Public URL</label>
+    </div>
+  </form>
+</template>
+
+<template name="register">
+  <div id="register-form-container" class="valign-wrapper">
+    {{> establishURL}}
+    <div id="register-options">
+      <div class="left valign-wrapper">
+        {{> socialLogin action="register" }}
+      </div>
+      <div class="right">
+        <form id="register-form">
+          <div class="input-field">
+            <i class="mdi-social-person prefix"></i>
+            <input id="user-profile-name" type="text"/>
+            <label for="user-profile-name">Your Name</label>
+          </div>
+          <div class="input-field">
+            <i class="mdi-communication-email prefix"></i>
+            <input id="user-email" type="email"  />
+            <label for="user-email">E-mail</label>
+          </div>
+          <div class="input-field">
+            <i class="mdi-action-lock prefix"></i>
+            <input id="user-password" type="password"/>
+            <label for="user-password">Password</label>
+          </div>
+          <div class="input-field">
+            <i class="mdi-action-lock prefix"></i>
+            <input id="user-password-confirm" type="password"/>
+            <label for="user-password-confirm">Confirm Password</label>
+          </div>
+          <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign Up</button>
+        </form>
+      </div>
+      <div style="clear: both"></div>
+    </div>
+  </div>
+</template>
+
+<template name="login">
+  <div id="login-modal" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <form id="login-form">
+          <h4 id="login-title">Login</h4>
+          <div class="input-field">
+            <i class="mdi-communication-email prefix"></i>
+            <input id="user-email" type="email"  />
+            <label for="user-email">E-mail</label>
+          </div>
+          <div class="input-field">
+            <i class="mdi-action-lock prefix"></i>
+            <input id="user-password" type="password"/>
+            <label for="user-password">Password</label>
+          </div>
+          <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign In</button>
+          <button id="cancel-tile-edit" type="button" class="btn waves-effect waves-grey modal-action modal-close grey">Cancel</button>
+        </form>
+        <div class="center">
+          {{> socialLogin action="login" }}
+        </div>
+      </div>
+  </div>
+</template>

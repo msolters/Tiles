@@ -1,0 +1,23 @@
+<template name="tileViewModal">
+  <div id="tile-view-modal" class="modal modal-fixed-footer" style="border-color: {{currentlyViewing.colour}}">
+    <div class="modal-content">
+      <div class='title'>
+        {{currentlyViewing.title}}
+      </div>
+      {{#if hasDates currentlyViewing}}
+        <div class="dates">
+          {{formatTileDates currentlyViewing.dates}}
+        </div>
+      {{/if}}
+      <div class='content'>
+        {{{textToHTML currentlyViewing.content}}}
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn waves-effect waves-light modal-action modal-close grey"><i class="mdi-action-done left"></i>Done</button>
+      <div class="progress">
+        <div class="indeterminate"></div>
+      </div>
+    </div>
+  </div>
+</template>

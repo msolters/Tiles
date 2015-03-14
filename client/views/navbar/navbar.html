@@ -1,0 +1,15 @@
+<template name="navbar">
+  <nav>
+    <div class="nav-wrapper">
+      {{#if verify currentUser}}
+        <div class='input-field'>
+          <i class="mdi-social-person prefix"></i>
+          <input type="text" id="user-profile-name" class="text-input user-name" placeholder="Your Name" value="{{profileName}}"/>
+        </div>
+      {{else}}
+        <a class="user-name">{{profileName}}</a>
+      {{/if}}
+      <a data-sidebar id="right-menu-collapse" href="#"><i class="mdi-navigation-menu"></i></a>
+    </div>
+  </nav>
+</template>

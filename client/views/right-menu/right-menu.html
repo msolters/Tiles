@@ -1,0 +1,59 @@
+<template name="rightMenu">
+  <div id="right-menu" class="ui right vertical inverted labeled icon sidebar menu">
+    <ul>
+      <li>
+        {{#if currentUser}}
+          <a href="{{currentUser.profile.public_url}}" id="brand-top-right"><i class="mdi-social-person"> {{currentUser.profile.name}}</i><i id="go-to-mypage" class="mdi-navigation-chevron-right right"></i></a>
+        {{else}}
+          <a href="#" id="brand-top-right"><i class="mdi-action-view-module"> TilesJS</i></a>
+        {{/if}}
+      </li>
+    {{#if verify currentUser}}
+      {{#unless tileSortActive}}
+        {{#unless categorySortActive}}
+          <li>
+            <a class="add-new-tile"><i class="mdi-content-add-box left"> New Tile</i></a>
+          </li>
+        {{/unless}}
+      {{/unless}}
+      {{#if categories}}
+        {{#if tileSortable}}
+          {{#unless categorySortActive}}
+            <li>
+              <a data-sort-tiles>
+                {{#if tileSortActive}}
+                  <i class="mdi-action-done left"> Done</i>
+                {{else}}
+                  <i class="mdi-content-sort left"> Sort Tiles</i>
+                {{/if}}
+              </a>
+            </li>
+          {{/unless}}
+        {{/if}}
+        {{#if categorySortable}}
+          {{#unless tileSortActive}}
+            <li>
+              <a data-sort-categories>
+                {{#if categorySortActive}}
+                  <i class="mdi-action-done left"> Done</i>
+                {{else}}
+                  <i class="mdi-content-sort left"> Sort Categories</i>
+                {{/if}}
+              </a>
+            </li>
+          {{/unless}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+    {{#if currentUser}}
+      <li>
+        <a data-logout><i class="mdi-action-exit-to-app left"> Sign Out</i></a>
+      </li>
+    {{else}}
+      <li>
+        <a data-login><i class="mdi-action-exit-to-app left"> Sign In</i></a>
+      </li>
+    {{/if}}
+    </ul>
+  </div>
+</template>

@@ -1,0 +1,76 @@
+@import "global-less";
+
+/*  login styles    */
+#login-modal {
+  max-width: 500px;
+}
+#login-title {
+  padding-bottom: 20px;
+  padding-left: 40px;
+  margin: 0;
+  font-weight: 300;
+  font-variant: small-caps;
+}
+#login-modal .modal-content {
+  overflow-y: auto;
+}
+#login-form {
+  margin-bottom: 100px;
+}
+#login-form button {
+  float: right;
+  margin: 5px;
+}
+#social-login-container {
+  z-index: 1001;
+}
+#social-login-container > button {
+  margin: 5px;
+}
+.or-divider {
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: @darkGrey;
+}
+
+
+/*  registration styles */
+#verify-url {
+  width: 100%;
+}
+
+#register-form-container {
+  margin: 0 auto;
+  margin-top: 10%;
+  text-align: center;
+  width: 500px;
+  flex-direction: column;
+}
+#register-options {
+  min-width: 500px;
+  position: relative;
+}
+#register-options > .left {
+  text-align: center;
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  padding-bottom: 50px;
+}
+#register-options > .right {
+  width: 50%;
+  padding-left: 10px;
+  border-left: 1px solid @darkishGrey;
+}
+#register-options > .left > #social-login-container {
+  width: 100%;
+}
+#register-options > .left button {
+  display: block;
+}
+#register-form-container button {
+  margin: 15px auto;
+}
