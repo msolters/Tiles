@@ -40,6 +40,33 @@
 /*  registration styles */
 #verify-url {
   width: 100%;
+  font-size: 30px;
+  position: relative;
+  height: 2.0em;
+  border-bottom: 1px solid @darkishGrey;
+  margin-bottom: 15px;
+}
+#url-stub {
+  color: @darkGrey;
+  position: absolute;
+  top: 0;
+  right: calc(~"50% + 5px");
+}
+#verify-url > .input-field {
+  position: absolute;
+  width: 50%;
+  font-size: 20px;
+  left: 50%;
+  top: 3px;
+  margin: 0;
+}
+#verify-url > .input-field > input {
+  font-size: 20px;
+  border: none !important;
+  box-shadow: none !important;
+}
+#verify-url > .input-field > label {
+  top: 0.92em;
 }
 
 #register-form-container {
