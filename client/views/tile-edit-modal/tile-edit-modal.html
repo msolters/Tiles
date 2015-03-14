@@ -13,8 +13,8 @@
         </div>
         <div class='input-field'>
           <i class="mdi-action-list prefix"></i>
-          <!--<input id='tile-category' type='text' class='tile-category' value="{{currentlyEditing.category}}" />-->
-          {{> inputAutocomplete settings=settings id="tile-category" class="tile-category" }}
+          <input id='tile-category' type='text' class='tile-category' value="{{currentlyEditing.category}}" />
+          <!--{{> inputAutocomplete settings=settings id="tile-category" class="tile-category" }}-->
           <!--class='form-control typeahead' data-source="categories" autocomplete="on" spellcheck="off"-->
           <label for='tile-category' class="{{activeOrNot currentlyEditing.category}}">Category</label>
         </div>

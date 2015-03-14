@@ -84,6 +84,7 @@ Template.registerHelper 'verify', (user) ->
 #   Template.allTiles
 #
 Template.allTiles.rendered = ->
+  $('.toast').remove()
   data = @data
   if data.categories.length is 0
     if !Meteor.user()?

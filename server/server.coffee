@@ -17,7 +17,7 @@ Accounts.validateNewUser (user) ->
       email.$in.push e.address
   if user.services?
     for serviceName, service of user.services
-      email.$in.push service.email
+      email.$in.push service.email if service.email?
   console.log email
   query =
     $or: []

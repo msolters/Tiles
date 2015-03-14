@@ -58,6 +58,9 @@ Template.establishURL.events
 #
 #     Template.register
 #
+Template.register.created = ->
+    @waiters = {}
+
 Template.register.rendered = ->
   toast "Welcome to TilesJS!", 20000, "success"
   setTimeout ->
@@ -70,7 +73,6 @@ Template.register.events
     email = template.find('input#user-email').value
     password = template.find('input#user-password').value
     passwordConfirm = template.find('input#user-password-confirm').value
-    url = template.find('input#user-url').value.toLowerCase()
     if name.length is 0
       toast "Please enter a name!  Seriously, this is going to be your website.  That's your name up there.  Don't you even care?", 5000, "danger"
       return false
@@ -89,18 +91,25 @@ Template.register.events
       if error?
         console.log error
         toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
+        return false
       else
         if response.success is true
           Meteor.loginWithPassword email, password
-          $(".toast").remove()
-          Deps.autorun =>
-            Router.go "/#{url}" if Meteor.userId()?
+          template.waiters.vanilla.stop() if template.waiters.vanilla?
+          template.waiters.vanilla = Deps.autorun =>
+            if Meteor.userId()?
+              $(".toast").remove()
+              Router.go "/setup"
+          return false
+          ###
           toast "Nice work, bone daddy!  Can I call you #{name.split(' ')[0]}?", 15000, "success"
           setTimeout =>
             toast "(Simply click or swipe these messages to dismiss)", 15000, "info"
           , 1500
+          ###
         else
           toast response.msg, 6500, "danger"
+          return false
     return false
 
 
@@ -142,7 +151,11 @@ Template.socialLogin.events
   'click button#facebook-account': (event, template) ->
     Meteor.loginWithFacebook {}, (err) ->
       if err?
-        toast "#{err.reason}", 4000, "danger"
+        if err.reason?
+          err_msg = err.reason
+        else
+          err_msg = err
+        toast "#{err_msg}", 4000, "danger"
         return
       else
         Router.go '/'
@@ -172,7 +185,11 @@ Template.socialLogin.events
   'click button#google-account': (event, template) ->
     Meteor.loginWithGoogle {}, (err) ->
       if err?
-        toast "#{err.reason}", 4000, "danger"
+        if err.reason?
+          err_msg = err.reason
+        else
+          err_msg = err
+        toast "#{err_msg}", 4000, "danger"
         return
       else
         Router.go '/'

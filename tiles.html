@@ -14,6 +14,7 @@
   {{/if}}
   {{> tileViewModal }}
   <div id="pusher-container" class="pusher">
+    {{> navbar }}
     {{> yield }}
     {{#if verify currentUser}}
       <div class="progress">
@@ -24,7 +25,6 @@
 </template>
 
 <template name="allTiles">
-  {{> navbar }}
   <div id="tile-container" class="flex-column"></div>
 </template>
 
@@ -54,8 +54,4 @@
      <button id="cancel-tile-edit" type="button" class="btn waves-effect waves-grey modal-action modal-close grey">Cancel</button>
    </div>
   </div>
-</template>
-
-<template name="notFound">
-  I don't know what you think you're trying to do here, wise guy, but it ain't working.
 </template>

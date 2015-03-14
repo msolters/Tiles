@@ -7,7 +7,9 @@
           <input type="text" id="user-profile-name" class="text-input user-name" placeholder="Your Name" value="{{profileName}}"/>
         </div>
       {{else}}
-        <a class="user-name">{{profileName}}</a>
+        {{#if profileName}}
+          <a class="user-name">{{profileName}}</a>
+        {{/if}}
       {{/if}}
       <a data-sidebar id="right-menu-collapse" href="#"><i class="mdi-navigation-menu"></i></a>
     </div>
