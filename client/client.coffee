@@ -95,7 +95,29 @@ Template.tile.events
 #
 #   Template.tileEditModal
 #
+###
+Template.tileEditModal.categories = ->
+  console.log "hi"
+  cats = Tiles.find({owner: Meteor.userId()}).fetch().map (it) ->
+    return it.category
+  console.log cats
+  return cats
+###
+Template.tileEditModal.helpers
+  'settings': ->
+    return {
+      position: top
+      limit: 5
+      rules: [
+        collection: Tiles
+        field: "category"
+        template: Template.categoryResult
+        selector: map (it) ->
+          return it.category
+      ]
+    }
 Template.tileEditModal.rendered = ->
+  #Meteor.typeahead.inject()
   instantiateTileEditModal @
 Template.tileEditModal.events
   'click #save-tile-edit': (event, template) ->

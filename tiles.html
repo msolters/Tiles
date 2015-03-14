@@ -15,7 +15,7 @@
         </div><div class="circle-clipper right">
           <div class="circle"></div>
         </div>
-      </div>
+      </div>t
 
       <div class="spinner-layer spinner-red">
         <div class="circle-clipper left">
@@ -299,6 +299,10 @@
   </div>
 </template>
 
+<template name="categoryResult">
+  <div>{{category}}</div>
+</template>
+
 <template name="tileEditModal">
   <div id="tile-edit-modal" class="modal modal-fixed-footer">
     <div class="modal-content">
@@ -310,7 +314,9 @@
         </div>
         <div class='input-field'>
           <i class="mdi-action-list prefix"></i>
-          <input id='tile-category' type='text' class='tile-category' value="{{currentlyEditing.category}}"/>
+          <!--<input id='tile-category' type='text' class='tile-category' value="{{currentlyEditing.category}}" />-->
+          {{> inputAutocomplete settings=settings id="tile-category" class="tile-category" }}
+          <!--class='form-control typeahead' data-source="categories" autocomplete="on" spellcheck="off"-->
           <label for='tile-category' class="{{activeOrNot currentlyEditing.category}}">Category</label>
         </div>
       </div>
