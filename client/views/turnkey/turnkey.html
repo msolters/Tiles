@@ -7,18 +7,30 @@
 </template>
 
 <template name="establishURL">
+  {{> navbar }}
+  <div id="setup-instructions" class="center">
+    {{#if currentUser.profile.public_url}}
+      If we must, we must.
+    {{else}}
+      Alright, "{{currentUser.profile.name}}", if that <i>is</i> your real name.<br/>You've made it this far.  Now it's time to choose a URL:
+    {{/if}}
+  </div>
   <form id="verify-url">
     <span id="url-stub">http://{{hostname}}/</span>
     <div class="input-field">
       <input id="user-url" type="text"/>
       <label for="user-url">Public URL</label>
     </div>
+    <button type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Save</button>
+    {{#if currentUser.profile.public_url}}
+      <a href="{{currentUser.profile.public_url}}"><button type="button" class="btn waves-effect waves-light modal-action grey">Cancel</button></a>
+    {{/if}}
   </form>
 </template>
 
 <template name="register">
   <div id="register-form-container" class="valign-wrapper">
-    {{> establishURL}}
+    Welcome to TilesJS!  If you must burden us with your presence I suppose you ought to make an account or something.
     <div id="register-options">
       <div class="left valign-wrapper">
         {{> socialLogin action="register" }}

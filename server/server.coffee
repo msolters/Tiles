@@ -3,76 +3,96 @@ Meteor.publish 'Tiles', (slug={}) ->
 Meteor.publish 'Users', (slug={}) ->
   return Meteor.users.find(slug)
 
-Meteor.startup ->
+#Meteor.startup ->
 
 ###
+#   Only users with no matching e-mails in the user database can be created
+#   at this time.
+###
 Accounts.validateNewUser (user) ->
-  if !user.profile.public_url?
-    throw new Meteor.Error 505, 'Could not login!  User is not registered.', 'User is not registered.'
+  email =
+    $in: []
+  if user.emails?
+    for e in user.emails
+      email.$in.push e.address
+  if user.services?
+    for serviceName, service of user.services
+      email.$in.push service.email
+  console.log email
+  query =
+    $or: []
+  _.each Accounts.oauth.serviceNames(), (name) ->
+      q = {}
+      q["services.#{name}.email"] = email;
+      query.$or.push(q);
+      q = {};
+      q["services.#{name}.emailAddress"] = email
+      query.$or.push q
+  query.$or.push
+    'emails.address': email
+  console.log query
+  if Meteor.users.findOne(query)
+    throw new Meteor.Error 500, 'Could not create new user; e-mail already taken.', 'E-mail already taken.'
   else
     return true
 
-Accounts.onCreateUser (options, user) ->
-  console.log "onCreateNewUser:"
-  console.log options
-  console.log '\n'
-  console.log user
 ###
-
+#   Server-side methods:
+###
 Meteor.methods
-  # Given a currentUser from a template context, and the URL of
-  # the client's current route, determine if the currentUser is
-  # authorized to manipulate the page at that URL.
+  ###
+  #   Given a currentUser from a template context, and the URL of
+  #   the client's current route, determine if the currentUser is
+  #   authorized to manipulate the page at that URL.
+  ###
   verifyUser: (user, url) ->
     db_user = Meteor.users.findOne({"profile.public_url": url})
     if user? and db_user?
       if user._id is db_user._id
         return true
     return false
-  # Check that the provided URL is not in use by another user already.:
+
+  ###
+  #   Check that the provided URL is not in use by another user already.:
+  ###
   verifyURL: (url) ->
+    bannedURLs = ['register', 'loading', 'setup']
+    for bannedURL in bannedURLs
+      if bannedURL is url
+        return false
     if Meteor.users.find({"profile.public_url": url}).count() is 0
       return true
     else
       return false
-  # Create a user (the only user) who can create/edit tiles
-  # This is only used if the user wants to specify their own
-  # e-mail and password (i.e. not Google, FB, etc.)
-  createNewUser: (email, password, name, url) ->
-    query =
-      $or: []
-    _.each Accounts.oauth.serviceNames(), (name) ->
-        q = {}
-        q["services.#{name}.email"] = email;
-        query.$or.push(q);
-        q = {};
-        q["services.#{name}.emailAddress"] = email
-        query.$or.push q
-    query.$or.push
-      'emails.address': email
-    if Meteor.users.findOne(query)?
-      throw new Meteor.Error 500, 'Could not create new user.  E-mail is already in use!', 'E-mail already taken.'
+
+  ###
+  #   Create a user (the only user) who can create/edit tiles
+  #   This is only used if the user wants to specify their own
+  #   e-mail and password (i.e. not Google, FB, etc.)
+  ###
+  createNewUser: (email, password, name) ->
     userId = Accounts.createUser
       email: email
       password: password
       profile:
         name: name
-        public_url: url
-    ###
-    Meteor.users.update(
-      {_id: userId}
-      $set:
-        public_url: url
-    )
-    ###
     return {success: true}
+
+  ###
+  #
+  ###
   updateUser: (_user) ->
+    console.log _user
     Meteor.users.update(
       {_id: Meteor.userId()}
       $set: _user
     )
-  # Upserts a tile specified by _id with the data in
-  # the _tile object argument.
+    return true
+
+  ###
+  #   Upserts a tile specified by _id with the data in
+  #   the _tile object argument.
+  ###
   saveTile: (_tile, _id=null) ->
     _updateAdd =
       $set: {}
@@ -111,8 +131,11 @@ Meteor.methods
         _updateRemove
         {multi: true}
       )
+
+  ###
   #   Updates tile(s) meeting the _query criteria with the
   #   _update operations:
+  ###
   updateTiles: (_query, _update) ->
     _query.owner = Meteor.userId() # only allow ops on Tiles belonging to the currently logged in user
     Tiles.update(
@@ -121,7 +144,10 @@ Meteor.methods
         _update
       {multi: true}
     )
-  # Removes a tile specified by _id from the Tiles collection:
+
+  ###
+  #   Removes a tile specified by _id from the Tiles collection:
+  ###
   deleteTile: (_id) ->
     Tiles.remove(
       _id: _id

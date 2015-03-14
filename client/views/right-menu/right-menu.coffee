@@ -41,6 +41,9 @@ Template.rightMenu.events
     Meteor.logout()
     $('.toast').remove()
     toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
+  'click a[data-change-url]': ->
+    $('#right-menu').sidebar 'hide'
+    Router.go 'Setup'
   'click a[data-sort-tiles]': (event, template) ->
     if !template.tileSortable? # if sortable hasn't been instantiated, instantiate it!
       template.tileSortable = new Sortable $("#tile-container")[0],

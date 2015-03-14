@@ -1,13 +1,17 @@
 <template name="rightMenu">
   <div id="right-menu" class="ui right vertical inverted labeled icon sidebar menu">
     <ul>
-      <li>
-        {{#if currentUser}}
-          <a href="{{currentUser.profile.public_url}}" id="brand-top-right"><i class="mdi-social-person"> {{currentUser.profile.name}}</i><i id="go-to-mypage" class="mdi-navigation-chevron-right right"></i></a>
-        {{else}}
-          <a href="#" id="brand-top-right"><i class="mdi-action-view-module"> TilesJS</i></a>
+      {{#if currentUser}}
+        {{#if currentUser.profile.public_url}}
+          <li>
+            <a href="{{currentUser.profile.public_url}}" id="brand-top-right"><i class="mdi-social-person"> {{currentUser.profile.name}}</i><i id="go-to-mypage" class="mdi-navigation-chevron-right right"></i></a>
+          </li>
         {{/if}}
-      </li>
+      {{else}}
+        <li>
+          <a href="#" id="brand-top-right"><i class="mdi-action-view-module"> TilesJS</i></a>
+        </li>
+      {{/if}}
     {{#if verify currentUser}}
       {{#unless tileSortActive}}
         {{#unless categorySortActive}}
@@ -43,6 +47,13 @@
             </li>
           {{/unless}}
         {{/if}}
+      {{/if}}
+      {{#if currentUser.profile.public_url}}
+        <li>
+          <a data-change-url>
+              <i class="mdi-action-language left"> Change URL</i>
+          </a>
+        </li>
       {{/if}}
     {{/if}}
     {{#if currentUser}}

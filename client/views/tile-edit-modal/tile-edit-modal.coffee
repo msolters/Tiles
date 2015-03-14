@@ -9,6 +9,7 @@ Template.tileEditModal.categories = ->
   console.log cats
   return cats
 ###
+###
 Template.tileEditModal.helpers
   'settings': ->
     return {
@@ -18,13 +19,16 @@ Template.tileEditModal.helpers
         collection: Tiles
         field: "category"
         template: Template.categoryResult
-        selector: map (it) ->
-          return it.category
+        selector:
+          owner: Meteor.userId()
       ]
     }
+###
+
 Template.tileEditModal.rendered = ->
   #Meteor.typeahead.inject()
   instantiateTileEditModal @
+
 Template.tileEditModal.events
   'click #save-tile-edit': (event, template) ->
     tileEditModal.showLoading()

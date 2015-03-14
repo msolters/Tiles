@@ -1,7 +1,17 @@
 Router.map ->
   @route 'Home',
     path: '/'
-    template: 'register'
+    action: ->
+      if !Meteor.user()?
+        if Meteor.loggingIn()
+          @render "loading"
+        else
+          @render "register"
+      else
+        if Meteor.user().profile.public_url?
+          @redirect "/#{Meteor.user().profile.public_url}"
+        else
+          @redirect "/setup"
 
   @route 'Register',
     path: '/register'
@@ -13,8 +23,14 @@ Router.map ->
   @route 'Setup',
     path: '/setup'
     template: 'establishURL'
-    data: ->
-      return {forceUpdate: true}
+    action: ->
+      if !Meteor.user()?
+        if Meteor.loggingIn()
+          @render "loading"
+        else
+          @render "notFound"
+      else
+        @render 'establishURL'
 
   @route 'Render User',
     path: '/:publicURL'
@@ -26,11 +42,13 @@ Router.map ->
       return unless @ready() is true  # Only do this stuff once the data is available:
       user = Meteor.users.findOne({"profile.public_url": @params.publicURL})
       if !user?
-        @redirect '/' #this isn't a valid url!  should be a not found screen
+        @render 'notFound' #this isn't a valid url!  should be a not found screen
+        return
 
       if Meteor.user()?
         if !Meteor.user().profile.public_url?
           @redirect '/setup'
+          return
 
       context =
         public_url: @params.publicURL
@@ -71,5 +89,6 @@ Router.map ->
 Router.configure
   loadingTemplate: 'loading'
   layoutTemplate: 'appLayout'
+  notFoundTemplate: 'notFound'
 
 Router.onBeforeAction 'loading'
