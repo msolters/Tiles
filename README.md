@@ -15,6 +15,4 @@ You will be guided through setting up an account on first visit.  All customizat
 1. Fulltext search
 2. Date search: inequality & range
 3. Sort: tiles & categories
-4. Drag n' Drop
 5. File upload?
-6. SaaS - Multiple user environment instead of private installation per machine.  This would make it much easier to integrate social media!
