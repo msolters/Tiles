@@ -43,31 +43,34 @@ html {
 .blue-btn:hover {
   background-color: @darkBlue;
 }
-/* label color */
+i.right {
+  margin-left: 5px;
+}
+i.left {
+  margin-right: 5px;
+}
+
+/*    Inputs    */
 .input-field label {
   top: 0.5em;
   left: 0.15em;
   color: @darkishGrey;
   pointer-events: none;
 }
-/* label focus color */
 .input-field input:focus + label ,
 .input-field textarea:focus + label {
   color: @lightRed !important;
 }
-/* label underline focus color */
 .input-field input:focus ,
 .input-field textarea:focus {
   border-bottom: 1px solid @lightRed;
   box-shadow: 0 1px 0 0 @lightRed;
 }
-/* valid color */
 .input-field input.valid ,
 .input-field textarea.valid {
   border-bottom: 1px solid @darkishGrey;
   box-shadow: 0 1px 0 0 @darkishGrey;
 }
-/* invalid color */
 .input-field input.invalid ,
 .input-field textarea.invalid {
   border-bottom: 1px solid #000;
@@ -76,7 +79,6 @@ html {
 .input-field .prefix {
   color: @darkishGrey;
 }
-/* icon prefix focus color */
 .input-field .prefix.active {
   color: @darkGrey;
 }
@@ -92,111 +94,7 @@ html {
   background: @hoverGrey;
   color: #000;
 }
-/*  Toast notification styles:   */
-#toast-container {
-  cursor: pointer;
-  display: block;
-  position: fixed;
-  z-index: 1001;
-}
-#toast-container.pusher,
-#toast-container.dimmed {
-  background-color: initial;
-  min-height: initial;
-}
-  @media only screen and (max-width : 600px) {
-    #toast-container {
-      min-width: 100%;
-      bottom: 0%;
-    }
-  }
-  @media only screen and (min-width : 601px) and (max-width : 992px) {
-    #toast-container {
-      min-width: 30%;
-      left: 5%;
-      bottom: 7%;
-    }
-  }
-  @media only screen and (min-width : 993px) {
-    #toast-container {
-      min-width: 8%;
-      top: initial;
-      right: initial;
-      bottom: 7%;
-      left: 20px;
-    }
-  }
-.toast *::before {
-  content: " ";
-  white-space: pre;
-}
-.toast *::after {
-  content: " ";
-  white-space: pre;
-}
-.toast {
-  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  background-clip: padding-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  top: 0px;
-  width: auto;
-  clear: both;
-  margin-top: 10px;
-  position: relative;
-  max-width: 100%;
-  min-height: 48px;
-  height: auto;
-  line-height: 1.7em;
-  background-color: #323232;
-  padding: 15px;
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: #fff;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
-}
-.toast .btn, .toast .btn-large, .toast .btn-flat {
-  margin: 0;
-  margin-left: 3rem;
-}
-.toast.rounded {
-  border-radius: 24px;
-}
-@media only screen and (max-width : 600px) {
-  .toast {
-    width: 100%;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
-    background-clip: padding-box;
-  }
-}
-@media only screen and (min-width : 601px) and (max-width : 992px) {
-  .toast {
-    float: left;
-  }
-}
-@media only screen and (min-width : 993px) {
-  .toast {
-    float: left;
-  }
-}
+
 
 .danger {
   background-color: @lightRed;
@@ -296,13 +194,4 @@ html {
   position: fixed;
   bottom: 0;
   height: 6px;
-}
-
-
-
-i.right {
-  margin-left: 5px;
-}
-i.left {
-  margin-right: 5px;
 }

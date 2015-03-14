@@ -112,44 +112,6 @@ Template.allTiles.rendered = ->
 
 
 #
-#   Template.tile
-#
-Template.tile.events
-  'click a.tile-read-more': (event, template) ->
-    data = Template.currentData()
-    tileViewModal data.tile
-  'click a.tile-edit': ->
-    data = Template.currentData()
-    tileEditModal.open data.tile
-  'click a.tile-delete': ->
-    data = Template.currentData()
-    Session.set "setToDelete", data.tile._id
-    modal = $('#delete-tile-confirmation')
-    modal.openModal()
-
-
-
-
-#
-#   Template.navbar
-#
-Template.navbar.events
-  'click a[data-sidebar]': ->
-    $('#right-menu').sidebar 'show'
-  'input input#user-profile-name': (event, template) ->
-    clearTimeout template.nameTimer if template.nameTimer?
-    _profile_name = event.currentTarget.value
-    _user =
-      profile:
-        name: _profile_name
-    template.nameTimer = setTimeout =>
-      Meteor.call "updateUser", Meteor.userId(), _user
-    , 200
-
-
-
-
-#
 #     Template.deleteTileConfirmation
 #
 Template.deleteTileConfirmation.events
