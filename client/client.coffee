@@ -311,6 +311,9 @@ Template.rightMenu.events
 Template.establishURL.rendered = ->
   $("input#user-url").focus()
 
+Template.establishURL.helpers
+  'hostname': -> window.location.hostname
+
 Template.establishURL.events
   'focus input#user-url': (event, template) ->
     if !Session.get("urlExplained")?

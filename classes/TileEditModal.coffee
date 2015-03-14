@@ -30,7 +30,7 @@ class @TileEditModal
       if tile.dates?
         @datePickerOne.set "select", tile.dates.dateOne if tile.dates.dateOne?
         @datePickerTwo.set "select", tile.dates.dateTwo if tile.dates.dateTwo?
-        return
+      return
     @modal.find("input").val ""
     @modal.find("textarea").val ""
     @modal.find("label").removeClass "active"
