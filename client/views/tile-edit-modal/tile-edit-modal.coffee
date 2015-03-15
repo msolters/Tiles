@@ -17,6 +17,15 @@ Template.tileEditModal.helpers
     return cats
 
 Template.tileEditModal.events
+  'focus .twitter-typeahead > input': (event, template) ->
+    input_field = $(event.currentTarget).parent().parent()
+    input_field.find("i").addClass "active"
+    input_field.find("label").addClass "active"
+  'focusout .twitter-typeahead input': (event, template) ->
+    if $(event.currentTarget).val().length is 0
+      input_field = $(event.currentTarget).parent().parent()
+      input_field.find("i").removeClass "active"
+      input_field.find("label").removeClass "active"
   'click #save-tile-edit': (event, template) ->
     tileEditModal.showLoading()
     _tile = tileEditModal.getTile() # get user's changes
