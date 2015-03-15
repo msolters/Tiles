@@ -111,6 +111,8 @@ Template.registerHelper 'getTile', (_id=null) ->
 #   Template.allTiles
 #
 Template.allTiles.rendered = ->
+  Session.set "tileSortableDisabled", true
+  Session.set "categorySortableDisabled", true
   $('.toast').remove()
   data = @data
   data.categories = Session.get "categories"
@@ -127,6 +129,7 @@ Template.allTiles.rendered = ->
               $('#right-menu').sidebar 'show'
 
     @autorun =>
+      renderTrigger.depend()
       data=Template.currentData()
       _inner = $("#tile-container-inner")[0]
       Blaze.remove Blaze.getView _inner if _inner?

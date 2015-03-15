@@ -9,6 +9,8 @@ Accounts.config
 @instantiateTileEditModal = (template) =>
   @tileEditModal = new TileEditModal template
 
+@renderTrigger = new Deps.Dependency
+
 #     Materialize Toast!
 @toast = (message, displayLength, className, completeCallback) ->
   createToast = (html) ->

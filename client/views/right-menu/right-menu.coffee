@@ -44,6 +44,12 @@ Template.rightMenu.events
   'click a[data-change-url]': ->
     $('#right-menu').sidebar 'hide'
     Router.go 'Setup'
+  'click a[data-cancel-sort-tiles]': (event, template) ->
+    $('#right-menu').sidebar 'hide'
+    toast "Reverting...", 2500, "info"
+    template.tileSortable.option "disabled", true
+    Session.set "tileSortableDisabled", true
+    renderTrigger.changed()
   'click a[data-sort-tiles]': (event, template) ->
     if !template.tileSortable? # if sortable hasn't been instantiated, instantiate it!
       template.tileSortable = new Sortable $("#tile-container")[0],
@@ -103,6 +109,12 @@ Template.rightMenu.events
                 toast "New arrangement committed to database successfully!", 4000, "success"
                 $("#pusher-container > .progress").hide()
         k++
+  'click a[data-cancel-sort-categories]': (event, template) ->
+    $('#right-menu').sidebar 'hide'
+    toast "Reverting...", 2500, "info"
+    template.categorySortable.option "disabled", true
+    Session.set "categorySortableDisabled", true
+    renderTrigger.changed()
   'click a[data-sort-categories]': (event, template) ->
     if !template.categorySortable? # if sortable hasn't been instantiated, instantiate it!
       template.categorySortable = new Sortable $("#tile-container")[0],
