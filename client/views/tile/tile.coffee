@@ -2,6 +2,8 @@
 #   Template.tile
 #
 Template.tile.events
+  'click .tile-content': ->
+    Session.set "currentlyViewing", @tile._id
   'click a.tile-read-more': (event, template) ->
     Session.set "currentlyViewing", @tile._id
   'click a.tile-edit': ->
