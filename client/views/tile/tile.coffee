@@ -3,7 +3,7 @@
 #
 Template.tile.events
   'click a.tile-read-more': (event, template) ->
-    tileViewModal @tile._id
+    Session.set "currentlyViewing", @tile._id
   'click a.tile-edit': ->
     data = Template.currentData()
     tileEditModal.open data.tile

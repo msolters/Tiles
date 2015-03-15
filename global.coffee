@@ -3,17 +3,6 @@
 # Only server can create a user!
 Accounts.config
   forbidClientAccountCreation: true
-#   Open a modal to view a Tile in detail:
-@tileViewModal = (_id) ->
-  modal = $('#tile-view-modal')
-  modal.find('.progress').show()
-  Session.set "currentlyViewing", _id
-  modal.openModal
-    ready: ->
-      modal.find('.progress').hide()
-    complete: ->
-      Router.go "#{window.location.pathname}"
-  Router.go "#{window.location.pathname}##{_id}"
 
 # Create a handler for the tileEditModal.
 # Called on modal render.

@@ -89,13 +89,21 @@ Template.registerHelper 'categories', ->
 #   Otherwise, returns the tile with that _id.
 ###
 Template.registerHelper 'getTile', (_id=null) ->
-  _id = Session.get "currentlyViewing" if !_id?
+  if !_id?
+    _id = Session.get "currentlyViewing"
+    hash_request = true
   console.log "retrieving tile #{_id}..."
   tiles = Session.get "tiles"
   if tiles?
-    if tiles[_id]?
-      console.log tiles[_id]
-      return tiles[_id]
+    if _id?
+      if tiles[_id]?
+        console.log tiles[_id]
+        return tiles[_id]
+      else
+        Session.set "currentlyViewing", null
+        toast "Sorry, looks like that Tile doesn't exist!", 3500, "danger" if hash_request is true
+  else
+    $("#tile-view-modal").closeModal()
   console.log "No tile found."
   return false
 
@@ -126,7 +134,7 @@ Template.allTiles.rendered = ->
       Blaze.renderWithData Template.categories, data, @find("#tile-container")
 
     if data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
-      tileViewModal data.show_tile_id
+      Session.set "currentlyViewing", data.show_tile_id
       return
     #toast "The URL you're looking for no longer exists!", 5000, "danger"
 
