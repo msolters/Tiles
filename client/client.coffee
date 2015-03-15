@@ -1,8 +1,3 @@
-Meteor.startup ->
-  if !Meteor.user()
-    $(document).on "keydown", (event) ->
-      $("input#tile-search").focus()
-
 ###
 #     Template helpers, events, et cetera for the client.
 ###
@@ -125,6 +120,10 @@ Template.allTiles.rendered = ->
   Session.set "categorySortableDisabled", true
   Session.set "search", null
   $('.toast').remove()
+  $(document).on "keydown", (event) ->
+    return if event.target.tagName is "INPUT"
+    $("#right-menu").sidebar 'hide'
+    $("input#tile-search").focus()
   data = @data
   data.categories = Session.get "categories"
   if data.categories?
