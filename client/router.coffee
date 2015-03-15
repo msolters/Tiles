@@ -60,7 +60,14 @@ Router.map ->
       # (2) Now lets construct a data object containing cat/tile info:
       categories = {}
       tiles = {}
-      for tile in Tiles.find({owner: user._id}, {'sort': {'pos.category': 1, 'pos.tile': 1}}).fetch()
+      _sort =
+        'sort':
+          'pos.category': 1
+          'pos.tile': 1
+      _q =
+        owner: user._id
+      _q.title = Session.get("search") if Session.get("search")
+      for tile in Tiles.find(_q, _sort).fetch()
         category = tile.category
         tiles[tile._id] = tile
         if !categories[category]?
