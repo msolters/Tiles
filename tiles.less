@@ -189,14 +189,14 @@ i.left {
 }
 .modal-content {
   padding: 20px;
-  height: calc(~"100% - 70px");
-  max-height: calc(~"100% - 70px");
+  height: calc(~"100% - @{modalFooterHeight}");
+  max-height: calc(~"100% - @{modalFooterHeight}");
   overflow-y: auto;
 }
 
 .modal-footer {
   width: 100%;
-  height: 55px;
+  height: @modalFooterHeight;
   text-align: right;
   padding: 5px;
 }
