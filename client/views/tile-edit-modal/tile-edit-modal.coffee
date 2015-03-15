@@ -17,7 +17,7 @@ Template.tileEditModal.helpers
     return cats
 
 Template.tileEditModal.events
-  'focus .twitter-typeahead > input': (event, template) ->
+  'focus .twitter-typeahead input': (event, template) ->
     input_field = $(event.currentTarget).parent().parent()
     input_field.find("i").addClass "active"
     input_field.find("label").addClass "active"
