@@ -26,7 +26,7 @@ Template.registerHelper 'hasDates', (tile) ->
 ###
 Template.registerHelper 'formatTileDates', (dates) ->
   if dates.dateOne? and dates.dateTwo?
-    return "#{moment(dates.dateOne).format('MMMM, YYYY')} - #{moment(dates.dateTwo).format('MMMM, YYYY')}"
+    return "#{moment(dates.dateOne).format('MMMM, YYYY')} &ndash; #{moment(dates.dateTwo).format('MMMM, YYYY')}"
   else if dates.dateOne?
     return "#{moment(dates.dateOne).format('MMMM, YYYY')}"
   else
