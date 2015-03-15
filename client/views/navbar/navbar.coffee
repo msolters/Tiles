@@ -14,4 +14,15 @@ Template.navbar.events
       Meteor.call "updateUser", Meteor.userId(), _user
     , 200
   'input input#tile-search': (event, template) ->
-    Session.set "search", event.currentTarget.value
+    _search = event.currentTarget.value
+    Session.set "search", _search
+    icon = $(event.currentTarget).parent().find 'i'
+    if _search.length > 0
+      icon.removeClass "mdi-action-search"
+      icon.addClass "mdi-content-clear pointer"
+    else
+      icon.addClass "mdi-action-search"
+      icon.removeClass "mdi-content-clear pointer"
+  'click #tile-search-prefix': (event, template) ->
+    template.find("input#tile-search").value = ""
+    Session.set "search", null

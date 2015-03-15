@@ -123,6 +123,7 @@ Template.registerHelper 'searchQuery', ->
 Template.allTiles.rendered = ->
   Session.set "tileSortableDisabled", true
   Session.set "categorySortableDisabled", true
+  Session.set "search", null
   $('.toast').remove()
   data = @data
   data.categories = Session.get "categories"
