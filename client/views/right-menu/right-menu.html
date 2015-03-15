@@ -12,78 +12,84 @@
           <a href="/" id="brand-top-right"><i class="mdi-action-view-module"> TilesJS</i></a>
         </li>
       {{/if}}
-    {{#if verify currentUser}}
-      {{#unless tileSortActive}}
-        {{#unless categorySortActive}}
-          <li>
-            <a class="add-new-tile"><i class="mdi-content-add-box left"> New Tile</i></a>
-          </li>
-        {{/unless}}
-      {{/unless}}
-      {{#if categories}}
-        {{#if tileSortable}}
-          {{#unless categorySortActive}}
-            {{#if tileSortActive}}
-              <li>
-                <a data-cancel-sort-tiles>
-                  <i class="mdi-content-clear left"> Cancel Sort</i>
-                </a>
-              </li>
-              <li>
-                <a data-sort-tiles>
-                  <i class="mdi-action-done left"> Done</i>
-                </a>
-              </li>
-            {{else}}
-              <li>
-                <a data-sort-tiles>
-                  <i class="mdi-content-sort left"> Sort Tiles</i>
-                </a>
-              </li>
-            {{/if}}
-          {{/unless}}
-        {{/if}}
-        {{#if categorySortable}}
-          {{#unless tileSortActive}}
-            {{#if categorySortActive}}
-              <li>
-                <a data-cancel-sort-categories>
-                  <i class="mdi-content-clear left"> Cancel Sort</i>
-                </a>
-              </li>
-              <li>
-                <a data-sort-categories>
-                  <i class="mdi-action-done left"> Done</i>
-                </a>
-              </li>
-            {{else}}
-              <li>
-                <a data-sort-categories>
-                  <i class="mdi-content-sort left"> Sort Categories</i>
-                </a>
-              </li>
-            {{/if}}
-          {{/unless}}
-        {{/if}}
-      {{/if}}
-      {{#if currentUser.profile.public_url}}
-        <li class="menu-divider"></li>
+
+
+      {{#if currentUser}}
         <li>
-          <a data-change-url>
-              <i class="mdi-action-language left"> Change URL</i>
-          </a>
+          <a data-logout><i class="mdi-action-exit-to-app left"> Sign Out</i></a>
+        </li>
+        {{#if verify currentUser}}
+          {{#if currentUser.profile.public_url}}
+            <li>
+              <a data-change-url>
+                  <i class="mdi-action-language left"> Change URL</i>
+              </a>
+            </li>
+          {{/if}}
+        {{/if}}
+      {{else}}
+        <li>
+          <a data-login><i class="mdi-action-exit-to-app left"> Sign In</i></a>
         </li>
       {{/if}}
-    {{/if}}
-    {{#if currentUser}}
-      <li>
-        <a data-logout><i class="mdi-action-exit-to-app left"> Sign Out</i></a>
-      </li>
-    {{else}}
-      <li>
-        <a data-login><i class="mdi-action-exit-to-app left"> Sign In</i></a>
-      </li>
-    {{/if}}
+
+      {{#if verify currentUser}}
+        <li class="menu-divider"></li>
+        {{#unless tileSortActive}}
+          {{#unless categorySortActive}}
+            <li>
+              <a class="add-new-tile"><i class="mdi-content-add-box left"> New Tile</i></a>
+            </li>
+          {{/unless}}
+        {{/unless}}
+        {{#if categories}}
+          {{#if tileSortable}}
+            {{#unless categorySortActive}}
+              {{#if tileSortActive}}
+                <li>
+                  <a data-cancel-sort-tiles>
+                    <i class="mdi-content-clear left"> Cancel Sort</i>
+                  </a>
+                </li>
+                <li>
+                  <a data-sort-tiles>
+                    <i class="mdi-action-done left"> Done</i>
+                  </a>
+                </li>
+              {{else}}
+                <li>
+                  <a data-sort-tiles>
+                    <i class="mdi-content-sort left"> Sort Tiles</i>
+                  </a>
+                </li>
+              {{/if}}
+            {{/unless}}
+          {{/if}}
+          {{#if categorySortable}}
+            {{#unless tileSortActive}}
+              {{#if categorySortActive}}
+                <li>
+                  <a data-cancel-sort-categories>
+                    <i class="mdi-content-clear left"> Cancel Sort</i>
+                  </a>
+                </li>
+                <li>
+                  <a data-sort-categories>
+                    <i class="mdi-action-done left"> Done</i>
+                  </a>
+                </li>
+              {{else}}
+                <li>
+                  <a data-sort-categories>
+                    <i class="mdi-content-sort left"> Sort Categories</i>
+                  </a>
+                </li>
+              {{/if}}
+            {{/unless}}
+          {{/if}}
+        {{/if}}
+      {{/if}}
+
     </ul>
   </div>
 </template>
