@@ -60,14 +60,21 @@ Router.map ->
       # (2) Now lets construct a data object containing cat/tile info:
       categories = {}
       tiles = {}
-      _sort =
-        'sort':
-          'pos.category': 1
-          'pos.tile': 1
       _q =
         owner: user._id
-      _q.title = Session.get("search") if Session.get("search")
-      for tile in Tiles.find(_q, _sort).fetch()
+      if !Session.get("search")?
+        console.log "Retrieving ALL tiles..."
+        _tiles = Tiles.find(_q, _sort)
+      else
+        if Session.get("search").length > 0
+          console.log "Conducting search on #{Session.get("search")}"
+          _tiles = Tiles.searchByKeyword
+            fields: ["title", "content"]
+            keywords: Session.get("search")
+        else
+          console.log "Retrieving ALL tiles..."
+          _tiles = Tiles.find(_q, _sort)
+      for tile in _tiles.fetch()
         category = tile.category
         tiles[tile._id] = tile
         if !categories[category]?

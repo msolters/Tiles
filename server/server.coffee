@@ -1,9 +1,9 @@
+Meteor.startup ->
+
 Meteor.publish 'Tiles', (slug={}) ->
   return Tiles.find(slug)
 Meteor.publish 'Users', (slug={}) ->
   return Meteor.users.find(slug)
-
-#Meteor.startup ->
 
 ###
 #   Only users with no matching e-mails in the user database can be created

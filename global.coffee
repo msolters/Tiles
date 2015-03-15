@@ -9,9 +9,13 @@ Accounts.config
 @instantiateTileEditModal = (template) =>
   @tileEditModal = new TileEditModal template
 
-@renderTrigger = new Deps.Dependency
+@_sort =
+  sort:
+    'pos.category': 1
+    'pos.tile': 1
+@renderTrigger = new Deps.Dependency # used to force tiles and categories to rearrange
 
-#     Materialize Toast!
+#     Materialize Toast:
 @toast = (message, displayLength, className, completeCallback) ->
   createToast = (html) ->
     `var container`
