@@ -24,3 +24,4 @@ accounts-twitter
 service-configuration
 materialize:materialize
 mizzao:autocomplete
+sergeyt:typeahead
