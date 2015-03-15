@@ -75,6 +75,7 @@ Router.map ->
         else
           console.log "Retrieving ALL tiles..."
           _tiles = Tiles.find(_q, _sort)
+      return unless _tiles?
       for tile in _tiles.fetch()
         category = tile.category
         tiles[tile._id] = tile

@@ -1,3 +1,8 @@
+Meteor.startup ->
+  if !Meteor.user()
+    $(document).on "keydown", (event) ->
+      $("input#tile-search").focus()
+
 ###
 #     Template helpers, events, et cetera for the client.
 ###
@@ -151,7 +156,6 @@ Template.allTiles.rendered = ->
       Session.set "currentlyViewing", data.show_tile_id
       return
     #toast "The URL you're looking for no longer exists!", 5000, "danger"
-
 
 #
 #     Template.deleteTileConfirmation
