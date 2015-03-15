@@ -2,7 +2,8 @@
 #   Template.tile
 #
 Template.tile.events
-  'click .tile-content': ->
+  'click .tile-content': (event, template) ->
+    return if event.target.tagName is "A"
     Session.set "currentlyViewing", @tile._id
   'click a.tile-read-more': (event, template) ->
     Session.set "currentlyViewing", @tile._id

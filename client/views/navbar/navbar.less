@@ -3,7 +3,6 @@
 nav {
   position: fixed;
   height: @navbarHeight;
-  padding-left: 15px;
   background-color: transparent;
   box-shadow: none;
   color: #000;
@@ -36,26 +35,37 @@ nav .user-name {
   color: #fff;
   background-color: @darkRed;
 }
+.nav-wrapper .prefix {
+  z-index: 3;
+  width: 64px;
+  text-align: center;
+}
+nav input#user-profile-name,
 nav input#tile-search {
+  max-width: 250px;
+  width: 100%;
   margin: 0;
-  margin-left: 3rem;
-  padding-left: 15px;
+  right: 0;
+  position: relative;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding-left: 64px;
+  box-sizing: border-box;
+}
+nav input#user-profile-name {
+  border-bottom-left-radius: 0;
+  max-width: 350px;
+}
+nav input#user-profile-name:focus {
+  border-right: 2px solid @lightRed;
+}
+nav input#tile-search {
   padding-right: 64px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-top-left-radius: 0;
   box-sizing: content-box;
 }
-nav input#user-profile-name,
-nav input#tile-search {
-  max-width: 250px;
-  margin-top: 0;
-  right: 0;
-  position: relative;
-  padding-left: 5px;
-  box-sizing: border-box;
-}
-nav input#user-profile-name:focus,
 nav input#tile-search:focus {
   border-left: 2px solid @lightRed;
 }
