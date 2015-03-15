@@ -11,12 +11,18 @@ html {
 }
 
 /*  Global classes  */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
 .flex-column {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .flex-divider {
   page-break-inside: avoid;
@@ -110,13 +116,18 @@ i.left {
 #pusher-container {
   height: 100%;
 }
+#tile-scroller {
+  height: 100%;
+  width: 100%;
+  overflow-x: auto;
+}
 #tile-container {
   position: relative;
   top: @navbarHeight;
   height: calc(~"100% - @{navbarHeight}");
-  overflow-y: hidden;
-  overflow-x: auto;
+  overflow: visible;
   text-align: center;
+  float: left;
 }
 #category-edit-list {
   margin-left: 10%;
