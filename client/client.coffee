@@ -121,7 +121,8 @@ Template.allTiles.rendered = ->
   Session.set "search", null
   $('.toast').remove()
   $(document).on "keydown", (event) ->
-    return if event.target.tagName is tagName for tagName in ["INPUT", "TEXTAREA"]
+    for tagName in ["INPUT", "TEXTAREA"]
+      return if event.target.tagName is tagName
     $("#right-menu").sidebar 'hide'
     $("input#tile-search").focus()
   data = @data

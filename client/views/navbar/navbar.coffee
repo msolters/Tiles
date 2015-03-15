@@ -25,6 +25,7 @@ Template.navbar.events
       icon.removeClass "mdi-content-clear pointer"
   'click #tile-search-prefix': (event, template) ->
     template.find("input#tile-search").value = ""
+    icon = $(event.currentTarget).parent().find 'i'
     icon.addClass "mdi-action-search"
     icon.removeClass "mdi-content-clear pointer"
     Session.set "search", null

@@ -7,7 +7,6 @@
 meteor-platform
 coffeescript
 iron:router
-less
 accounts-password
 fortawesome:fontawesome
 velocityjs:velocityjs
@@ -25,3 +24,4 @@ service-configuration
 materialize:materialize
 mizzao:autocomplete
 sergeyt:typeahead
+lauricio:less-autoprefixer

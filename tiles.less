@@ -151,10 +151,12 @@ i.left {
   height: 100%;
   width: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
 }
 #tile-container {
   position: relative;
   top: @navbarHeight;
+  width: 0;
   height: calc(~"100% - @{navbarHeight}");
   overflow: visible;
   text-align: center;

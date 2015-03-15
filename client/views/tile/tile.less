@@ -3,7 +3,8 @@
 /*  styles for tile cards */
 .tile {
   width: @tileWidth;
-  height: @tileHeight;
+  max-height: @tileHeight;
+  padding-bottom: 40px;
   margin: 15px;
   border: 10px solid;
   border-bottom: none;
@@ -17,7 +18,7 @@
 }
 .tile .tile-content {
   padding: 10px;
-  height: calc(~"100% - 40px");
+  max-height: calc(~"@{tileHeight} - 50px");
   width: 100%;
   overflow: hidden;
   box-shadow: inset 0 0 2px #001325;
