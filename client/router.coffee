@@ -28,7 +28,7 @@ Router.map ->
         if Meteor.loggingIn()
           @render "loading"
         else
-          @render "notFound"
+          @redirect "/"
       else
         @render 'establishURL'
 
