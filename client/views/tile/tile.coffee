@@ -3,13 +3,10 @@
 #
 Template.tile.events
   'click a.tile-read-more': (event, template) ->
-    data = Template.currentData()
-    tileViewModal data.tile
+    tileViewModal @tile._id
   'click a.tile-edit': ->
     data = Template.currentData()
     tileEditModal.open data.tile
   'click a.tile-delete': ->
-    data = Template.currentData()
-    Session.set "setToDelete", data.tile._id
-    modal = $('#delete-tile-confirmation')
-    modal.openModal()
+    Session.set "setToDelete", @tile._id
+    $('#delete-tile-confirmation').openModal()

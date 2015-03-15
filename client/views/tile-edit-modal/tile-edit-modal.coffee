@@ -1,6 +1,3 @@
-Template.categoryresult.rendered = ->
-  console.log @
-
 #
 #   Template.tileEditModal
 #
@@ -12,9 +9,8 @@ Template.tileEditModal.helpers
   'categories': ->
     cats = Tiles.find({owner: Meteor.userId()}).fetch().map (it) ->
       return it.category
-    cats = _.uniq cats
-    console.log cats
-    return cats
+    #cats = _.uniq cats
+    return _.uniq cats
 
 Template.tileEditModal.events
   'focus .twitter-typeahead input': (event, template) ->
@@ -37,11 +33,11 @@ Template.tileEditModal.events
       if !_tile._id?  # tile is new!
         pos = {}
         k = 0
-        for cat, i in @categories
+        for cat, i in Session.get "categories"
           if cat.title is _tile.category
             _tile.pos =
               category: i
-              tile: cat.tiles.length
+              tile: cat.tile_ids.length
             break
           else
             k++

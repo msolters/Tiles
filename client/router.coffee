@@ -42,7 +42,7 @@ Router.map ->
       return unless @ready() is true  # Only do this stuff once the data is available:
       user = Meteor.users.findOne({"profile.public_url": @params.publicURL})
       if !user?
-        @render 'notFound' #this isn't a valid url!  should be a not found screen
+        @render 'notFound' #this isn't a valid url; no page exists here.
         return
 
       if Meteor.user()?
@@ -59,36 +59,42 @@ Router.map ->
 
       # (2) Now lets construct a data object containing cat/tile info:
       categories = {}
+      tiles = {}
       for tile in Tiles.find({owner: user._id}, {'sort': {'pos.category': 1, 'pos.tile': 1}}).fetch()
         category = tile.category
+        tiles[tile._id] = tile
         if !categories[category]?
           categories[category] =
-            tiles: [ tile ]
+            tile_ids: [ tile._id ]
         else
-          categories[category].tiles.push tile
+          categories[category].tile_ids.push tile._id
       category_list = []
       numCategories = (c for c of categories).length
       delta_hue = 360/numCategories
       hue = 0
       for title, cat of categories
         colour = "hsl(#{hue}, 65%, 50%)"
-        for tile in cat.tiles
-          tile['colour'] = colour
+        for _id in cat.tile_ids
+          tiles[_id].colour = colour
         category_list.push
           title: title
-          tiles: cat.tiles
+          tile_ids: cat.tile_ids
           color: colour
         hue += delta_hue
-      context['categories'] = category_list
 
-      #console.log context
+      #console.log 'Server delivers data:'
+      #console.log category_list
+      #console.log tiles
+      Session.set "categories", category_list
+      Session.set "tiles", tiles
 
       # (3) Pass that shit to the template engine!
       return context
 
+
+#  Define defaults:
 Router.configure
   loadingTemplate: 'loading'
   layoutTemplate: 'appLayout'
   notFoundTemplate: 'notFound'
-
 Router.onBeforeAction 'loading'

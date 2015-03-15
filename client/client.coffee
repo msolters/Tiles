@@ -78,6 +78,26 @@ Template.registerHelper 'verify', (user) ->
         return true
   return false
 
+###
+#   Returns category-tile tree object from session storage
+###
+Template.registerHelper 'categories', ->
+  return Session.get "categories" or []
+
+###
+#   With no argument, returns the "currently viewing" tile.
+#   Otherwise, returns the tile with that _id.
+###
+Template.registerHelper 'getTile', (_id=null) ->
+  _id = Session.get "currentlyViewing" if !_id?
+  console.log "retrieving tile #{_id}..."
+  tiles = Session.get "tiles"
+  if tiles?
+    if tiles[_id]?
+      console.log tiles[_id]
+      return tiles[_id]
+  console.log "No tile found."
+  return false
 
 
 #
@@ -86,30 +106,29 @@ Template.registerHelper 'verify', (user) ->
 Template.allTiles.rendered = ->
   $('.toast').remove()
   data = @data
-  if data.categories.length is 0
-    if !Meteor.user()?
-      toast "Looks like you need to add some content.<br>Sign in using the menu in the top right!", 15000, "info"
-      $('#right-menu').sidebar 'show'
-    else
-      @autorun ->
-        if Meteor.user()?
-          if Meteor.user().profile.public_url is data.public_url
-            toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
-            $('#right-menu').sidebar 'show'
+  data.categories = Session.get "categories"
+  if data.categories?
+    if data.categories.length is 0
+      if !Meteor.user()?
+        toast "Looks like you need to add some content.<br>Sign in using the menu in the top right!", 15000, "info"
+        $('#right-menu').sidebar 'show'
+      else
+        @autorun ->
+          if Meteor.user()?
+            if Meteor.user().profile.public_url is data.public_url
+              toast "Now that you're logged in, you can create new tiles from the right-side menu!", 15000, "success"
+              $('#right-menu').sidebar 'show'
 
-  @autorun =>
-    data=Template.currentData()
-    if $("#tile-container-inner")[0]?
-      Blaze.remove(Blaze.getView($("#tile-container-inner")[0]))
-    Blaze.renderWithData Template.categories, data, @find("#tile-container")
+    @autorun =>
+      data=Template.currentData()
+      _inner = $("#tile-container-inner")[0]
+      Blaze.remove Blaze.getView _inner if _inner?
+      Blaze.renderWithData Template.categories, data, @find("#tile-container")
 
-  if data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
-    for category in data.categories
-      for tile in category.tiles
-        if tile._id is data.show_tile_id
-          tileViewModal tile
-          return
-    toast "The URL you're looking for no longer exists!", 5000, "danger"
+    if data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
+      tileViewModal data.show_tile_id
+      return
+    #toast "The URL you're looking for no longer exists!", 5000, "danger"
 
 
 #

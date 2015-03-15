@@ -7,14 +7,14 @@ Template.rightMenu.rendered = ->
 Template.rightMenu.helpers
   'tileSortable': ->
     t = 0
-    for cat in @categories
-      for tile in cat.tiles
+    for cat in Session.get "categories"
+      for _id in cat.tile_ids
         t++
         if t > 1
           return true
     return false
   'categorySortable': ->
-    if @categories.length > 1
+    if Session.get("categories").length > 1
       return true
     return false
   'tileSortActive': ->
