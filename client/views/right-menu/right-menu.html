@@ -15,9 +15,6 @@
 
 
       {{#if currentUser}}
-        <li>
-          <a data-logout><i class="mdi-action-exit-to-app left"> Sign Out</i></a>
-        </li>
         {{#if verify currentUser}}
           {{#if currentUser.profile.public_url}}
             <li>
@@ -27,6 +24,9 @@
             </li>
           {{/if}}
         {{/if}}
+        <li>
+          <a data-logout><i class="mdi-action-exit-to-app left"> Sign Out</i></a>
+        </li>
       {{else}}
         <li>
           <a data-login><i class="mdi-action-exit-to-app left"> Sign In</i></a>
