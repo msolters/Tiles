@@ -69,6 +69,7 @@ Router.map ->
         if Session.get("search").length > 0
           console.log "Conducting search on #{Session.get("search")}"
           _tiles = Tiles.searchByKeyword
+            selector: _q
             fields: ["title", "content"]
             keywords: Session.get("search")
         else

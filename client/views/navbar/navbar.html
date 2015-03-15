@@ -1,17 +1,25 @@
 <template name="navbar">
   <nav>
     <div class="nav-wrapper">
-      {{#if verify currentUser}}
-        <div class='input-field'>
-          <i class="mdi-social-person prefix"></i>
-          <input type="text" id="user-profile-name" class="text-input user-name" placeholder="Your Name" value="{{profileName}}"/>
-        </div>
-      {{else}}
-        {{#if profileName}}
+      {{#if profileName}}
+        {{#if verify currentUser}}
+          <div class='input-field'>
+            <i class="mdi-social-person prefix"></i>
+            <input type="text" id="user-profile-name" class="text-input user-name" placeholder="Your Name" value="{{profileName}}"/>
+          </div>
+        {{else}}
           <a class="user-name">{{profileName}}</a>
         {{/if}}
       {{/if}}
-      <a data-sidebar id="right-menu-collapse" href="#"><i class="mdi-navigation-menu"></i></a>
+      <div class="right">
+        {{#if profileName}}
+          <div class='input-field'>
+            <i class="mdi-action-search prefix"></i>
+            <input type="text" id="tile-search" class="text-input" placeholder="Search" value="{{searchQuery}}"/>
+          </div>
+        {{/if}}
+        <a data-sidebar id="right-menu-collapse" href="#"><i class="mdi-navigation-menu"></i></a>
+      </div>
     </div>
   </nav>
 </template>

@@ -55,6 +55,31 @@ i.right {
 i.left {
   margin-right: 5px;
 }
+#no-results {
+  text-align: center;
+  position: fixed;
+  top: @navbarHeight;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  font-size: 24px;
+  line-height: 26px;
+  font-family: Roboto Condensed;
+  font-variant: small-caps;
+  color: @darkGrey;
+  overflow-y: auto;
+}
+#no-results > span {
+  margin-top: 10px;
+  font-variant: initial;
+  font-weight: bold;
+}
 
 /*    Inputs    */
 .input-field .twitter-typeahead {

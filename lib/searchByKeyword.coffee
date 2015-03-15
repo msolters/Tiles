@@ -12,8 +12,10 @@ Meteor.Collection.prototype.searchByKeyword = (options) ->
           _q[field] =
             $in: regexKeywords
           query.push _q
-        return this.find({
+
+        finalQuery =
           $or: query
-          owner: Meteor.userId()
-        }, _sort)
+        if options.selector?
+          finalQuery[field] = val for field, val of options.selector
+        return this.find(finalQuery, _sort)
   return null

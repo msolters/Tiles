@@ -7,9 +7,12 @@
 ###
 Template.registerHelper 'profileName', ->
   url = Router.current().params.publicURL
+  return false if !url? or url is 'setup'
   db_user = Meteor.users.findOne({"profile.public_url": url})
   name = db_user.profile.name if db_user?
-  return name if name?
+  if name?
+    return name
+  return false
 
 ###
 #
@@ -106,6 +109,8 @@ Template.registerHelper 'getTile', (_id=null) ->
   console.log "No tile found."
   return false
 
+Template.registerHelper 'searchQuery', ->
+  Session.get 'search'
 
 #
 #   Template.allTiles
@@ -133,7 +138,13 @@ Template.allTiles.rendered = ->
       data=Template.currentData()
       _inner = $("#tile-container-inner")[0]
       Blaze.remove Blaze.getView _inner if _inner?
-      Blaze.renderWithData Template.categories, data, @find("#tile-container")
+      if Session.get("tiles")?
+        if (t for t,tile of Session.get("tiles")).length > 0
+          Blaze.renderWithData Template.categories, data, @find("#tile-container")
+        else
+          if Session.get("search")?
+            if Session.get("search").length > 0
+              Blaze.renderWithData Template.noResults, data, @find("#tile-container")
 
     if data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
       console.log "Setting currentlyViewing: #{data.show_tile_id}"

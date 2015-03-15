@@ -13,3 +13,5 @@ Template.navbar.events
     template.nameTimer = setTimeout =>
       Meteor.call "updateUser", Meteor.userId(), _user
     , 200
+  'input input#tile-search': (event, template) ->
+    Session.set "search", event.currentTarget.value
