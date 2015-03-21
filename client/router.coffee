@@ -1,3 +1,15 @@
+routerBeforeHooks =
+  loginRequired: ->
+    if !Meteor.user()?
+      if Meteor.loggingIn() is true
+        console.log "logging in"
+        @render 'loading'
+      else
+        console.log "not a valid user!"
+        @render 'login'
+    else
+      @next()
+
 Router.map ->
   @route 'Home',
     path: '/'
@@ -32,9 +44,24 @@ Router.map ->
       else
         @render 'establishURL'
 
+  @route 'Edit Tile',
+    path: '/edit/:tile_id'
+    template: 'editTile'
+    waitOn: ->
+      Meteor.subscribe 'Tiles'
+      Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
+    data: ->
+      return unless @ready() is true  # Only do this stuff once the data is available:
+      if !Meteor.user()
+        @render 'notFound' #this isn't a valid url; no page exists here.
+        return
+
   @route 'Render User',
     path: '/:publicURL'
     template: 'allTiles'
+    yieldTemplates:
+      'tileViewModal':
+        to: 'modals'
     waitOn: ->
       Meteor.subscribe 'Tiles'
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
@@ -113,4 +140,7 @@ Router.configure
   loadingTemplate: 'loading'
   layoutTemplate: 'appLayout'
   notFoundTemplate: 'notFound'
+
 Router.onBeforeAction 'loading'
+Router.onBeforeAction routerBeforeHooks.loginRequired,
+  only: ['Edit Tile']

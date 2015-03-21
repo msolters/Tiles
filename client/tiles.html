@@ -7,12 +7,12 @@
 <template name="appLayout">
   {{> rightMenu}}
   {{#if verify currentUser}}
-    {{> tileEditModal }}
     {{> deleteTileConfirmation }}
   {{else}}
     {{> login }}
   {{/if}}
-  {{> tileViewModal }}
+  <!--{{> tileViewModal }} -->
+  {{> yield region="modals"}}
   <div id="pusher-container" class="pusher">
     {{> navbar }}
     {{> yield }}
