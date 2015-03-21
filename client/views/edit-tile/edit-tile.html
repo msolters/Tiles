@@ -1,0 +1,61 @@
+<template name="edit-tile">
+  
+</template>
+
+<template name="tileEditModal">
+  <div id="tile-edit-modal" class="modal modal-fixed-footer">
+    {{#with tile=getEditTile}}
+      <div class="modal-content">
+        <div class='title'>
+          <div class='input-field'>
+            <i class="mdi-content-create prefix"></i>
+            <input id='tile-title' type='text' class='tile-title' value="{{tile.title}}"/>
+            <label for='tile-title' class="{{activeOrNot tile.title}}">Title</label>
+          </div>
+          <div class='input-field'>
+            <i class="mdi-action-list prefix"></i>
+            <input id='tile-category' name="categoryresult" type='text' class='tile-category form-control typeahead' autocomplete="off" spellcheck="off" value="{{tile.category}}" data-source="categories"/>
+            <!--{{> inputAutocomplete settings=settings id="tile-category" class="tile-category" }}-->
+            <!--class='tile-category form-control typeahead' data-source="categories" autocomplete="on" spellcheck="off"-->
+            <label for='tile-category' class="{{activeOrNot tile.category}}">Category</label>
+          </div>
+        </div>
+        <div class="tile-dates">
+          <div class='input-field'>
+            <i class="mdi-action-label-outline prefix"></i>
+            <input id="date-one" type="date" class="datepicker" />
+            <label for='date-one' class="{{activeOrNot tile.dates.dateOne}}">Start Date</label>
+          </div>
+          <div class='input-field'>
+            <i class="mdi-action-label prefix"></i>
+            <input id="date-two" type="date" class="datepicker" />
+            <label for='date-two' class="{{activeOrNot tile.dates.dateOne}}">End Date</label>
+          </div>
+        </div>
+        <div class='content'>
+          <div class='input-field'>
+            <i class="mdi-action-subject prefix"></i>
+            <textarea id='tile-content' class='materialize-textarea tile-content'>{{tile.content}}</textarea>
+            <label for='tile-content' class="{{activeOrNot tile.content}}">Content</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-action-done left"></i>Done</button>
+        <button id="cancel-tile-edit" type="button" class="btn waves-effect waves-grey modal-action modal-close grey">Cancel</button>
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
+      </div>
+    {{/with}}
+  </div>
+</template>
+
+<template name="categoryresult">
+  <div style="height: 100px; width: 100px; z-index: 1000; position: absolute; top: 0; left: 0;">{{this}}</div>
+</template>
+
+<template name="noresult">
+  No results!
+</template>
