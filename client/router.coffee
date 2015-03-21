@@ -70,7 +70,7 @@ Router.map ->
           console.log "Conducting search on #{Session.get("search")}"
           _tiles = Tiles.searchByKeyword
             selector: _q
-            fields: ["title", "content", "category"]
+            fields: ["title", "searchableContent", "category"]
             keywords: Session.get("search")
         else
           console.log "Retrieving ALL tiles..."

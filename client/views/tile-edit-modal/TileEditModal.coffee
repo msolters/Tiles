@@ -66,14 +66,13 @@ class @TileEditModal
         dateTwo = moment(@datePickerTwo.get()).toDate()
       $("body").append("<div id='render-html'>#{@content.val()}</div>")
       searchableContent = $("#render-html").text()
-      console.log searchableContent
       $("#render-html").remove()
       tile =
         _id: _id
         title: @title.val()
         category: @category.val()
         content: @content.val()
-        searchable: searchableContent
+        searchableContent: searchableContent
         dates:
           dateOne: dateOne
           dateTwo: dateTwo
