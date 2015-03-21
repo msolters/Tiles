@@ -100,6 +100,7 @@ Template.registerHelper 'categories', ->
 ###
 Template.registerHelper 'getTile', (_id=null) ->
   console.log "retrieving tile #{_id}..."
+  return true if _id is "new"
   tiles = Session.get "tiles"
   if tiles?
     if _id?

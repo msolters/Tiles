@@ -2,15 +2,42 @@
 #   Template.tileEditModal
 #
 Template.tileEditModal.rendered = ->
-  Meteor.typeahead.inject()
-  instantiateTileEditModal @
+  Meteor.typeahead.inject() # configure category autocomplete
+  modal = $ "#tile-edit-modal"
+  #instantiateTileEditModal @
+  @autorun ->
+    _id = Session.get "currentlyEditing"
+    if !_id?
+      console.log "close that shit"
+      #Router.go "#{window.location.pathname}#"
+      modal.closeModal()
+    else
+      console.log "open that shit"
+      modal.find('.progress').show()
+      modal.openModal
+        ready: =>
+          console.log @
+          $('textarea#tile-content').keydown() # configure content textarea size
+          modal.find('.progress').hide()
+          #Router.go "#{window.location.pathname}##{_id}"
+        complete: ->
+          console.log "done"
+          Session.set "currentlyEditing", null
+          #Router.go "#{window.location.pathname}"
 
 Template.tileEditModal.helpers
   'categories': ->
     cats = Tiles.find({owner: Meteor.userId()}).fetch().map (it) ->
       return it.category
-    #cats = _.uniq cats
     return _.uniq cats
+  'getEditTile': ->
+    _id = Session.get "currentlyEditing"
+    return {} if _id is "new"
+    tiles = Session.get "tiles"
+    if tiles?
+      if _id?
+        if tiles[_id]?
+          return tiles[_id]
 
 Template.tileEditModal.events
   'focus .twitter-typeahead input': (event, template) ->
@@ -22,6 +49,8 @@ Template.tileEditModal.events
       input_field = $(event.currentTarget).parent().parent()
       input_field.find("i").removeClass "active"
       input_field.find("label").removeClass "active"
+  'click button#cancel-tile-edit': ->
+    Session.set "currentlyEditing", null
   'click #save-tile-edit': (event, template) ->
     tileEditModal.showLoading()
     _tile = tileEditModal.getTile() # get user's changes

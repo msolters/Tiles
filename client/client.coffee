@@ -9,6 +9,7 @@
 Template.allTiles.rendered = ->
   Session.set "tileSortableDisabled", true
   Session.set "categorySortableDisabled", true
+  Session.set "currentlyEditing", null
   Session.set "search", null
   $('.toast').remove()
   $(document).on "keydown", (event) ->
