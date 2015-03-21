@@ -126,11 +126,12 @@ Meteor.methods
         _updateAdd,
         {multi: true}
       )
-      Tiles.update(
-        _q
-        _updateRemove
-        {multi: true}
-      )
+      if (p for p of _updateRemove.$unset).length > 0
+        Tiles.update(
+          _q
+          _updateRemove
+          {multi: true}
+        )
 
   ###
   #   Updates tile(s) meeting the _query criteria with the
