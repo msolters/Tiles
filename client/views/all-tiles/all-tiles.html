@@ -1,0 +1,32 @@
+<template name="allTiles">
+  <div id="tile-scroller">
+    <div id="tile-container" class="flex-column"></div>
+  </div>
+</template>
+
+<template name="noResults">
+  <div id="no-results" class="center">
+    Sorry, no results found for <span>{{searchQuery}}</span>
+    <div id="tile-container-inner"></div>
+  </div>
+</template>
+
+<template name="categories">
+  {{#each categories}}
+    {{> category}}
+  {{/each}}
+  <div id="tile-container-inner"></div>
+</template>
+
+<template name="category">
+  <div class="category-title valign-wrapper" style="color: {{color}};">
+    <div class="category-title-text">{{title}}</div>
+  </div>
+  {{#each tile_ids}}
+    {{#with getTile this}}
+      {{#if this}}
+        {{> tileSmall color=../../color tile=this}}
+      {{/if}}
+    {{/with}}
+  {{/each}}
+</template>

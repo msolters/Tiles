@@ -2,11 +2,11 @@
 
 #edit-panel {
   margin: 0 auto;
-  margin-left: 64px;
-  margin-right: 64px;
-  height: 100%;
+  height: calc(~"100% - @{navbarHeight}");
   padding-top: @navbarHeight;
-  overflow-x: auto;
+  overflow-y: auto;
+  position: relative;
+  top: @navbarHeight;
 }
 #edit-panel .left {
   float: left;

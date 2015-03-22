@@ -17,7 +17,7 @@ Template.tileViewModal.rendered = ->
           modal.find('.progress').hide()
           Router.go "#{window.location.pathname}##{_id}"
         complete: ->
-          console.log "done"
+          #console.log "done"
           Session.set "currentlyViewing", null
           Router.go "#{window.location.pathname}"
 
