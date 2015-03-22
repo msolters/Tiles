@@ -10,8 +10,7 @@ Template.registerHelper 'profileName', ->
   return false if !url? or url is 'setup'
   db_user = Meteor.users.findOne({"profile.public_url": url})
   name = db_user.profile.name if db_user?
-  if name?
-    return name
+  return name if name?
   return false
 
 ###
@@ -116,16 +115,3 @@ Template.registerHelper 'getTile', (_id=null) ->
 
 Template.registerHelper 'searchQuery', ->
   Session.get 'search'
-
-###
-#   Sets title of browser window by concatenating arguments
-###
-Template.registerHelper 'title', ->
-  title = ""
-  if arguments.length > 1
-    for i in [0..arguments.length-2]
-      title += arguments[i]
-  else
-    title = "TilesJS"
-  document.title = title
-  undefined #prevents helper from rendering output to screen
