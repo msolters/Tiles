@@ -24,8 +24,6 @@
       <div class='input-field'>
         <i class="mdi-action-list prefix"></i>
         <input id='tile-category' name="categoryresult" type='text' class='tile-category form-control typeahead' autocomplete="off" spellcheck="off" value="{{tile.category}}" data-source="categories"/>
-        <!--{{> inputAutocomplete settings=settings id="tile-category" class="tile-category" }}-->
-        <!--class='tile-category form-control typeahead' data-source="categories" autocomplete="on" spellcheck="off"-->
         <label for='tile-category' class="{{activeOrNot tile.category}}">Category</label>
       </div>
     </div>
@@ -33,12 +31,12 @@
       <div class='input-field'>
         <i class="mdi-action-label-outline prefix"></i>
         <input id="date-one" type="date" class="datepicker" />
-        <label for='date-one' class="{{activeOrNot tile.dates.dateOne}}">Start Date</label>
+        <label for='date-one' class="active">Start Date</label>
       </div>
       <div class='input-field'>
         <i class="mdi-action-label prefix"></i>
         <input id="date-two" type="date" class="datepicker" />
-        <label for='date-two' class="{{activeOrNot tile.dates.dateOne}}">End Date</label>
+        <label for='date-two' class="active">End Date</label>
       </div>
     </div>
     <div class='content'>

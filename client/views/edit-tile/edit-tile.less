@@ -1,0 +1,32 @@
+@import "global-less";
+
+#edit-panel {
+  margin: 0 auto;
+  margin-left: 64px;
+  margin-right: 64px;
+  height: 100%;
+  padding-top: @navbarHeight;
+  overflow-x: auto;
+}
+#edit-panel .left {
+  float: left;
+  border-right: 1px solid @darkGrey;
+  padding: 10px;
+}
+#edit-panel .right {
+  float: right;
+}
+#edit-panel .left,
+#edit-panel .right {
+  width: 50%;
+  height: 100%;
+}
+
+#preview-small {
+  height: calc(@tileHeight + 45px);
+  border-bottom: 1px solid @darkGrey;
+  padding: 10px;
+}
+#preview-large {
+  padding: 10px;
+}

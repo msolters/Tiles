@@ -167,7 +167,9 @@ Template.rightMenu.events
               toast "New arrangement committed to database successfully!", 4000, "success"
               $('.tiles').show()
               $("#pusher-container > .progress").hide()
+  ###
   #      TILE EDITING
+  ###
   'click a[data-cancel-edit]': ->
     $("#right-menu").sidebar "hide"
     Router.go "/#{Meteor.user().profile.public_url}"
@@ -191,17 +193,6 @@ Template.rightMenu.events
         delete _tile['_id']
       else
         _id = null
-      # Check if the user selected any dates or if they were cleared
-      ###
-      if @datePickerOne.get().length is 0
-        dateOne = null
-      else
-        dateOne = moment(@datePickerOne.get()).toDate()
-      if @datePickerTwo.get().length is 0
-        dateTwo = null
-      else
-        dateTwo = moment(@datePickerTwo.get()).toDate()
-      ###
 
       # Convert preview and body content from HTML -> Text, for keyword searching:
       $("body").append("<div id='render-html'>#{_tile.content} #{_tile.preview}</div>")
