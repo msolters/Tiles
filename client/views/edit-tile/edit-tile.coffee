@@ -15,6 +15,7 @@ Template.editTile.helpers
 #
 Template.tileEditForm.rendered = ->
   Meteor.typeahead.inject() # configure category autocomplete
+  $("textarea").keydown()
 
 Template.tileEditForm.helpers
   'categories': ->
@@ -46,7 +47,10 @@ Template.tileEditForm.events
     if dateVal.length > 0
       _tile.dates.dateOne = new Date dateVal
     else
-      delete _tile.dates['dateOne']
+      if _tile.dates.dateTwo?
+        delete _tile.dates['dateOne']
+      else
+      delete _tile['dates']
     Session.set "currentlyEditing", _tile
   'input input#date-two': (event, template) ->
     _tile = Session.get "currentlyEditing"
@@ -55,7 +59,10 @@ Template.tileEditForm.events
     if dateVal.length > 0
       _tile.dates.dateTwo = new Date dateVal
     else
-      delete _tile.dates['dateTwo']
+      if !_tile.dates.dateOne?
+        delete _tile.dates['dateTwo']
+      else
+        delete _tile['dates']
     Session.set "currentlyEditing", _tile
   'input textarea#tile-preview': (event, template) ->
     _tile = Session.get "currentlyEditing"
