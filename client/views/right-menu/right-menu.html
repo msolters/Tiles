@@ -14,6 +14,10 @@
               </a>
             </li>
           {{/if}}
+        {{else}}
+          <li>
+            <a href="/" id="brand-top-right"><i class="mdi-action-view-module"> TilesJS</i></a>
+          </li>
         {{/if}}
         <li>
           <a data-logout><i class="mdi-action-exit-to-app left"> Sign Out</i></a>
@@ -27,7 +31,7 @@
         </li>
       {{/if}}
       <!--  End User Tools  -->
-      <li class="menu-divider"></li>
+
       <!-- Context Specific Tools -->
       {{ > UI.contentBlock
           context=__context__ }}
@@ -37,8 +41,9 @@
 </template>
 
 <template name="manageTilesMenu">
-  {{# rightMenu }}
+  {{#rightMenu }}
     {{#if verify currentUser}}
+      <li class="menu-divider"></li>
       {{#unless tileSortActive}}
         {{#unless categorySortActive}}
           <li>
@@ -97,7 +102,8 @@
 </template>
 
 <template name="editTileMenu">
-  {{# rightMenu }}
+  {{#rightMenu }}
+    <li class="menu-divider"></li>
     <li>
       <a data-cancel-edit>
         <i class="mdi-content-clear left"> Cancel</i>

@@ -58,14 +58,14 @@ Template.establishURL.events
 #
 #     Template.register
 #
-Template.register.created = ->
-    @waiters = {}
-
 Template.register.rendered = ->
-  toast "Welcome to TilesJS!", 20000, "success"
-  setTimeout ->
-      toast "Create an account to get started.", 20000, "info"
-    , 900
+  if !Meteor.user()
+    toast "Welcome to TilesJS!", 20000, "success"
+    setTimeout ->
+        toast "Create an account to get started.", 20000, "info"
+      , 900
+  @autorun =>
+    Router.go '/' if Meteor.userId()? # move the user on if they have an account!
 
 Template.register.events
   'submit form#register-form': (event, template) ->
@@ -144,9 +144,6 @@ Template.loginForm.events
 #
 #     Template.socialLogin
 #
-Template.socialLogin.created = ->
-  @data.waiters = {}
-
 Template.socialLogin.events
   'click button#facebook-account': (event, template) ->
     Meteor.loginWithFacebook {}, (err) ->
@@ -158,8 +155,7 @@ Template.socialLogin.events
         toast "#{err_msg}", 4000, "danger"
         return
       else
-        #Router.go '/'
-        $('#login-modal').closeModal()
+        $('#login-modal').closeModal() # in case this is from the login modal
 
   'click button#google-account': (event, template) ->
     Meteor.loginWithGoogle {}, (err) ->
@@ -171,5 +167,4 @@ Template.socialLogin.events
         toast "#{err_msg}", 4000, "danger"
         return
       else
-        #Router.go '/'
-        $('#login-modal').closeModal()
+        $('#login-modal').closeModal()  # in case this is from the login modal

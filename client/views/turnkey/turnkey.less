@@ -18,7 +18,7 @@
   overflow-y: auto;
 }
 #login-form button {
-  width: 100%;
+  width: calc(~"100% - 15px");
   margin: 5px;
 }
 .modal-login-button {
@@ -81,11 +81,14 @@
 
 #register-form-container {
   max-width: 500px;
+  margin: auto;
+  height: 100%;
 }
 .turnkey-options {
-  margin-top: 35px;
+  padding: 10px;
   min-width: 500px;
   position: relative;
+  border: 1px solid @darkishGrey;
 }
 .turnkey-options > .left {
   text-align: center;

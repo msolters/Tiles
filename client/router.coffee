@@ -25,7 +25,7 @@ Router.map ->
         if Meteor.user().profile.public_url?
           @redirect "/#{Meteor.user().profile.public_url}"
         else
-          @redirect "/setup"
+          Router.go "/setup"
 
   @route 'Register',
     path: '/register'
@@ -37,14 +37,11 @@ Router.map ->
   @route 'Setup',
     path: '/setup'
     template: 'establishURL'
-    action: ->
-      if !Meteor.user()?
-        if Meteor.loggingIn()
-          @render "loading"
-        else
-          @redirect "/"
-      else
-        @render 'establishURL'
+    yieldTemplates:
+      'rightMenu':
+        to: 'rightMenu'
+      'setupNavbar':
+        to: 'navbar'
 
   @route 'Edit Tile',
     path: '/edit/:tile_id'
@@ -161,4 +158,4 @@ Router.configure
 
 Router.onBeforeAction 'loading'
 Router.onBeforeAction routerBeforeHooks.loginRequired,
-  only: ['Edit Tile']
+  only: ['Edit Tile', 'Setup']
