@@ -15,6 +15,12 @@ Accounts.config
     'pos.tile': 1
 @renderTrigger = new Deps.Dependency # used to force tiles and categories to rearrange
 
+@nonEmptyString = (obj) ->
+  if obj?
+    if obj.length > 0
+      return true
+  return false
+
 #     Materialize Toast:
 @toast = (message, displayLength, className, completeCallback) ->
   createToast = (html) ->
