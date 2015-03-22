@@ -116,7 +116,7 @@ Template.register.events
 #
 #   Template.login
 #
-Template.login.events
+Template.loginForm.events
   'submit form#login-form': (event, template) ->
     email = template.find('input#user-email').value
     password = template.find('input#user-password').value
@@ -158,29 +158,8 @@ Template.socialLogin.events
         toast "#{err_msg}", 4000, "danger"
         return
       else
-        Router.go '/'
+        #Router.go '/'
         $('#login-modal').closeModal()
-        ###
-        waiter.stop() for waiter in template.data.waiters
-        template.data.waiters.facebook = Deps.autorun =>
-          if Meteor.userId()?
-        ###
-        ###
-        switch @action
-          when "register"
-            toast "Nice work, bone daddy!  Can I call you #{Meteor.user().profile.name.split(' ')[0]}?", 15000, "success"
-            setTimeout =>
-              toast "(Simply click or swipe these messages to dismiss)", 15000, "info"
-            , 1500
-          when "login"
-            given_name = "Asshole"
-            if Meteor.user().profile?
-              if Meteor.user().profile.name?
-                given_name = Meteor.user().profile.name.split(' ')[0] if Meteor.user().profile.name.split(' ')[0].length > 0
-            toast "Welcome back, #{given_name}!", 7000, "success"
-            if given_name is "Asshole"
-              toast "Hey you should probably fill in your name (top left).", 7000, "info"
-        ###
 
   'click button#google-account': (event, template) ->
     Meteor.loginWithGoogle {}, (err) ->
@@ -192,25 +171,5 @@ Template.socialLogin.events
         toast "#{err_msg}", 4000, "danger"
         return
       else
-        Router.go '/'
+        #Router.go '/'
         $('#login-modal').closeModal()
-        ###
-        waiter.stop() for waiter in template.data.waiters
-        template.data.waiters.facebook = Deps.autorun =>
-          if Meteor.userId()?
-            switch @action
-              when "register"
-                toast "Nice work, bone daddy!  Can I call you #{Meteor.user().profile.name.split(' ')[0]}?", 15000, "success"
-                setTimeout =>
-                  toast "(Simply click or swipe these messages to dismiss)", 15000, "info"
-                , 1500
-              when "login"
-                given_name = "Asshole"
-                if Meteor.user().profile?
-                  if Meteor.user().profile.name?
-                    given_name = Meteor.user().profile.name.split(' ')[0] if Meteor.user().profile.name.split(' ')[0].length > 0
-                toast "Welcome back, #{given_name}!", 7000, "success"
-                if given_name is "Asshole"
-                  toast "Hey you should probably fill in your name (top left).", 7000, "info"
-            $('#login-modal').closeModal()
-        ###

@@ -6,8 +6,9 @@ routerBeforeHooks =
         @render 'loading'
       else
         #console.log "not a valid user!"
-        @render 'login'
-        $('#login-modal').openModal()
+        toast "Yeahhh, if you could just...login.....that would be greeaaat.", 7500, "danger"
+        @render 'loginScreen'
+        #$('#login-modal').openModal()
     else
       @next()
 
