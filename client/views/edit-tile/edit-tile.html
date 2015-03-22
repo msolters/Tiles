@@ -4,12 +4,18 @@
       {{> tileEditForm tile=tile}}
     </div>
     <div class="right">
-      <div id="preview-small">
-        {{> tileSmall tile=tile preview=true}}
-      </div>
-      <div id="preview-large">
-        {{> tileBig tile=tile preview=true}}
-      </div>
+      {{#if minimumTile}}
+        <div id="preview-small">
+          {{> tileSmall tile=tile preview=true}}
+        </div>
+        <div id="preview-large">
+          {{> tileBig tile=tile preview=true}}
+        </div>
+      {{else}}
+        <div id="empty-preview" class="centered-container">
+          Start filling out the form to the left to see what your Tile will look like!
+        </div>
+      {{/if}}
     </div>
   </div>
 </template>

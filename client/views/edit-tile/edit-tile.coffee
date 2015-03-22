@@ -4,6 +4,11 @@
 Template.editTile.helpers
   'tile': ->
     Session.get "currentlyEditing"
+  'minimumTile': ->
+    _tile = Session.get "currentlyEditing"
+    if nonEmptyString(_tile.title) is true or nonEmptyString(_tile.content) is true or nonEmptyString(_tile.preview) is true or _tile.dates?
+      return true
+    return false
 
 #
 #   Template.tileEditModal
