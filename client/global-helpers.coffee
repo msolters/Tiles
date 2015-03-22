@@ -116,3 +116,16 @@ Template.registerHelper 'getTile', (_id=null) ->
 
 Template.registerHelper 'searchQuery', ->
   Session.get 'search'
+
+###
+#   Sets title of browser window by concatenating arguments
+###
+Template.registerHelper 'title', ->
+  title = ""
+  if arguments.length > 1
+    for i in [0..arguments.length-2]
+      title += arguments[i]
+  else
+    title = "TilesJS"
+  document.title = title
+  undefined #prevents helper from rendering output to screen

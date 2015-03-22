@@ -7,7 +7,7 @@ Template.tileViewModal.rendered = ->
     _id = Session.get "currentlyViewing"
     if !_id?
       console.log "close that shit"
-      Router.go "#{window.location.pathname}#"
+      Router.go "#{window.location.pathname}"
       modal.closeModal()
     else
       console.log "open that shit"
