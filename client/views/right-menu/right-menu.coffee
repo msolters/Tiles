@@ -29,9 +29,7 @@ Template.rightMenu.helpers
       return false
 
 Template.rightMenu.events
-  'click a.add-new-tile': ->
-    $('#right-menu').sidebar 'hide'
-    tileEditModal.open()
+  #   USER CONFIGURATION
   'click a[data-login]': ->
     $('#right-menu').sidebar 'hide'
     $('#login-modal').openModal()
@@ -44,6 +42,10 @@ Template.rightMenu.events
   'click a[data-change-url]': ->
     $('#right-menu').sidebar 'hide'
     Router.go 'Setup'
+  #   TILE MANAGEMENT
+  'click a.add-new-tile': ->
+    $('#right-menu').sidebar 'hide'
+    Router.go '/edit/new'
   'click a[data-cancel-sort-tiles]': (event, template) ->
     $('#right-menu').sidebar 'hide'
     toast "Reverting...", 2500, "info"
@@ -130,6 +132,11 @@ Template.rightMenu.events
         scroll: true # or HTMLElement
         scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.
         scrollSpeed: 10 # px
+  #      TILE EDITING
+  'click a[data-cancel-edit]': ->
+    Router.go "/#{Meteor.user().profile.public_url}"
+  'click a[data-save-edit]': ->
+    
 
     # (1) we toggle the disabled value!
     categorySortableDisabled = !template.categorySortable.option "disabled"
