@@ -4,7 +4,7 @@
       {{#if currentUser}}
         {{#if currentUser.profile.public_url}}
           <li>
-            <a href="{{currentUser.profile.public_url}}" id="brand-top-right"><i class="mdi-social-person"> {{currentUser.profile.name}}</i><i id="go-to-mypage" class="mdi-navigation-chevron-right right"></i></a>
+            <a href="/{{currentUser.profile.public_url}}" id="brand-top-right"><i class="mdi-social-person"> {{currentUser.profile.name}}</i><i id="go-to-mypage" class="mdi-navigation-chevron-right right"></i></a>
           </li>
         {{/if}}
       {{else}}
