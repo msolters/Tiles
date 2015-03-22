@@ -54,7 +54,8 @@ Router.map ->
     data: ->
       return unless @ready() is true  # Only do this stuff once the data is available:
       if @params.tile_id is "new"
-        _tile = {}
+        _tile =
+          color: "#000000"
       else
         _tile = Tiles.findOne(
           owner: Meteor.userId()
@@ -154,6 +155,7 @@ Router.map ->
       #console.log tiles
       Session.set "categories", category_list
       Session.set "tiles", tiles
+      Session.set "colours", colours
 
       # (3) Pass that shit to the template engine!
       return context

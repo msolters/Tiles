@@ -22,14 +22,6 @@ Template.tileEditForm.helpers
     cats = Tiles.find({owner: Meteor.userId()}).fetch().map (it) ->
       return it.category
     return _.uniq cats
-  'getEditTile': ->
-    _id = Session.get "currentlyEditing"
-    return {} if _id is "new"
-    tiles = Session.get "tiles"
-    if tiles?
-      if _id?
-        if tiles[_id]?
-          return tiles[_id]
 
 Template.tileEditForm.events
   'input input#tile-title': (event, template) ->
@@ -39,6 +31,19 @@ Template.tileEditForm.events
   'input input#tile-category': (event, template) ->
     _tile = Session.get "currentlyEditing"
     _tile.category = event.target.value
+    color=Session.get("colours")[_tile.category]
+    if color?
+      _tile.color = color
+    else
+      _tile.color = "#000000"
+    Session.set "currentlyEditing", _tile
+  'keydown input#tile-category': (event, template) ->
+    color=Session.get("colours")[event.target.value]
+    _tile = Session.get "currentlyEditing"
+    if color?
+      _tile.color = color
+    else
+      _tile.color = "#000000"
     Session.set "currentlyEditing", _tile
   'input input#date-one': (event, template) ->
     _tile = Session.get "currentlyEditing"
