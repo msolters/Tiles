@@ -6,11 +6,11 @@ Template.tileViewModal.rendered = ->
   @autorun ->
     _id = Session.get "currentlyViewing"
     if !_id?
-      console.log "close that shit"
+      #console.log "close that shit"
       Router.go "#{window.location.pathname}"
       modal.closeModal()
     else
-      console.log "open that shit"
+      #console.log "open that shit"
       modal.find('.progress').show()
       modal.openModal
         ready: ->

@@ -23,9 +23,16 @@
 }
 
 #preview-small {
-  height: calc(@tileHeight + 45px);
+  max-height: calc(@tileHeight + 45px);
   border-bottom: 1px solid @darkGrey;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+#preview-small > .tile {
+  margin: auto;
 }
 #preview-large {
   padding: 10px;

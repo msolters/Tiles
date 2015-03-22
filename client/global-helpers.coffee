@@ -60,7 +60,8 @@ Template.registerHelper 'textToHTML', (text) ->
   text.replace(/(\r\n|\n|\r)/gm,"<br/>") if text?
 
 ###
-#
+#   Simply returns the tile object that is currently being modified in the
+#   template editTile.
 ###
 Template.registerHelper 'currentlyEditing', ->
   _tile = Session.get("currentlyEditing")
