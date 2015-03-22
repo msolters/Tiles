@@ -93,6 +93,8 @@
 
 <template name="loginScreen">
   <div id="login-container" class="centered-container">
+    {{ > UI.contentBlock
+        context=__context__ }}
     {{> loginForm }}
   </div>
 </template>

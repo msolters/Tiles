@@ -25,9 +25,10 @@
 
 <template name="home">
   <div id="home-container" class="centered-container">
-    <p>
-      Welcome to TilesJS!  Sign in or whatever.  <a href="/register">Don't have an account?</a>
-    </p>
-    {{> loginScreen }}
+    {{#loginScreen }}
+      <p>
+        Welcome to TilesJS!  Sign in or whatever.  <a href="/register">Don't have an account?</a>
+      </p>
+    {{/loginScreen}}
   </div>
 </template>
