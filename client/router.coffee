@@ -2,13 +2,10 @@ routerBeforeHooks =
   loginRequired: ->
     if !Meteor.user()?
       if Meteor.loggingIn() is true
-        #console.log "logging in"
         @render 'loading'
       else
-        #console.log "not a valid user!"
         toast "Yeahhh, if you could just...login.....that would be greeaaat.", 7500, "danger"
         @render 'loginScreen'
-        #$('#login-modal').openModal()
     else
       @next()
 

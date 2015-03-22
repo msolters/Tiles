@@ -36,7 +36,7 @@
     {{#if profileName}}
       {{#if verify currentUser}}
         <div class='input-field'>
-          <i class="mdi-social-person prefix"></i>
+          <i class="mdi-social-person prefix {{activeOrNot currentUser.profile.name}}"></i>
           <input type="text" id="user-profile-name" class="text-input nav-left-text" placeholder="Your Name" value="{{profileName}}"/>
         </div>
       {{else}}
