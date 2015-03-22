@@ -11,10 +11,20 @@
   </div>
 </template>
 
+<template name="noTiles">
+  <div id="no-results" class="center">
+    <a href="/edit/new">Why don't you make your first Tile?</a>
+  </div>
+</template>
+
 <template name="categories">
-  {{#each categories}}
-    {{> category}}
-  {{/each}}
+  {{#if emptyTiles}}
+    {{> noTiles}}
+  {{else}}
+    {{#each categories}}
+      {{> category}}
+    {{/each}}
+  {{/if}}
   <div id="tile-container-inner"></div>
 </template>
 
