@@ -30,6 +30,7 @@ Template.editTileMenu.events
   'click a[data-save-edit]': ->
     $("#right-menu").sidebar "hide"
     _tile = Session.get "currentlyEditing"
+    _tile.category = $("input#tile-category").focusout().val()
     _errors = []
     if !nonEmptyString _tile.title
       _errors.push "Please enter a valid title for this Tile!"
