@@ -11,7 +11,7 @@ Template.allTiles.rendered = ->
   Session.set "categorySortableDisabled", true
   Session.set "currentlyEditing", null
   Session.set "search", null
-  $('.toast').remove()
+  #$('.toast').remove()
 
   # Trigger search field on key down:
   $(document).on "keydown", (event) ->
@@ -48,7 +48,7 @@ Template.allTiles.rendered = ->
               Blaze.renderWithData Template.noResults, data, @find("#tile-container")
 
     if @data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
-    #  console.log "Setting currentlyViewing: #{data.show_tile_id}"
+      console.log "Setting currentlyViewing: #{data.show_tile_id}"
       Session.set "currentlyViewing", @data.show_tile_id
       return
     #toast "The URL you're looking for no longer exists!", 5000, "danger"
