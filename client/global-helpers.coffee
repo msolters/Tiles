@@ -58,7 +58,7 @@ Template.registerHelper 'activeOrNot', (value) ->
 #   HTML newlines <br/>).
 ###
 Template.registerHelper 'textToHTML', (text) ->
-  text.replace(/(\r\n\r\n|\n\n|\r\r)/gm,"<br/><br/>") if text?
+  text.replace(/(\r\n|\n|\r)/gm,"<br/>") if text?
 
 ###
 #
