@@ -89,6 +89,21 @@ Router.map ->
           @redirect '/setup'
           return
 
+      #   Define persistent colours based on all categories:
+      cat_q =
+        owner: user._id
+      cat_sort =
+        sort:
+          pos: 1
+      _cats = Categories.find(cat_q, cat_sort).fetch()
+      delta_hue = 360/_cats.length
+      hue = 0
+      colours = {}
+      for cat in _cats
+        colour = "hsl(#{hue}, 65%, 50%)"
+        colours[cat.title] = colour
+        hue += delta_hue
+
       context =
         public_url: @params.publicURL
         renderedUser: user
@@ -118,25 +133,21 @@ Router.map ->
       return unless _tiles?
       for tile in _tiles.fetch()
         category = tile.category
+        tile.color = colours[category]
         tiles[tile._id] = tile
         if !categories[category]?
           categories[category] =
             tile_ids: [ tile._id ]
         else
           categories[category].tile_ids.push tile._id
+
       category_list = []
-      numCategories = (c for c of categories).length
-      delta_hue = 360/numCategories
-      hue = 0
-      for title, cat of categories
-        colour = "hsl(#{hue}, 65%, 50%)"
-        for _id in cat.tile_ids
-          tiles[_id].colour = colour
-        category_list.push
-          title: title
-          tile_ids: cat.tile_ids
-          color: colour
-        hue += delta_hue
+      for ordered_title, colour of colours
+        if categories[ordered_title]?
+          category_list.push
+            title: ordered_title
+            tile_ids: categories[ordered_title].tile_ids
+            color: colour
 
       #console.log 'Server delivers data:'
       #console.log category_list

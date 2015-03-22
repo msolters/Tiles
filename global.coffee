@@ -12,8 +12,7 @@ Accounts.config
 
 @_sort =
   sort:
-    'pos.category': 1
-    'pos.tile': 1
+    'pos': 1
 @renderTrigger = new Deps.Dependency # used to force tiles and categories to rearrange
 
 @nonEmptyString = (obj) ->

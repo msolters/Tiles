@@ -171,6 +171,19 @@ Meteor.methods
     )
 
   ###
+  #   Updates category(ies) meeting the _query criteria with the
+  #   _update operations:
+  ###
+  updateCategories: (_query, _update) ->
+    _query.owner = Meteor.userId() # only allow ops on Tiles belonging to the currently logged in user
+    Categories.update(
+      _query
+      $set:
+        _update
+      {multi: true}
+    )
+
+  ###
   #   Removes a tile specified by _id from the Tiles collection:
   ###
   deleteTile: (_id) ->
@@ -201,6 +214,6 @@ ServiceConfiguration.configurations.insert
   clientId: "204767897565-0htfv8rfc4njfhnkqbm3c3dsr4f3o9ra.apps.googleusercontent.com"
   secret: "_s3YqyBq4yDW2aIYvVvb0VaZ"
 ServiceConfiguration.configurations.insert
-  service: "facebook",
-  appId: "363206583870762",
+  service: "facebook"
+  appId: "363206583870762"
   secret: "5303f40d3f93963a3636035a2eb1a36b"

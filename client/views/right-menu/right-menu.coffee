@@ -136,7 +136,7 @@ Template.manageTilesMenu.events
           tilePositions[currentCat] = []
         if $child.is(".tile")
           tilePositions[currentCat].push Blaze.getData(child).tile._id
-      k = 0
+
       pending = 0
       for cat, tileList of tilePositions
         pending += tileList.length
@@ -145,9 +145,7 @@ Template.manageTilesMenu.events
         for _id, i in tileList
           _tile =
             category: cat
-            pos:
-              tile: i
-              category: k
+            pos: i
           Meteor.call "saveTile", _tile, _id, (err, resp) ->
             if err?
               pending -= 1
@@ -158,7 +156,6 @@ Template.manageTilesMenu.events
               if pending is 0
                 toast "New arrangement committed to database successfully!", 4000, "success"
                 $("#pusher-container > .progress").hide()
-        k++
   'click a[data-cancel-sort-categories]': (event, template) ->
     $('#right-menu').sidebar 'hide'
     toast "Reverting...", 2500, "info"
@@ -201,9 +198,21 @@ Template.manageTilesMenu.events
       pending = categoryPositions.length
       for category, pos in categoryPositions
         _query =
-          category: category
+          title: category
         _update =
-          "pos.category": pos
+          "pos": pos
+        Meteor.call "updateCategories", _query, _update, (err, resp) ->
+          if err?
+            pending -= 1
+            toast "Problem saving new position of category #{category}!  Skipping...", 4000, "danger"
+          else
+            pending -= 1
+            console.log pending
+            if pending is 0
+              toast "New arrangement committed to database successfully!", 4000, "success"
+              $('.tiles').show()
+              $("#pusher-container > .progress").hide()
+        ###
         Meteor.call "updateTiles", _query, _update, (err, resp) ->
           if err?
             pending -= 1
@@ -215,3 +224,4 @@ Template.manageTilesMenu.events
               toast "New arrangement committed to database successfully!", 4000, "success"
               $('.tiles').show()
               $("#pusher-container > .progress").hide()
+        ###
