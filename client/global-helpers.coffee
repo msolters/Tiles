@@ -41,6 +41,7 @@ Template.registerHelper 'formatTileDates', (dates) ->
 #   as an input to an input[type=date].
 ###
 Template.registerHelper 'formatInputDate', (date) ->
+  return null if !date?
   moment(date).format('YYYY-MM-D')
 
 ###
