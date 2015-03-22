@@ -1,5 +1,5 @@
 <template name="tileSmall">
-  <div data-id="{{tile._id}}" class="card tile" style="{{#if preview}}border-color: #000; background-color: #000;{{else}}border-color: {{color}}; background-color: {{color}};{{/if}}">
+  <div data-id="{{tile._id}}" class="card tile" style="{{#if preview}}border-color: #000; background-color: #000;{{else}}border-color: {{tile.color}}; background-color: {{tile.color}};{{/if}}">
     <div class="tile-content pointer">
       <div class="tile-title">{{tile.title}}</div>
       {{#if hasDates tile}}
@@ -30,7 +30,7 @@
 </template>
 
 <template name="tileBig">
-  <div id="tile-big" style="border-color: {{colour}}">
+  <div id="tile-big" style="border-color: {{tile.color}}">
     <div class="modal-content">
       <div class='title'>
         {{tile.title}}
