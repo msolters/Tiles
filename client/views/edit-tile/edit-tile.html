@@ -1,14 +1,14 @@
 <template name="editTile">
   <div id="edit-panel">
     <div class="left">
-      {{> tileEditForm }}
+      {{> tileEditForm tile=tile}}
     </div>
     <div class="right">
       <div id="preview-small">
         {{> tileSmall tile=tile}}
       </div>
       <div id="preview-large">
-
+        {{> tileBig tile=tile preview=true}}
       </div>
     </div>
   </div>
