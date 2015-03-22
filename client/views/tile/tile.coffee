@@ -1,7 +1,7 @@
 #
 #   Template.tile
 #
-Template.tile.events
+Template.tileSmall.events
   'click .tile-content': (event, template) ->
     return if event.target.tagName is "A"
     Session.set "currentlyViewing", @tile._id

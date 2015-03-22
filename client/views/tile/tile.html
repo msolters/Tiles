@@ -1,4 +1,4 @@
-<template name="tile">
+<template name="tileSmall">
   <div data-id="{{tile._id}}" class="card tile" style="border-color: {{color}}; background-color: {{color}};">
     <div class="tile-content pointer">
       <div class="tile-title">{{tile.title}}</div>
@@ -8,7 +8,7 @@
         </div>
       {{/if}}
       <div class="tile-body">
-        {{{textToHTML tile.content}}}
+        {{{textToHTML tile.preview}}}
       </div>
     </div>
     <div class="tile-action row">
