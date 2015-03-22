@@ -27,7 +27,7 @@
         </li>
       {{/if}}
       <!--  End User Tools  -->
-
+      <li class="menu-divider"></li>
       <!-- Context Specific Tools -->
       {{ > UI.contentBlock
           context=__context__ }}
@@ -38,7 +38,6 @@
 <template name="manageTilesMenu">
   {{# rightMenu }}
     {{#if verify currentUser}}
-      <li class="menu-divider"></li>
       {{#unless tileSortActive}}
         {{#unless categorySortActive}}
           <li>
