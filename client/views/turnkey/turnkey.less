@@ -2,13 +2,11 @@
 
 /*  login styles    */
 #login-container {
-  margin: 0 auto;
-  margin-top: 64px;
   max-width: 500px;
 }
-#login-modal {
+/*#login-modal {
   max-width: 500px;
-}
+}*/
 #login-title {
   padding-bottom: 20px;
   padding-left: 40px;
@@ -19,18 +17,16 @@
 #login-modal .modal-content {
   overflow-y: auto;
 }
-#login-form {
-  margin-bottom: 100px;
-}
 #login-form button {
-  float: right;
+  width: 100%;
   margin: 5px;
+}
+.modal-login-button {
+  width: calc(~"50% - 10px") !important;
+  float: right !important;
 }
 #social-login-container {
   z-index: 1001;
-}
-#social-login-container > button {
-  margin: 5px;
 }
 .or-divider {
   margin: 0 auto;
@@ -84,35 +80,33 @@
 }
 
 #register-form-container {
-  margin: 0 auto;
-  margin-top: 10%;
-  text-align: center;
-  width: 500px;
-  flex-direction: column;
+  max-width: 500px;
 }
-#register-options {
+.turnkey-options {
   margin-top: 35px;
   min-width: 500px;
   position: relative;
 }
-#register-options > .left {
+.turnkey-options > .left {
   text-align: center;
   width: 50%;
   height: 100%;
   position: absolute;
+}
+#register-form-container > .turnkey-options > .left {
   padding-bottom: 50px;
 }
-#register-options > .right {
+.turnkey-options > .right {
   width: 50%;
   padding-left: 10px;
   border-left: 1px solid @darkishGrey;
 }
-#register-options > .left > #social-login-container {
+.turnkey-options > .left > #social-login-container {
   width: 100%;
 }
-#register-options > .left button {
+.turnkey-options > .left button {
   display: block;
 }
-#register-form-container button {
+.turnkey-options button {
   margin: 15px auto;
 }

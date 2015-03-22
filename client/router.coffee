@@ -20,7 +20,7 @@ Router.map ->
         if Meteor.loggingIn()
           @render "loading"
         else
-          @render "register"
+          @render "home"
       else
         if Meteor.user().profile.public_url?
           @redirect "/#{Meteor.user().profile.public_url}"
@@ -30,9 +30,6 @@ Router.map ->
   @route 'Register',
     path: '/register'
     template: 'register'
-    yieldTemplates:
-      'navbar':
-        to: 'navbar'
 
   @route 'Loading',
     path: '/loading'
