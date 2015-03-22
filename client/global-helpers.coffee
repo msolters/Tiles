@@ -37,6 +37,13 @@ Template.registerHelper 'formatTileDates', (dates) ->
     return "#{moment.utc(dates.dateTwo).format('MMMM Do, YYYY')}"
 
 ###
+#   Taking a Date object or string representing one, return a string acceptable
+#   as an input to an input[type=date].
+###
+Template.registerHelper 'formatInputDate', (date) ->
+  moment(date).format('YYYY-MM-D')
+
+###
 #   If the input value is non-empty, returns the string 'active.'
 #   The 'active' class is used by inputs to do things like move
 #   input labels out of the way of the input content, etc.
