@@ -5,7 +5,7 @@
 <body></body>
 
 <template name="appLayout">
-  {{> rightMenu}}
+  {{> yield region="rightMenu"}}
   {{#if verify currentUser}}
     {{> deleteTileConfirmation }}
   {{else}}
