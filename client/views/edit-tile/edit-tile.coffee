@@ -19,9 +19,9 @@ Template.tileEditForm.rendered = ->
 
 Template.tileEditForm.helpers
   'categories': ->
-    cats = Tiles.find({owner: Meteor.userId()}).fetch().map (it) ->
-      return it.category
-    return _.uniq cats
+    cats = Categories.find({owner: Meteor.userId()}).fetch().map (it) ->
+      return it.title
+    return cats
 
 Template.tileEditForm.events
   'input input#tile-title': (event, template) ->
