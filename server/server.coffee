@@ -110,9 +110,10 @@ Meteor.methods
       if (d for d,v of _tile.dates).length is 0
         delete _tile.dates
 
+    # (1)  insert/upsert/update Tile
     if !_id?
       _tile.owner = Meteor.userId()
-      Tiles.insert(
+      _id = Tiles.insert(
         _tile
       )
     else
@@ -120,9 +121,6 @@ Meteor.methods
         _id: _id
         owner: Meteor.userId()
       _updateAdd['$set'] = _tile
-      console.log _updateAdd
-      #console.log _updateRemove
-      #console.log '\n'
       Tiles.upsert(
         _q,
         _updateAdd,
@@ -134,6 +132,30 @@ Meteor.methods
           _updateRemove
           {multi: true}
         )
+    if _tile.category?
+      _q =
+        owner: Meteor.userId()
+        title: _tile.category
+      _update =
+        $addToSet:
+          tiles: _id
+      Categories.upsert(_q, _update) # assign tile to new category
+      _q =
+        owner: Meteor.userId()
+        tiles: _id
+        title:
+          $ne: _tile.category
+      _update =
+        $pull:
+          tiles: _id
+      Categories.update(_q, _update) # remove tile from old category (if applicable)
+      _cleanup =
+        owner: Meteor.userId()
+        tiles:
+          $size: 0
+      Categories.remove(_cleanup) # delete any categories containg 0 tiles
+
+
 
   ###
   #   Updates tile(s) meeting the _query criteria with the
@@ -156,6 +178,18 @@ Meteor.methods
       _id: _id
       owner: Meteor.userId()
     )
+    _q =
+      owner: Meteor.userId()
+      tiles: _id
+    _update =
+      $pull:
+        tiles: _id
+    Categories.update(_q, _update) # remove tile from old category (if applicable)
+    _cleanup =
+      owner: Meteor.userId()
+      tiles:
+        $size: 0
+    Categories.remove(_cleanup) # delete any categories containg 0 tiles
 
 # First remove any services that may have been auto/already configured:
 ServiceConfiguration.configurations.remove
