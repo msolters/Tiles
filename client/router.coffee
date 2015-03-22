@@ -75,6 +75,7 @@ Router.map ->
         to: 'navbar'
     waitOn: ->
       Meteor.subscribe 'Tiles'
+      Meteor.subscribe 'Categories'
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
     data: ->
       return unless @ready() is true  # Only do this stuff once the data is available:

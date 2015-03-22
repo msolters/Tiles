@@ -1,4 +1,5 @@
 @Tiles = new Mongo.Collection 'Tiles'
+@Categories = new Mongo.Collection 'Categories'
 
 # Only server can create a user!
 Accounts.config
