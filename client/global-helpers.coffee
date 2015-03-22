@@ -98,19 +98,19 @@ Template.registerHelper 'categories', ->
 #   Otherwise, returns the tile with that _id.
 ###
 Template.registerHelper 'getTile', (_id=null) ->
-  console.log "retrieving tile #{_id}..."
   return true if _id is "new"
   tiles = Session.get "tiles"
   if tiles?
     if _id?
+      console.log "retrieving tile #{_id}..."
       if tiles[_id]?
         return tiles[_id]
-      #else
-      #  toast "Sorry, looks like that Tile doesn't exist!", 3500, "danger" if hash_request is true
-      #  Session.set "currentlyViewing", null
+      else
+        toast "Sorry, looks like that Tile doesn't exist!", 3500, "danger" if hash_request is true
+        Session.set "currentlyViewing", null
   #else
   #  $("#tile-view-modal").closeModal()
-  console.log "No tile found."
+  console.log "No tile found." if _id?
   return false
 
 Template.registerHelper 'searchQuery', ->

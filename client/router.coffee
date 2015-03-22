@@ -2,11 +2,12 @@ routerBeforeHooks =
   loginRequired: ->
     if !Meteor.user()?
       if Meteor.loggingIn() is true
-        console.log "logging in"
+        #console.log "logging in"
         @render 'loading'
       else
-        console.log "not a valid user!"
+        #console.log "not a valid user!"
         @render 'login'
+        $('#login-modal').openModal()
     else
       @next()
 
@@ -47,14 +48,23 @@ Router.map ->
   @route 'Edit Tile',
     path: '/edit/:tile_id'
     template: 'editTile'
+    yieldTemplates:
+      'editTileMenu':
+        to: 'rightMenu'
     waitOn: ->
       Meteor.subscribe 'Tiles'
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
     data: ->
       return unless @ready() is true  # Only do this stuff once the data is available:
-      if !Meteor.user()
-        @render 'notFound' #this isn't a valid url; no page exists here.
-        return
+      if @params.tile_id is "new"
+        _tile = {}
+      else
+        _tile = Tiles.findOne(
+          owner: Meteor.userId()
+          _id: @params.tile_id
+        )
+      Session.set "currentlyEditing", _tile
+
 
   @route 'Render User',
     path: '/:publicURL'
@@ -62,12 +72,14 @@ Router.map ->
     yieldTemplates:
       'tileViewModal':
         to: 'modals'
+      'manageTilesMenu':
+        to: 'rightMenu'
     waitOn: ->
       Meteor.subscribe 'Tiles'
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
     data: ->
       return unless @ready() is true  # Only do this stuff once the data is available:
-      user = Meteor.users.findOne({"profile.public_url": @params.publicURL})
+      user = Meteor.users.findOne({"profile.public_url": @params.publicURL}, {fields: {profile: 1}})
       if !user?
         @render 'notFound' #this isn't a valid url; no page exists here.
         return
@@ -79,6 +91,7 @@ Router.map ->
 
       context =
         public_url: @params.publicURL
+        renderedUser: user
 
       # (1) Did the user specific a specific Tile link?
       if @params.hash

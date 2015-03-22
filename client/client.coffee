@@ -37,7 +37,6 @@ Template.allTiles.rendered = ->
     @autorun =>
       renderTrigger.depend()
       data=Template.currentData()
-      console.log data
       _inner = $("#tile-container-inner")[0]
       Blaze.remove Blaze.getView _inner if _inner?
       if Session.get("tiles")?

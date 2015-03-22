@@ -17,12 +17,38 @@
           <a class="tile-delete" href="#"><i class="mdi-action-delete"></i></a>
         </p>
         <p>
-          <a class="tile-edit" href="#"><i class="mdi-editor-border-color right"></i>edit</a>
+          <a class="tile-edit" href="/edit/{{tile._id}}"><i class="mdi-editor-border-color right"></i>edit</a>
         </p>
       {{/if}}
       <p>
         <a class="tile-read-more" href="#{{tile._id}}">read more</a>
       </p>
     </div>
+  </div>
+</template>
+
+<template name="tileBig">
+  <div id="tile-big" style="border-color: {{colour}}">
+    <div class="modal-content">
+      <div class='title'>
+        {{tile.title}}
+      </div>
+      {{#if hasDates tile}}
+        <div class="dates">
+          {{{formatTileDates tile.dates}}}
+        </div>
+      {{/if}}
+      <div class='content'>
+        {{{textToHTML tile.content}}}
+      </div>
+    </div>
+    {{#unless preview}}
+      <div class="modal-footer">
+        <button id="close-view-modal" type="button" class="btn waves-effect waves-light modal-action modal-close grey"><i class="mdi-action-done left"></i>Done</button>
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
+      </div>
+    {{/unless}}
   </div>
 </template>

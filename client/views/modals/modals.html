@@ -1,28 +1,9 @@
 <template name="tileViewModal">
   <div id="tile-view-modal" class="modal modal-fixed-footer">
   {{#with getTile currentlyViewing}}
-    <div style="border-color: {{colour}}">
-      <div class="modal-content">
-        <div class='title'>
-          {{title}}
-        </div>
-        {{#if hasDates this}}
-          <div class="dates">
-            {{{formatTileDates dates}}}
-          </div>
-        {{/if}}
-        <div class='content'>
-          {{{textToHTML content}}}
-        </div>
-      </div>
 
-      <div class="modal-footer">
-        <button id="close-view-modal" type="button" class="btn waves-effect waves-light modal-action modal-close grey"><i class="mdi-action-done left"></i>Done</button>
-        <div class="progress">
-          <div class="indeterminate"></div>
-        </div>
-      </div>
-    </div>
+        {{> tileBig tile=this}}
+
   {{/with}}
   </div>
 </template>
