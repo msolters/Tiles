@@ -131,6 +131,11 @@ i.left {
   background: @hoverGrey;
   color: #000;
 }
+/* Hide up/down buttons on datepickers   */
+input[type=date]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  display: none;
+}
 
 
 .danger {
