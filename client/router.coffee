@@ -29,6 +29,9 @@ Router.map ->
   @route 'Register',
     path: '/register'
     template: 'register'
+    yieldTemplates:
+      'navbar':
+        to: 'navbar'
 
   @route 'Loading',
     path: '/loading'
@@ -51,6 +54,8 @@ Router.map ->
     yieldTemplates:
       'editTileMenu':
         to: 'rightMenu'
+      'editTileNavbar':
+        to: 'navbar'
     waitOn: ->
       Meteor.subscribe 'Tiles'
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
@@ -74,6 +79,8 @@ Router.map ->
         to: 'modals'
       'manageTilesMenu':
         to: 'rightMenu'
+      'renderUserNavbar':
+        to: 'navbar'
     waitOn: ->
       Meteor.subscribe 'Tiles'
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}

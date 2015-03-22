@@ -13,7 +13,7 @@
   {{/if}}
   {{> yield region="modals"}}
   <div id="pusher-container" class="pusher">
-    {{> navbar }}
+    {{> yield region="navbar" }}
     {{> yield }}
     {{#if verify currentUser}}
       <div class="progress">

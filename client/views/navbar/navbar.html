@@ -1,16 +1,10 @@
 <template name="navbar">
   <nav>
     <div class="nav-wrapper">
-      {{#if profileName}}
-        {{#if verify currentUser}}
-          <div class='input-field'>
-            <i class="mdi-social-person prefix"></i>
-            <input type="text" id="user-profile-name" class="text-input user-name" placeholder="Your Name" value="{{profileName}}"/>
-          </div>
-        {{else}}
-          <a class="user-name">{{profileName}}</a>
-        {{/if}}
-      {{/if}}
+      {{ > UI.contentBlock
+          context=__context__ }}
+
+      <!--  Right menu collapse/open; persistent  -->
       <div class="right">
         {{#if profileName}}
           <div class='input-field'>
@@ -20,6 +14,28 @@
         {{/if}}
         <a data-sidebar id="right-menu-collapse" href="#"><i class="mdi-navigation-menu"></i></a>
       </div>
+      <!--  End right menu collapse/open  -->
     </div>
   </nav>
+</template>
+
+<template name="editTileNavbar">
+  {{#navbar}}
+    <div class="nav-left-text">Edit Tile</div>
+  {{/navbar}}
+</template>
+
+<template name="renderUserNavbar">
+  {{#navbar}}
+    {{#if profileName}}
+      {{#if verify currentUser}}
+        <div class='input-field'>
+          <i class="mdi-social-person prefix"></i>
+          <input type="text" id="user-profile-name" class="text-input nav-left-text" placeholder="Your Name" value="{{profileName}}"/>
+        </div>
+      {{else}}
+        <a class="nav-left-text">{{profileName}}</a>
+      {{/if}}
+    {{/if}}
+  {{/navbar}}
 </template>

@@ -3,7 +3,6 @@
 #edit-panel {
   margin: 0 auto;
   height: calc(~"100% - @{navbarHeight}");
-  padding-top: @navbarHeight;
   overflow-y: auto;
   position: relative;
   top: @navbarHeight;
@@ -15,6 +14,9 @@
 }
 #edit-panel .right {
   float: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 #edit-panel .left,
 #edit-panel .right {
