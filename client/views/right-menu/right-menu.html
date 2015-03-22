@@ -1,22 +1,13 @@
 <template name="rightMenu">
   <div id="right-menu" class="ui right vertical inverted labeled icon sidebar menu">
     <ul>
+      <!--  User Tools, always available  -->
       {{#if currentUser}}
         {{#if currentUser.profile.public_url}}
           <li>
             <a href="/{{currentUser.profile.public_url}}" id="brand-top-right"><i class="mdi-social-person"> {{currentUser.profile.name}}</i><i id="go-to-mypage" class="mdi-navigation-chevron-right right"></i></a>
           </li>
-        {{/if}}
-      {{else}}
-        <li>
-          <a href="/" id="brand-top-right"><i class="mdi-action-view-module"> TilesJS</i></a>
-        </li>
-      {{/if}}
-
-
-      {{#if currentUser}}
-        {{#if verify currentUser}}
-          {{#if currentUser.profile.public_url}}
+          {{#if verify currentUser}}
             <li>
               <a data-change-url>
                   <i class="mdi-action-language left"> Change URL</i>
@@ -29,67 +20,93 @@
         </li>
       {{else}}
         <li>
+          <a href="/" id="brand-top-right"><i class="mdi-action-view-module"> TilesJS</i></a>
+        </li>
+        <li>
           <a data-login><i class="mdi-action-exit-to-app left"> Sign In</i></a>
         </li>
       {{/if}}
+      <!--  End User Tools  -->
 
-      {{#if verify currentUser}}
-        <li class="menu-divider"></li>
-        {{#unless tileSortActive}}
-          {{#unless categorySortActive}}
-            <li>
-              <a class="add-new-tile"><i class="mdi-content-add-box left"> New Tile</i></a>
-            </li>
-          {{/unless}}
-        {{/unless}}
-        {{#if categories}}
-          {{#if tileSortable}}
-            {{#unless categorySortActive}}
-              {{#if tileSortActive}}
-                <li>
-                  <a data-cancel-sort-tiles>
-                    <i class="mdi-content-clear left"> Cancel Sort</i>
-                  </a>
-                </li>
-                <li>
-                  <a data-sort-tiles>
-                    <i class="mdi-action-done left"> Done</i>
-                  </a>
-                </li>
-              {{else}}
-                <li>
-                  <a data-sort-tiles>
-                    <i class="mdi-content-sort left"> Sort Tiles</i>
-                  </a>
-                </li>
-              {{/if}}
-            {{/unless}}
-          {{/if}}
-          {{#if categorySortable}}
-            {{#unless tileSortActive}}
-              {{#if categorySortActive}}
-                <li>
-                  <a data-cancel-sort-categories>
-                    <i class="mdi-content-clear left"> Cancel Sort</i>
-                  </a>
-                </li>
-                <li>
-                  <a data-sort-categories>
-                    <i class="mdi-action-done left"> Done</i>
-                  </a>
-                </li>
-              {{else}}
-                <li>
-                  <a data-sort-categories>
-                    <i class="mdi-content-sort left"> Sort Categories</i>
-                  </a>
-                </li>
-              {{/if}}
-            {{/unless}}
-          {{/if}}
-        {{/if}}
-      {{/if}}
-
+      <!-- Context Specific Tools -->
+      {{ > UI.contentBlock
+          context=__context__ }}
     </ul>
   </div>
+</template>
+
+<template name="manageTilesMenu">
+  {{# rightMenu }}
+    {{#if verify currentUser}}
+      <li class="menu-divider"></li>
+      {{#unless tileSortActive}}
+        {{#unless categorySortActive}}
+          <li>
+            <a class="add-new-tile"><i class="mdi-content-add-box left"> New Tile</i></a>
+          </li>
+        {{/unless}}
+      {{/unless}}
+      {{#if categories}}
+        {{#if tileSortable}}
+          {{#unless categorySortActive}}
+            {{#if tileSortActive}}
+              <li>
+                <a data-cancel-sort-tiles>
+                  <i class="mdi-content-clear left"> Cancel Sort</i>
+                </a>
+              </li>
+              <li>
+                <a data-sort-tiles>
+                  <i class="mdi-action-done left"> Done</i>
+                </a>
+              </li>
+            {{else}}
+              <li>
+                <a data-sort-tiles>
+                  <i class="mdi-content-sort left"> Sort Tiles</i>
+                </a>
+              </li>
+            {{/if}}
+          {{/unless}}
+        {{/if}}
+        {{#if categorySortable}}
+          {{#unless tileSortActive}}
+            {{#if categorySortActive}}
+              <li>
+                <a data-cancel-sort-categories>
+                  <i class="mdi-content-clear left"> Cancel Sort</i>
+                </a>
+              </li>
+              <li>
+                <a data-sort-categories>
+                  <i class="mdi-action-done left"> Done</i>
+                </a>
+              </li>
+            {{else}}
+              <li>
+                <a data-sort-categories>
+                  <i class="mdi-content-sort left"> Sort Categories</i>
+                </a>
+              </li>
+            {{/if}}
+          {{/unless}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  {{/rightMenu}}
+</template>
+
+<template name="editTileMenu">
+  {{# rightMenu }}
+    <li>
+      <a data-cancel-edit-tile>
+        <i class="mdi-content-clear left"> Cancel</i>
+      </a>
+    </li>
+    <li>
+      <a data-save-tile>
+        <i class="mdi-action-done left"> Save Tile</i>
+      </a>
+    </li>
+  {{/rightMenu}}
 </template>
