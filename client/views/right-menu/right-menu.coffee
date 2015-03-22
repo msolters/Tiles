@@ -132,12 +132,6 @@ Template.rightMenu.events
         scroll: true # or HTMLElement
         scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.
         scrollSpeed: 10 # px
-  #      TILE EDITING
-  'click a[data-cancel-edit]': ->
-    Router.go "/#{Meteor.user().profile.public_url}"
-  'click a[data-save-edit]': ->
-    
-
     # (1) we toggle the disabled value!
     categorySortableDisabled = !template.categorySortable.option "disabled"
     template.categorySortable.option "disabled", categorySortableDisabled
@@ -173,3 +167,51 @@ Template.rightMenu.events
               toast "New arrangement committed to database successfully!", 4000, "success"
               $('.tiles').show()
               $("#pusher-container > .progress").hide()
+  #      TILE EDITING
+  'click a[data-cancel-edit]': ->
+    $("#right-menu").sidebar "hide"
+    Router.go "/#{Meteor.user().profile.public_url}"
+  'click a[data-save-edit]': ->
+    $("#right-menu").sidebar "hide"
+    _tile = Session.get "currentlyEditing"
+    _errors = []
+    if !nonEmptyString _tile.title
+      _errors.push "Please enter a valid title for this Tile!"
+    if !nonEmptyString _tile.category
+      _errors.push "Please enter a valid category for this Tile!"
+    if _errors.length > 0
+      #@hideLoading()
+      for error in _errors
+        toast error, 4500, "danger"
+      return
+    else
+      # Set _id (this depends on if it's a new or pre-existing tile)
+      if _tile._id?
+        _id = _tile._id
+        delete _tile['_id']
+      else
+        _id = null
+      # Check if the user selected any dates or if they were cleared
+      ###
+      if @datePickerOne.get().length is 0
+        dateOne = null
+      else
+        dateOne = moment(@datePickerOne.get()).toDate()
+      if @datePickerTwo.get().length is 0
+        dateTwo = null
+      else
+        dateTwo = moment(@datePickerTwo.get()).toDate()
+      ###
+
+      # Convert preview and body content from HTML -> Text, for keyword searching:
+      $("body").append("<div id='render-html'>#{_tile.content} #{_tile.preview}</div>")
+      searchableContent = $("#render-html").text()
+      $("#render-html").remove()
+
+      _tile.searchableContent = searchableContent
+      Meteor.call "saveTile", _tile, _id, (error, response) ->
+        if error
+          toast "Error saving tile: #{error}", 6000, "danger"
+        else
+          toast "Tile saved successfully!", 4000, "success"
+          Router.go "/#{Meteor.user().profile.public_url}"
