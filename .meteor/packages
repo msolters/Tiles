@@ -25,3 +25,5 @@ materialize:materialize
 mizzao:autocomplete
 sergeyt:typeahead
 lauricio:less-autoprefixer
+meteorhacks:flow-router
+meteorhacks:fast-render
