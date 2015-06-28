@@ -95,7 +95,7 @@ Template.register.events
       else
         if response.success is true
           Meteor.loginWithPassword email, password
-          template.waiters.vanilla.stop() if template.waiters.vanilla?
+          #template.waiters.vanilla.stop() if template.waiters.vanilla?
           template.waiters.vanilla = Deps.autorun =>
             if Meteor.userId()?
               $(".toast").remove()

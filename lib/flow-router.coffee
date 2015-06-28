@@ -28,11 +28,11 @@ FlowRouter.route '/register',
 #     Login
 ###
 FlowRouter.route '/login',
-  name: 'Register'
+  name: 'Login'
   subscriptions: (params, qParams) ->
   action: (params) ->
     FlowLayout.render 'app',
-      main: 'loginForm'
+      main: 'login'
 
 
 ###
