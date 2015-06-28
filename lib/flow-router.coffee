@@ -10,8 +10,7 @@ FlowRouter.route '/',
   subscriptions: (params, qParams) ->
     #@register "UserData", Meteor.subscribe "UserData"
   action: (params) ->
-    FlowLayout.render 'internalLayout',
-      main: 'home'
+    FlowRouter.go "/login"
 
 
 ###
@@ -21,21 +20,19 @@ FlowRouter.route '/register',
   name: 'Register'
   subscriptions: (params, qParams) ->
   action: (params) ->
-    FlowLayout.render 'externalLayout',
+    FlowLayout.render 'app',
       main: 'register'
 
 
 ###
-#     Loading
+#     Login
 ###
-###
-FlowRouter.route '/',
-  name: 'Home'
+FlowRouter.route '/login',
+  name: 'Register'
   subscriptions: (params, qParams) ->
   action: (params) ->
-    FlowLayout.render 'internalLayout',
-      main: 'loading'
-###
+    FlowLayout.render 'app',
+      main: 'loginForm'
 
 
 ###
@@ -66,6 +63,11 @@ FlowRouter.route '/edit/:tile_id',
 FlowRouter.route '/:publicURL',
   name: 'Render User'
   subscriptions: (params, qParams) ->
+    @register 'Tiles', Meteor.subscribe 'Tiles'
+    @register 'Categories', Meteor.subscribe 'Categories'
+    @register 'Users', Meteor.subscribe 'Users'
   action: (params) ->
-    FlowLayout.render 'internalLayout',
-      main: 'allTiles'
+    FlowLayout.render 'app',
+      rightMenu: 'manageTilesMenu'
+      navbar: 'renderUserNavbar'
+      #main: 'allTiles'

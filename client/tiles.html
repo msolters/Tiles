@@ -4,14 +4,19 @@
 
 <body></body>
 
+<!--
 <template name="appLayout">
+
   {{> yield region="rightMenu"}}
+
   {{#if verify currentUser}}
     {{> deleteTileConfirmation }}
   {{else}}
     {{> loginModal }}
   {{/if}}
+
   {{> yield region="modals"}}
+
   <div id="pusher-container" class="pusher">
     {{> yield region="navbar" }}
     {{> yield }}
@@ -21,7 +26,9 @@
       </div>
     {{/if}}
   </div>
+
 </template>
+-->
 
 <template name="home">
   <div id="home-container" class="centered-container">
