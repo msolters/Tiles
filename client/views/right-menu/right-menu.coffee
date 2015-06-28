@@ -17,7 +17,7 @@ Template.rightMenu.events
     toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
   'click a[data-change-url]': ->
     $('#right-menu').sidebar 'hide'
-    Router.go 'Setup'
+    FlowRouter.go 'Setup'
 
 
 #
@@ -26,7 +26,7 @@ Template.rightMenu.events
 Template.editTileMenu.events
   'click a[data-cancel-edit]': ->
     $("#right-menu").sidebar "hide"
-    Router.go "/#{Meteor.user().profile.public_url}"
+    FlowRouter.go "/#{Meteor.user().profile.public_url}"
   'click a[data-save-edit]': ->
     $("#right-menu").sidebar "hide"
     _tile = Session.get "currentlyEditing"
@@ -60,7 +60,7 @@ Template.editTileMenu.events
           toast "Error saving tile: #{error}", 6000, "danger"
         else
           toast "Tile saved successfully!", 4000, "success"
-          Router.go "/#{Meteor.user().profile.public_url}"
+          FlowRouter.go "/#{Meteor.user().profile.public_url}"
 
 
 #
@@ -93,7 +93,7 @@ Template.manageTilesMenu.helpers
 Template.manageTilesMenu.events
   'click a.add-new-tile': ->
     $('#right-menu').sidebar 'hide'
-    Router.go '/edit/new'
+    FlowRouter.go '/edit/new'
   'click a[data-cancel-sort-tiles]': (event, template) ->
     $('#right-menu').sidebar 'hide'
     toast "Reverting...", 2500, "info"

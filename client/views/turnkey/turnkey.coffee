@@ -47,7 +47,7 @@ Template.establishURL.events
                   return false
                 else
                   if response is true
-                    Router.go "/#{url}"
+                    FlowRouter.go "/#{url}"
                   return false
             else
               toast "Sorry, that URL is already taken!  Please try to be more creative.  For fuck's sake.", 5000, "danger"
@@ -65,7 +65,7 @@ Template.register.rendered = ->
         toast "Create an account to get started.", 20000, "info"
       , 900
   @autorun =>
-    Router.go '/' if Meteor.userId()? # move the user on if they have an account!
+    FlowRouter.go '/' if Meteor.userId()? # move the user on if they have an account!
 
 Template.register.events
   'submit form#register-form': (event, template) ->
@@ -99,7 +99,7 @@ Template.register.events
           template.waiters.vanilla = Deps.autorun =>
             if Meteor.userId()?
               $(".toast").remove()
-              Router.go "/setup"
+              FlowRouter.go "/setup"
           return false
           ###
           toast "Nice work, bone daddy!  Can I call you #{name.split(' ')[0]}?", 15000, "success"
