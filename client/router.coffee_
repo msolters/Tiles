@@ -23,7 +23,7 @@ Router.map ->
           @redirect "/#{Meteor.user().profile.public_url}"
         else
           Router.go "/setup"
-
+###
   @route 'Register',
     path: '/register'
     template: 'register'
@@ -39,7 +39,7 @@ Router.map ->
         to: 'rightMenu'
       'setupNavbar':
         to: 'navbar'
-
+###
   @route 'Edit Tile',
     path: '/edit/:tile_id'
     template: 'editTile'
@@ -79,6 +79,7 @@ Router.map ->
       Meteor.subscribe 'Categories'
       Meteor.subscribe 'Users'#, {public_url: @params.publicURL}
     data: ->
+      ###
       return unless @ready() is true  # Only do this stuff once the data is available:
       user = Meteor.users.findOne({"profile.public_url": @params.publicURL}, {fields: {profile: 1}})
       if !user?
@@ -89,21 +90,21 @@ Router.map ->
         if !Meteor.user().profile.public_url?
           @redirect '/setup'
           return
-
       #   Define persistent colours based on all categories:
       cat_q =
         owner: user._id
       cat_sort =
         sort:
           pos: 1
-      _cats = Categories.find(cat_q, cat_sort).fetch()
+      _cats = Categories.find( cat_q, cat_sort ).fetch()
       delta_hue = 360/_cats.length
       hue = 0
       colours = {}
       for cat in _cats
         colour = "hsl(#{hue}, 65%, 50%)"
-        colours[cat.title] = colour
+        colours[ cat.title ] = colour
         hue += delta_hue
+      ###
 
       context =
         public_url: @params.publicURL
@@ -111,7 +112,7 @@ Router.map ->
 
       # (1) Did the user specific a specific Tile link?
       if @params.hash
-        context['show_tile_id'] = @params.hash
+        context[ 'show_tile_id' ] = @params.hash
 
       # (2) Now lets construct a data object containing cat/tile info:
       categories = {}
@@ -149,7 +150,8 @@ Router.map ->
             title: ordered_title
             tile_ids: categories[ordered_title].tile_ids
             color: colour
-
+      ###
+      
       #console.log 'Server delivers data:'
       #console.log category_list
       #console.log tiles

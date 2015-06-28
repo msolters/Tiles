@@ -48,6 +48,8 @@ FlowRouter.route '/setup',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'establishURL'
+      rightMenu: 'rightMenu'
+      navbar: 'setupNavbar'
 
 ###
 #     Edit Tile
@@ -58,7 +60,8 @@ FlowRouter.route '/edit/:tile_id',
   action: (params) ->
     FlowLayout.render 'internalLayout',
       main: 'editTile'
-
+      rightMenu: 'manageTilesMenu'
+      navbar: 'renderUserNavbar'
 
 ###
 #     Render User
@@ -71,6 +74,6 @@ FlowRouter.route '/:publicURL',
     @register 'Users', Meteor.subscribe 'Users'
   action: (params) ->
     FlowLayout.render 'app',
+      main: 'allTiles'
       rightMenu: 'manageTilesMenu'
       navbar: 'renderUserNavbar'
-      main: 'allTiles'
