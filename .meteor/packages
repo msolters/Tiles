@@ -6,7 +6,6 @@
 
 meteor-platform
 coffeescript
-iron:router
 accounts-password
 fortawesome:fontawesome
 velocityjs:velocityjs
@@ -27,3 +26,4 @@ sergeyt:typeahead
 lauricio:less-autoprefixer
 meteorhacks:flow-router
 meteorhacks:fast-render
+meteorhacks:flow-layout

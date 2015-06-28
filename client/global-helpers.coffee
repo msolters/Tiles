@@ -1,6 +1,20 @@
 #   Template helpers for ALL Templates.
 
 ###
+#     This helper returns true if the subscription(s)
+#     passed in the argument are ready.  Omitting an argument,
+#     it will return true only if ALL subscriptions are ready.
+###
+Template.registerHelper 'subsReady', (subscriptions=[]) ->
+  if subscriptions.length > 0
+    for sub in subscriptions
+      return false if !FlowRouter.subsReady sub
+    return true
+  else
+    return true if FlowRouter.subsReady()
+  return false
+
+###
 #   Returns the user profile name of the page currently being
 #   viewed.  Note that it does not depend on if the current
 #   visitor is a user or not.
