@@ -22,7 +22,8 @@ FlowRouter.route '/register',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'register'
-
+      rightMenu: null
+      navbar: null
 
 ###
 #     Login
@@ -33,6 +34,8 @@ FlowRouter.route '/login',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'login'
+      rightMenu: null
+      navbar: null
 
 
 ###
@@ -43,7 +46,7 @@ FlowRouter.route '/setup',
   subscriptions: (params, qParams) ->
     #@register "UserData", Meteor.subscribe "UserData"
   action: (params) ->
-    FlowLayout.render 'internalLayout',
+    FlowLayout.render 'app',
       main: 'establishURL'
 
 ###
@@ -70,4 +73,4 @@ FlowRouter.route '/:publicURL',
     FlowLayout.render 'app',
       rightMenu: 'manageTilesMenu'
       navbar: 'renderUserNavbar'
-      #main: 'allTiles'
+      main: 'allTiles'

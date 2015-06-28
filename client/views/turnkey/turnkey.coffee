@@ -58,14 +58,17 @@ Template.establishURL.events
 #
 #     Template.register
 #
+Template.register.created = ->
+  @waiters = {} # used to store interval timer handles
+
 Template.register.rendered = ->
   if !Meteor.user()
     toast "Welcome to TilesJS!", 20000, "success"
     setTimeout ->
         toast "Create an account to get started.", 20000, "info"
       , 900
-  @autorun =>
-    FlowRouter.go '/' if Meteor.userId()? # move the user on if they have an account!
+  #@autorun =>
+  #  FlowRouter.go '/' if Meteor.userId()? # move the user on if they have an account!
 
 Template.register.events
   'submit form#register-form': (event, template) ->
@@ -95,7 +98,7 @@ Template.register.events
       else
         if response.success is true
           Meteor.loginWithPassword email, password
-          #template.waiters.vanilla.stop() if template.waiters.vanilla?
+          template.waiters.vanilla.stop() if template.waiters.vanilla?
           template.waiters.vanilla = Deps.autorun =>
             if Meteor.userId()?
               $(".toast").remove()
