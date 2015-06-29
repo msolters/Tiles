@@ -57,11 +57,13 @@ FlowRouter.route '/setup',
 FlowRouter.route '/edit/:tile_id',
   name: 'Edit Tile'
   subscriptions: (params, qParams) ->
+    @register 'Tiles', Meteor.subscribe 'Tiles'
+    @register 'Users', Meteor.subscribe 'Users'
   action: (params) ->
-    FlowLayout.render 'internalLayout',
+    FlowLayout.render 'app',
       main: 'editTile'
-      rightMenu: 'manageTilesMenu'
-      navbar: 'renderUserNavbar'
+      rightMenu: 'editTileMenu'
+      navbar: 'editTileNavbar'
 
 ###
 #     Render User
