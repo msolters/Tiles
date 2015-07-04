@@ -66,6 +66,14 @@ FlowRouter.route '/edit/:tile_id',
       navbar: 'editTileNavbar'
 
 ###
+#     Show Icons (Development Only)
+###
+FlowRouter.route '/icons',
+  name: 'MDI Icon Listing'
+  action: ->
+    FlowLayout.render 'icons'
+
+###
 #     Render User
 ###
 FlowRouter.route '/:publicURL',
