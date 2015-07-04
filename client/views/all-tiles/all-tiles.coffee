@@ -127,7 +127,8 @@ Template.allTiles.rendered = ->
       return if event.target.tagName is tagName
     $("input#tile-search").focus()
 
-  document.title = @user.get().profile.name # set the page title to be the user's name
+  @autorun =>
+    document.title = @user.get().profile.name # set the page title to be the user's name
   ###
   if @data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
     console.log "Setting currentlyViewing: #{data.show_tile_id}"
