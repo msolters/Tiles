@@ -1,6 +1,6 @@
-#
+###
 #   Template.editTile
-#
+###
 Template.editTile.helpers
   'tile': ->
     Session.get "currentlyEditing"
@@ -10,14 +10,10 @@ Template.editTile.helpers
       return true
     return false
 
-
-###
-#   Template.editTileControls
-###
-Template.editTileControls.events
-  'click a[data-cancel-edit]': ->
+Template.editTile.events
+  'click a[data-cancel]': ->
     FlowRouter.go "/#{Meteor.user().profile.public_url}"
-  'click a[data-save-edit]': ->
+  'click a[data-confirm]': ->
     _tile = Session.get "currentlyEditing"
     _tile.category = $("input#tile-category").focusout().val()
     _errors = []

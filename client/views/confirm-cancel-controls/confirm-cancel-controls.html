@@ -1,0 +1,14 @@
+<template name="confirmCancelControls">
+  <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+    <a data-confirm class="btn-floating btn-large green">
+      <i class="mdi-action-done"></i>
+    </a>
+  </div>
+  {{#if cancelCondition}}
+    <div class="fixed-action-btn" style="bottom: 110px; right: 33px;">
+      <a data-cancel class="btn-floating red">
+        <i class="mdi-content-clear"></i>
+      </a>
+    </div>
+  {{/if}}
+</template>
