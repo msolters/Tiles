@@ -10,7 +10,7 @@
           {{#if verify currentUser}}
             <li>
               <a data-change-url>
-                  <i class="mdi-action-language left"> Change URL</i>
+                <i class="mdi-action-language left"> Change URL</i>
               </a>
             </li>
           {{/if}}
@@ -91,21 +91,5 @@
         {{/if}}
       {{/if}}
     {{/if}}
-  {{/rightMenu}}
-</template>
-
-<template name="editTileMenu">
-  {{#rightMenu }}
-    <li class="menu-divider"></li>
-    <li>
-      <a data-cancel-edit>
-        <i class="mdi-content-clear left"> Cancel</i>
-      </a>
-    </li>
-    <li>
-      <a data-save-edit>
-        <i class="mdi-action-done left"> Save Tile</i>
-      </a>
-    </li>
   {{/rightMenu}}
 </template>

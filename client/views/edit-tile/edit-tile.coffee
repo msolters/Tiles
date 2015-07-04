@@ -1,5 +1,5 @@
 #
-#   Template.tileEdit
+#   Template.editTile
 #
 Template.editTile.helpers
   'tile': ->
@@ -10,9 +10,52 @@ Template.editTile.helpers
       return true
     return false
 
-#
-#   Template.tileEditModal
-#
+
+###
+#   Template.editTileControls
+###
+Template.editTileControls.events
+  'click a[data-cancel-edit]': ->
+    FlowRouter.go "/#{Meteor.user().profile.public_url}"
+  'click a[data-save-edit]': ->
+    _tile = Session.get "currentlyEditing"
+    _tile.category = $("input#tile-category").focusout().val()
+    _errors = []
+    if !nonEmptyString _tile.title
+      _errors.push "Please enter a valid title for this Tile!"
+    if !nonEmptyString _tile.category
+      _errors.push "Please enter a valid category for this Tile!"
+    if _errors.length > 0
+      #@hideLoading()
+      for error in _errors
+        toast error, 4500, "danger"
+      return
+    else
+      # Set _id (this depends on if it's a new or pre-existing tile)
+      if _tile._id?
+        _id = _tile._id
+        delete _tile['_id']
+      else
+        _id = null
+
+      # Convert preview and body content from HTML -> Text, for keyword searching:
+      $("body").append("<div id='render-html'>#{_tile.content} #{_tile.preview}</div>")
+      searchableContent = $("#render-html").text()
+      $("#render-html").remove()
+
+      _tile.searchableContent = searchableContent
+      Meteor.call "saveTile", _tile, _id, (error, response) ->
+        if error
+          toast "Error saving tile: #{error}", 6000, "danger"
+        else
+          toast "Tile saved successfully!", 4000, "success"
+          FlowRouter.go "/#{Meteor.user().profile.public_url}"
+
+
+
+###
+#   Template.tileEditForm
+###
 Template.tileEditForm.rendered = ->
   Meteor.typeahead.inject() # configure category autocomplete
   $("textarea").keydown()

@@ -62,7 +62,7 @@ FlowRouter.route '/edit/:tile_id',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'editTile'
-      rightMenu: 'editTileMenu'
+      rightMenu: 'rightMenu'
       navbar: 'editTileNavbar'
 
 ###
