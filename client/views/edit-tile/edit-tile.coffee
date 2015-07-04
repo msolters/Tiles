@@ -1,11 +1,43 @@
 ###
 #   Template.editTile
 ###
+Template.editTile.created = ->
+  #
+  # (1) Construct a Reactive Map object to store
+  #     information about the tile being edited:
+  #
+  @tileMap = new ReactiveMap()
+
+  #
+  # (2) If this is a pre-existing tile, pre-populate the
+  #     Reactive Map above with the data from the
+  #     database record for it.
+  #
+  tile_id = FlowRouter.getParam 'tile_id'
+  if tile_id isnt 'new'
+    @autorun =>
+      _tile = Tiles.findOne(
+        _id: tile_id
+      )
+      @tileMap.set _tile
+
+  #
+  # (?) Tile edit is not available to 2 subsets of users:
+  #       1. Users not logged in at all
+  #       2. Users who don't own the tile referenced in the URL
+  #     For these users, we render a 'notFound' template.
+  #
+  @autorun =>
+    ifLoggedOut ->
+      FlowLayout.render 'notFound'
+
 Template.editTile.helpers
-  'tile': ->
-    Session.get "currentlyEditing"
-  'minimumTile': ->
-    _tile = Session.get "currentlyEditing"
+  tile: ->
+    Template.instance().tileMap.all()
+  tileMap: ->
+    Template.instance().tileMap
+  minimumTile: ->
+    _tile = Template.instance().tileMap.all()
     if nonEmptyString(_tile.title) is true or nonEmptyString(_tile.content) is true or nonEmptyString(_tile.preview) is true or _tile.dates?
       return true
     return false
@@ -13,9 +45,9 @@ Template.editTile.helpers
 Template.editTile.events
   'click a[data-cancel]': ->
     FlowRouter.go "/#{Meteor.user().profile.public_url}"
-  'click a[data-confirm]': ->
-    _tile = Session.get "currentlyEditing"
-    _tile.category = $("input#tile-category").focusout().val()
+  'click a[data-confirm]': (event, template) ->
+    _tile = template.tileMap.all()
+    #_tile.category = $("input#tile-category").focusout().val() # focusout is necessary to force autocomplete (if active) to finish
     _errors = []
     if !nonEmptyString _tile.title
       _errors.push "Please enter a valid title for this Tile!"
@@ -63,60 +95,107 @@ Template.tileEditForm.helpers
     return cats
 
 Template.tileEditForm.events
+  ###
+  #   Event callbacks to update the Reactive Map object
+  #   storing the data about the tile we are currently editing.
+  ###
   'input input#tile-title': (event, template) ->
-    _tile = Session.get "currentlyEditing"
-    _tile.title = event.target.value
-    Session.set "currentlyEditing", _tile
-  'input input#tile-category': (event, template) ->
-    _tile = Session.get "currentlyEditing"
-    _tile.category = event.target.value
-    color=Session.get("colours")[_tile.category]
+    #
+    # (1) Update the tileMap with the title the user just
+    #     entered from the text input.
+    #
+    template.data.tileMap.set
+      title: event.target.value
+  'input input#tile-category, keydown input#tile-category': (event, template) ->
+    #
+    # (1) Determine the colour corresponding to the category
+    #     the user just entered from the text input.
+    #
+    _category = event.target.value
+    #color=Session.get("colours")[_category]
     if color?
-      _tile.color = color
+      _color = color
     else
-      _tile.color = "#000000"
-    Session.set "currentlyEditing", _tile
-  'keydown input#tile-category': (event, template) ->
-    color=Session.get("colours")[event.target.value]
-    _tile = Session.get "currentlyEditing"
-    if color?
-      _tile.color = color
-    else
-      _tile.color = "#000000"
-    Session.set "currentlyEditing", _tile
+      _color = "#000000"
+    #
+    # (2) Update the tileMap with the category and colour
+    #     based on the data above.
+    #
+    template.data.tileMap.set
+      category: _category
+      color: _color
   'input input#date-one': (event, template) ->
-    _tile = Session.get "currentlyEditing"
-    _tile.dates = {} if !_tile.dates?
+    #
+    # (1) Create a _dates object representing the dates
+    #     the user has entered, if any.
+    #
+    tileMap = template.data.tileMap
+    _dates = tileMap.get 'dates'
+    _dates = {} if !_dates?
     dateVal = event.target.value
     if dateVal.length > 0
-      _tile.dates.dateOne = new Date dateVal
+      _dates.dateOne = new Date dateVal
     else
       if _tile.dates.dateTwo?
-        delete _tile.dates['dateOne']
+        delete _dates['dateOne']
       else
-      delete _tile['dates']
-    Session.set "currentlyEditing", _tile
+        _dates = undefined
+    #
+    # (2) Update the tileMap with this new _dates data.
+    #     If _dates is undefined, we delete the key 'dates'
+    #     from the tileMap.  Otherwise, we set it to its new
+    #     value.
+    #
+    if _dates?
+      tileMap.set
+        dates: _dates
+    else
+      tileMap.delete 'dates'
   'input input#date-two': (event, template) ->
-    _tile = Session.get "currentlyEditing"
-    _tile.dates = {} if !_tile.dates?
+    #
+    # (1) Create a _dates object representing the dates
+    #     the user has entered, if any.
+    #
+    tileMap = template.data.tileMap
+    _dates = tileMap.get 'dates'
+    _dates = {} if !_dates?
     dateVal = event.target.value
     if dateVal.length > 0
-      _tile.dates.dateTwo = new Date dateVal
+      _dates.dateTwo = new Date dateVal
     else
-      if !_tile.dates.dateOne?
-        delete _tile.dates['dateTwo']
+      if _tile.dates.dateOne?
+        delete _dates['dateTwo']
       else
-        delete _tile['dates']
-    Session.set "currentlyEditing", _tile
+        _dates = undefined
+    #
+    # (2) Update the tileMap with this new _dates data.
+    #     If _dates is undefined, we delete the key 'dates'
+    #     from the tileMap.  Otherwise, we set it to its new
+    #     value.
+    #
+    if _dates?
+      tileMap.set
+        dates: _dates
+    else
+      tileMap.delete 'dates'
   'input textarea#tile-preview': (event, template) ->
-    _tile = Session.get "currentlyEditing"
-    _tile.preview = event.target.value
-    Session.set "currentlyEditing", _tile
+    #
+    # (1) Update the tileMap with the tile preview content
+    #     the user just entered from the text input.
+    #
+    template.data.tileMap.set
+      preview: event.target.value
   'input textarea#tile-content': (event, template) ->
-    _tile = Session.get "currentlyEditing"
-    _tile.content = event.target.value
-    Session.set "currentlyEditing", _tile
-
+    #
+    # (1) Update the tileMap with the tile content
+    #     the user just entered from the text input.
+    #
+    template.data.tileMap.set
+      content: event.target.value
+  ###
+  #   Event callbacks to handle autocomplete field for
+  #   Tile categories.
+  ###
   'focus .twitter-typeahead input': (event, template) ->
     input_field = $(event.currentTarget).parent().parent()
     input_field.find("i").addClass "active"

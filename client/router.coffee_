@@ -10,6 +10,7 @@ routerBeforeHooks =
       @next()
 
 Router.map ->
+###
   @route 'Home',
     path: '/'
     action: ->
@@ -23,7 +24,7 @@ Router.map ->
           @redirect "/#{Meteor.user().profile.public_url}"
         else
           Router.go "/setup"
-###
+
   @route 'Register',
     path: '/register'
     template: 'register'
@@ -39,7 +40,6 @@ Router.map ->
         to: 'rightMenu'
       'setupNavbar':
         to: 'navbar'
-###
   @route 'Edit Tile',
     path: '/edit/:tile_id'
     template: 'editTile'
@@ -62,6 +62,7 @@ Router.map ->
           _id: @params.tile_id
         )
       Session.set "currentlyEditing", _tile
+###
 
 
   @route 'Render User',
@@ -151,7 +152,7 @@ Router.map ->
             tile_ids: categories[ordered_title].tile_ids
             color: colour
       ###
-      
+
       #console.log 'Server delivers data:'
       #console.log category_list
       #console.log tiles

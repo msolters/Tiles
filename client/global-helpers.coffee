@@ -58,7 +58,7 @@ Template.registerHelper 'formatTileDates', (dates) ->
 ###
 Template.registerHelper 'formatInputDate', (date) ->
   return null if !date?
-  moment(date).format('YYYY-MM-D')
+  moment.utc(date).format('YYYY-MM-DD')
 
 ###
 #   If the input value is non-empty, returns the string 'active.'
