@@ -22,8 +22,6 @@ FlowRouter.route '/register',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'register'
-      rightMenu: null
-      navbar: null
 
 ###
 #     Login
@@ -34,8 +32,6 @@ FlowRouter.route '/login',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'login'
-      rightMenu: null
-      navbar: null
 
 
 ###
@@ -48,8 +44,6 @@ FlowRouter.route '/setup',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'establishURL'
-      rightMenu: 'rightMenu'
-      navbar: 'setupNavbar'
 
 ###
 #     Edit Tile
@@ -62,8 +56,6 @@ FlowRouter.route '/edit/:tile_id',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'editTile'
-      rightMenu: 'rightMenu'
-      navbar: 'editTileNavbar'
 
 ###
 #     Show Icons (Development Only)
@@ -85,8 +77,6 @@ FlowRouter.route '/:publicURL',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'allTiles'
-      rightMenu: 'manageTilesMenu'
-      navbar: 'renderUserNavbar'
 
 
 ###

@@ -1,4 +1,5 @@
 <template name="allTiles">
+  {{> renderUserNavbar searchVar=searchVar }}
   <div id="tile-scroller">
     <div id="tile-container" class="flex-column">
       {{> categories sortedCategories=sortedCategories sortedTiles=sortedTiles }}

@@ -2,8 +2,6 @@
 #   Template.navbar
 #
 Template.navbar.events
-  'click a[data-sidebar]': ->
-    $('#right-menu').sidebar 'show'
   'input input#user-profile-name': (event, template) ->
     clearTimeout template.nameTimer if template.nameTimer?
     _profile_name = event.currentTarget.value
@@ -15,7 +13,7 @@ Template.navbar.events
     , 200
   'input input#tile-search': (event, template) ->
     _search = event.currentTarget.value
-    Session.set "search", _search
+    template.data.searchVar.set _search
     icon = $(event.currentTarget).parent().find 'i'
     if _search.length > 0
       icon.removeClass "mdi-action-search"
@@ -28,4 +26,4 @@ Template.navbar.events
     icon = $(event.currentTarget).parent().find 'i'
     icon.addClass "mdi-action-search"
     icon.removeClass "mdi-content-clear pointer"
-    Session.set "search", null
+    template.data.searchVar.set null

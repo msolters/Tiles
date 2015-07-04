@@ -71,7 +71,7 @@ Template.allTiles.created = ->
       _tiles = Tiles.find( tiles_q, _sort )
     else
       if _search.length > 0
-        console.log "Conducting search on #{Session.get("search")}"
+        console.log "Conducting search on #{_search}"
         _tiles = Tiles.searchByKeyword
           selector: tiles_q
           fields: [ "title", "searchableContent", "category" ]
@@ -91,6 +91,7 @@ Template.allTiles.created = ->
     tiles = {}
     _tiles = @tiles.get()
     colours = @colours.get()
+    return unless _tiles?
     for tile in _tiles.fetch()
       category = tile.category
       tile.color = @colours[category]
@@ -156,6 +157,10 @@ Template.allTiles.helpers
     Template.instance().sortedCategories.get()
   sortedTiles: ->
     Template.instance().sortedTiles.get()
+  searchVar: ->
+    # This is not the value of the ReactiveVar `search`,
+    # it is a reference to the variable itself.
+    Template.instance().search
 
 
 ###
