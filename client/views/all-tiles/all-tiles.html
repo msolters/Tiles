@@ -20,7 +20,6 @@
       {{> category category=this tiles=../sortedTiles}}
     {{/each}}
   {{/if}}
-  <div id="tile-container-inner"></div>
 </template>
 
 <template name="category">
@@ -28,7 +27,7 @@
     <div class="category-title-text">{{category.title}}</div>
   </div>
   {{#each tiles}}
-    {{> tileSmall color=../color tile=this}}
+    {{> tileSmall color=../category.color tile=this}}
   {{/each}}
 </template>
 

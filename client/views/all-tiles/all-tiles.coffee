@@ -94,7 +94,7 @@ Template.allTiles.created = ->
     return unless _tiles?
     for tile in _tiles.fetch()
       category = tile.category
-      tile.color = @colours[category]
+      tile.color = colours[category]
       tiles[tile._id] = tile
       if !categories[category]?
         categories[category] =
@@ -118,7 +118,6 @@ Template.allTiles.rendered = ->
   Session.set "tileSortableDisabled", true
   Session.set "categorySortableDisabled", true
   Session.set "currentlyEditing", null
-  Session.set "search", null
   ###
   #$('.toast').remove()
 
@@ -133,22 +132,8 @@ Template.allTiles.rendered = ->
   if @data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
     console.log "Setting currentlyViewing: #{data.show_tile_id}"
     Session.set "currentlyViewing", @data.show_tile_id
-
-  @autorun =>
-    renderTrigger.depend()
-    data=Template.currentData()
-    _inner = $("#tile-container-inner")[0]
-    Blaze.remove Blaze.getView _inner if _inner?
-    if Session.get("tiles")?
-      if Session.get("search")?
-        if Session.get("search").length > 0
-          if (t for t,tile of Session.get("tiles")).length is 0
-            Blaze.renderWithData Template.noResults, data, @find("#tile-container")
-            return
-      Blaze.renderWithData Template.categories, data, @find("#tile-container")
   ###
-
-    #toast "The URL you're looking for no longer exists!", 5000, "danger"
+  #toast "The URL you're looking for no longer exists!", 5000, "danger"
 
 
 Template.allTiles.helpers
