@@ -3,26 +3,7 @@
 ###
 Template.editTile.created = ->
   #
-  # (1) Construct a Reactive Map object to store
-  #     information about the tile being edited:
-  #
-  @tileMap = new ReactiveMap()
-
-  #
-  # (2) If this is a pre-existing tile, pre-populate the
-  #     Reactive Map above with the data from the
-  #     database record for it.
-  #
-  tile_id = FlowRouter.getParam 'tile_id'
-  if tile_id isnt 'new'
-    @autorun =>
-      _tile = Tiles.findOne(
-        _id: tile_id
-      )
-      @tileMap.set _tile
-
-  #
-  # (?) Tile edit is not available to 2 subsets of users:
+  # (1) Tile edit is not available to 2 subsets of users:
   #       1. Users not logged in at all
   #       2. Users who don't own the tile referenced in the URL
   #     For these users, we render a 'notFound' template.
@@ -30,6 +11,27 @@ Template.editTile.created = ->
   @autorun =>
     ifLoggedOut ->
       FlowLayout.render 'notFound'
+
+  #
+  # (2) Construct a Reactive Map object to store
+  #     information about the tile being edited:
+  #
+  @tileMap = new ReactiveMap()
+
+  #
+  # (3) If this is a pre-existing tile, pre-populate the
+  #     Reactive Map above with the data from the
+  #     database record for it.
+  #
+  @autorun =>
+    tile_id = FlowRouter.getParam 'tile_id'
+    if tile_id isnt 'new'
+      _tile = Tiles.findOne(
+        _id: tile_id
+      )
+      @tileMap.set _tile
+      FlowLayout.render "notFound" if Meteor.userId() isnt _tile.owner
+
 
 Template.editTile.helpers
   tile: ->
