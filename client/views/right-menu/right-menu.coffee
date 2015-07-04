@@ -91,9 +91,6 @@ Template.manageTilesMenu.helpers
       return false
 
 Template.manageTilesMenu.events
-  'click a.add-new-tile': ->
-    $('#right-menu').sidebar 'hide'
-    FlowRouter.go '/edit/new'
   'click a[data-cancel-sort-tiles]': (event, template) ->
     $('#right-menu').sidebar 'hide'
     toast "Reverting...", 2500, "info"

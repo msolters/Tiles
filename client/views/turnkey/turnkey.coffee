@@ -67,8 +67,10 @@ Template.login.created = ->
   @autorun ->  # kicks non-logged in users out
     ifLoggedIn ->
       if Meteor.user().profile.public_url?
+        # If the logged-in user has setup a URL, take them there:
         FlowRouter.go "/#{Meteor.user().profile.public_url}"
       else
+        # If the logged-in user has no URL, take them to the setup page:
         FlowRouter.go "/setup"
 
 #

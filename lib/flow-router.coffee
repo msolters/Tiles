@@ -76,6 +76,6 @@ FlowRouter.route '/:publicURL',
     @register 'Users', Meteor.subscribe 'Users'
   action: (params) ->
     FlowLayout.render 'app',
-      main: null
+      main: 'allTiles'
       rightMenu: 'manageTilesMenu'
       navbar: 'renderUserNavbar'

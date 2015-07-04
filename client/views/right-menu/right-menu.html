@@ -44,13 +44,6 @@
   {{#rightMenu }}
     {{#if verify currentUser}}
       <li class="menu-divider"></li>
-      {{#unless tileSortActive}}
-        {{#unless categorySortActive}}
-          <li>
-            <a class="add-new-tile"><i class="mdi-content-add-box left"> New Tile</i></a>
-          </li>
-        {{/unless}}
-      {{/unless}}
       {{#if categories}}
         {{#if tileSortable}}
           {{#unless categorySortActive}}

@@ -4,7 +4,9 @@
 Template.allTiles.created = ->
   @publicURL = FlowRouter.getParam 'publicURL'
 
+  #
   # (1) Find the user whose publicURL this is:
+  #
   user_q =
     "profile.public_url": @publicURL
   user_filter =
@@ -15,7 +17,9 @@ Template.allTiles.created = ->
     # If there is no user with this URL, present the "Not Found" page:
     FlowLayout.render 'notFound'
 
+  #
   # (2) Map Categories to Colours:
+  #
   cat_q =
     owner: user._id
   cat_filter =
@@ -31,10 +35,12 @@ Template.allTiles.created = ->
     hue += delta_hue
 
   # (3) Did the user specify a specific Tile hash?
-  if @params.hash
-    context[ 'show_tile_id' ] = @params.hash
+  #if @params.hash
+  #  context[ 'show_tile_id' ] = @params.hash
 
+  #
   # (4) Construct a category_list data object:
+  #
   categories = {}
   tiles = {}
   _q =
