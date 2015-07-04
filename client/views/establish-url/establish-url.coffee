@@ -1,6 +1,11 @@
 ###
 #   Template.establishURL
 ###
+Template.establishURL.created = ->
+  @autorun =>
+    ifLoggedOut ->
+      FlowRouter.go '/'
+
 Template.establishURL.rendered = ->
   $("input#user-url").focus()
 
