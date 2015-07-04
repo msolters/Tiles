@@ -34,10 +34,10 @@
 <template name="allTilesControls">
   <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
     {{#if currentUser}}
-      <a class="btn-floating btn-large blue z-depth-2"  data-tooltip-direction="w" data-tooltip="Menu">
+      <a data-toggle-menu class="btn-floating btn-large blue z-depth-2"  data-tooltip-direction="w" data-tooltip="Menu">
         <i class="mdi-navigation-menu"></i>
       </a>
-      <ul>
+      <ul class="closed">
         <li>
           <a data-logout class="btn-floating green darken-1" data-tooltip-direction="w" data-tooltip="Sign Out">
             <i class="mdi-action-exit-to-app"></i>

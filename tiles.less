@@ -51,6 +51,17 @@ html {
 .fixed-action-btn ul {
   bottom: 45px !important;
 }
+ul.open > li > .btn-floating {
+  transform: scaleY(1) scaleX(1) translateY(0px) !important;
+  opacity: 1 !important;
+}
+ul.closed {
+  pointer-events: none;
+}
+ul.closed > li > .btn-floating {
+  transform: scaleY(0.4) scaleX(0.4) translateY(40px) !important;
+  opacity: 0 !important;
+}
 .tooltip {
   z-index: 10;
 }

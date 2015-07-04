@@ -9,7 +9,9 @@
     </div>
 
     {{#if currentUser}}
-
+      {{#if verify currentUser }}
+        {{> deleteTileConfirmation }}
+      {{/if}}
     {{else}}
       {{> loginModal }}
     {{/if}}

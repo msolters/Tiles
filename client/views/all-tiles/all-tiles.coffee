@@ -179,3 +179,7 @@ Template.allTilesControls.events
     Meteor.logout()
     $('.toast').remove()
     toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
+  'click a[data-toggle-menu]': (event, template) ->
+    actionList = $ template.find("ul")
+    actionList.toggleClass "open"
+    actionList.toggleClass "closed"
