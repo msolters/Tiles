@@ -122,6 +122,7 @@ Template.registerHelper 'categories', ->
 #   With no argument, returns the "currently viewing" tile.
 #   Otherwise, returns the tile with that _id.
 ###
+###
 Template.registerHelper 'getTile', (_id=null) ->
   return true if _id is "new"
   tiles = Session.get "tiles"
@@ -137,6 +138,7 @@ Template.registerHelper 'getTile', (_id=null) ->
   #  $("#tile-view-modal").closeModal()
   console.log "No tile found." if _id?
   return false
+###
 
 Template.registerHelper 'searchQuery', ->
   Session.get 'search'

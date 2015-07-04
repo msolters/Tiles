@@ -7,7 +7,7 @@ Template.editTile.created = ->
   #       1. Users not logged in at all
   #       2. Users who don't own the tile referenced in the URL
   #     For these users, we render a 'notFound' template.
-  #
+  #     We handle case 1 in the following autorun block:
   @autorun =>
     ifLoggedOut ->
       FlowLayout.render 'notFound'
@@ -29,8 +29,13 @@ Template.editTile.created = ->
       _tile = Tiles.findOne(
         _id: tile_id
       )
-      @tileMap.set _tile
-      FlowLayout.render "notFound" if Meteor.userId() isnt _tile.owner
+      if Meteor.userId() is _tile.owner
+        # The current user does own this tile; let us proceed.
+        @tileMap.set _tile
+      else
+        # Here we handle case 2 from step (1) above, users viewing a tile
+        # edit dialog but who do not own the tile:
+        FlowLayout.render 'notFound'
 
 
 Template.editTile.helpers

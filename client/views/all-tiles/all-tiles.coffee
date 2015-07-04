@@ -1,90 +1,124 @@
-#
+###
 #   Template.allTiles
-#
+###
 Template.allTiles.created = ->
-  @publicURL = FlowRouter.getParam 'publicURL'
+  #
+  # (1) Create a ReactiveVar containing the current URL:
+  #
+  @publicURL = new ReactiveVar 0
+  @autorun =>
+    @publicURL.set FlowRouter.getParam 'publicURL'
 
   #
-  # (1) Find the user whose publicURL this is:
+  # (1) Find the user whose page we're currently viewing:
   #
-  user_q =
-    "profile.public_url": @publicURL
-  user_filter =
-    fields:
-      profile: 1
-  user = Meteor.users.findOne( user_q, user_filter )
-  if !user?
-    # If there is no user with this URL, present the "Not Found" page:
-    FlowLayout.render 'notFound'
+  @user = new ReactiveVar 0
+  @autorun =>
+    user_q =
+      "profile.public_url": @publicURL.get()
+    user_filter =
+      fields:
+        profile: 1
+    user = Meteor.users.findOne( user_q, user_filter )
+    if !user?
+      # If there is no user with this URL, present the "Not Found" page:
+      FlowLayout.render 'notFound'
+    else
+      @user.set user
 
   #
-  # (2) Map Categories to Colours:
+  # (2) Create Reactive Categories data structure:
   #
-  cat_q =
-    owner: user._id
-  cat_filter =
-    sort:
-      pos: 1
-  _cats = Categories.find( cat_q, cat_filter ).fetch()
-  delta_hue = 360/_cats.length
-  hue = 0
-  colours = {}
-  for cat in _cats
-    colour = "hsl(#{hue}, 65%, 50%)"
-    colours[ cat.title ] = colour
-    hue += delta_hue
+  @categories = new ReactiveVar 0
+  @autorun =>
+    cat_q =
+      owner: @user.get()._id
+    cat_filter =
+      sort:
+        pos: 1
+    @categories.set Categories.find( cat_q, cat_filter ).fetch()
+
+  #
+  # (3) Reactively map Categories to Colours:
+  #
+  @colours = new ReactiveVar 0
+  @autorun =>
+    _cats = @categories.get()
+    delta_hue = 360/_cats.length
+    hue = 0
+    colours = {}
+    for cat in _cats
+      colour = "hsl(#{hue}, 65%, 50%)"
+      colours[ cat.title ] = colour
+      hue += delta_hue
+    @colours.set colours
 
   # (3) Did the user specify a specific Tile hash?
   #if @params.hash
   #  context[ 'show_tile_id' ] = @params.hash
 
   #
-  # (4) Construct a category_list data object:
+  # (4) Create Reactive Tiles data structure:
   #
-  categories = {}
-  tiles = {}
-  _q =
-    owner: user._id
-  if !Session.get("search")?
-    console.log "Retrieving ALL tiles..."
-    _tiles = Tiles.find(_q, _sort)
-  else
-    if Session.get("search").length > 0
-      console.log "Conducting search on #{Session.get("search")}"
-      _tiles = Tiles.searchByKeyword
-        selector: _q
-        fields: ["title", "searchableContent", "category"]
-        keywords: Session.get("search")
+  @search = new ReactiveVar 0 # search query
+  @tiles = new ReactiveVar 0  # array of Tiles matching query and URL
+  @autorun =>
+    _search = @search.get()
+    tiles_q =
+      owner: @user.get()._id
+    if !_search?
+      console.log "Retrieving all tiles..."
+      _tiles = Tiles.find( tiles_q, _sort )
     else
-      console.log "Retrieving ALL tiles..."
-      _tiles = Tiles.find(_q, _sort)
-  return unless _tiles?
-  for tile in _tiles.fetch()
-    category = tile.category
-    tile.color = colours[category]
-    tiles[tile._id] = tile
-    if !categories[category]?
-      categories[category] =
-        tile_ids: [ tile._id ]
-    else
-      categories[category].tile_ids.push tile._id
+      if _search.length > 0
+        console.log "Conducting search on #{Session.get("search")}"
+        _tiles = Tiles.searchByKeyword
+          selector: tiles_q
+          fields: [ "title", "searchableContent", "category" ]
+          keywords: _search
+      else
+        console.log "Retrieving all tiles..."
+        _tiles = Tiles.find( tiles_q, _sort )
+    @tiles.set _tiles
 
-  category_list = []
-  for ordered_title, colour of colours
-    if categories[ordered_title]?
-      category_list.push
-        title: ordered_title
-        tile_ids: categories[ordered_title].tile_ids
-        color: colour
+  #
+  # (5) Create a Reactive sortedTiles data structure:
+  #
+  @sortedCategories = new ReactiveVar 0
+  @sortedTiles = new ReactiveVar 0
+  @autorun =>
+    categories = {}
+    tiles = {}
+    _tiles = @tiles.get()
+    colours = @colours.get()
+    for tile in _tiles.fetch()
+      category = tile.category
+      tile.color = @colours[category]
+      tiles[tile._id] = tile
+      if !categories[category]?
+        categories[category] =
+          tile_ids: [ tile._id ]
+      else
+        categories[category].tile_ids.push tile._id
 
-
+    category_list = []
+    for ordered_title, colour of colours
+      if categories[ordered_title]?
+        category_list.push
+          title: ordered_title
+          tile_ids: categories[ordered_title].tile_ids
+          color: colour
+    @sortedCategories.set category_list
+    @sortedTiles.set tiles
 
 
 Template.allTiles.rendered = ->
+  ###
   Session.set "tileSortableDisabled", true
   Session.set "categorySortableDisabled", true
   Session.set "currentlyEditing", null
   Session.set "search", null
+  ###
   #$('.toast').remove()
 
   # Trigger search field on key down:
@@ -94,10 +128,8 @@ Template.allTiles.rendered = ->
     $("#right-menu").sidebar 'hide'
     $("input#tile-search").focus()
 
-  document.title = @data.renderedUser.profile.name # set the page title to be the user's name
-
-  @data.categories = Session.get "categories"
-
+  document.title = @user.get().profile.name # set the page title to be the user's name
+  ###
   if @data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
     console.log "Setting currentlyViewing: #{data.show_tile_id}"
     Session.set "currentlyViewing", @data.show_tile_id
@@ -114,18 +146,32 @@ Template.allTiles.rendered = ->
             Blaze.renderWithData Template.noResults, data, @find("#tile-container")
             return
       Blaze.renderWithData Template.categories, data, @find("#tile-container")
-
-
+  ###
 
     #toast "The URL you're looking for no longer exists!", 5000, "danger"
 
 
-#
+Template.allTiles.helpers
+  sortedCategories: ->
+    Template.instance().sortedCategories.get()
+  sortedTiles: ->
+    Template.instance().sortedTiles.get()
+
+
+###
 #   Template.categories
-#
+###
 Template.categories.helpers
-  'emptyTiles': ->
-    if (cat for cat of Session.get("colours")).length is 0
+  emptyTiles: ->
+    if (t for t of Template.currentData().sortedTiles).length is 0
       return true
     else
       return false
+
+
+###
+#   Template.category
+###
+Template.category.helpers
+  tiles: ->
+    return (Template.currentData().tiles[ tile_id ] for tile_id in Template.currentData().category.tile_ids)

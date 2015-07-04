@@ -1,10 +1,32 @@
 <template name="allTiles">
   <div id="tile-scroller">
-    <div id="tile-container" class="flex-column"></div>
+    <div id="tile-container" class="flex-column">
+      {{> categories sortedCategories=sortedCategories sortedTiles=sortedTiles }}
+    </div>
     {{#if verify currentUser}}
       {{> allTilesControls }}
     {{/if}}
   </div>
+</template>
+
+<template name="categories">
+  {{#if emptyTiles}}
+    {{> noTiles}}
+  {{else}}
+    {{#each sortedCategories}}
+      {{> category category=this tiles=../sortedTiles}}
+    {{/each}}
+  {{/if}}
+  <div id="tile-container-inner"></div>
+</template>
+
+<template name="category">
+  <div class="category-title valign-wrapper" style="color: {{category.color}};">
+    <div class="category-title-text">{{category.title}}</div>
+  </div>
+  {{#each tiles}}
+    {{> tileSmall color=../color tile=this}}
+  {{/each}}
 </template>
 
 <template name="allTilesControls">
@@ -36,28 +58,4 @@
       This user doesn't have any Tiles yet!
     {{/if}}
   </div>
-</template>
-
-<template name="categories">
-  {{#if emptyTiles}}
-    {{> noTiles}}
-  {{else}}
-    {{#each categories}}
-      {{> category}}
-    {{/each}}
-  {{/if}}
-  <div id="tile-container-inner"></div>
-</template>
-
-<template name="category">
-  <div class="category-title valign-wrapper" style="color: {{color}};">
-    <div class="category-title-text">{{title}}</div>
-  </div>
-  {{#each tile_ids}}
-    {{#with getTile this}}
-      {{#if this}}
-        {{> tileSmall color=../../color tile=this}}
-      {{/if}}
-    {{/with}}
-  {{/each}}
 </template>
