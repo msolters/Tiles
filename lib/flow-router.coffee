@@ -87,3 +87,8 @@ FlowRouter.route '/:publicURL',
       main: 'allTiles'
       rightMenu: 'manageTilesMenu'
       navbar: 'renderUserNavbar'
+
+
+###
+#     Triggers
+###

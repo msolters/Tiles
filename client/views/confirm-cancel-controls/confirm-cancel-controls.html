@@ -1,12 +1,12 @@
 <template name="confirmCancelControls">
   <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-    <a data-confirm class="btn-floating btn-large green">
+    <a data-confirm class="btn-floating btn-large green" data-tooltip-direction="w" data-tooltip="Accept">
       <i class="mdi-action-done"></i>
     </a>
   </div>
   {{#if cancelCondition}}
     <div class="fixed-action-btn" style="bottom: 110px; right: 33px;">
-      <a data-cancel class="btn-floating red">
+      <a data-cancel class="btn-floating red" data-tooltip-direction="w" data-tooltip="Cancel">
         <i class="mdi-content-clear"></i>
       </a>
     </div>
