@@ -73,11 +73,16 @@ Template.editTile.events
       else
         _id = null
 
-      # Convert preview and body content from HTML -> Text, for keyword searching:
-      $("body").append("<div id='render-html'>#{_tile.content} #{_tile.preview}</div>")
+      # Convert _tile.preview and _tile.content from HTML to plaintext,
+      # to facilitate user keyword searching.
+      _string = ''
+      if _tile.content?
+        _string += _tile.content + ' '
+      if _tile.preview?
+        _string += _tile.preview
+      $("body").append("<div id='render-html'>#{_string}</div>")
       searchableContent = $("#render-html").text()
       $("#render-html").remove()
-
       _tile.searchableContent = searchableContent
       Meteor.call "saveTile", _tile, _id, (error, response) ->
         if error
