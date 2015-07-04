@@ -20,9 +20,11 @@ Template.registerHelper 'subsReady', (subscriptions=[]) ->
 #   visitor is a user or not.
 ###
 Template.registerHelper 'profileName', ->
-  url = FlowRouter.current().params.publicURL
+  url = FlowRouter.getParam 'publicURL'
   return false if !url? or url is 'setup'
-  db_user = Meteor.users.findOne({"profile.public_url": url})
+  db_user = Meteor.users.findOne(
+    "profile.public_url": url
+  )
   name = db_user.profile.name if db_user?
   return name if name?
   return false
@@ -102,7 +104,7 @@ Template.registerHelper 'currentlyViewing', ->
 #
 ###
 Template.registerHelper 'verify', (user) ->
-  url = FlowRouter.current().params.publicURL
+  url = FlowRouter.getParam 'publicURL'
   if Meteor.user()?
     db_url = Meteor.user().profile.public_url
     if db_url?
