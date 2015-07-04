@@ -175,3 +175,16 @@ Template.categories.helpers
 Template.category.helpers
   tiles: ->
     return (Template.currentData().tiles[ tile_id ] for tile_id in Template.currentData().category.tile_ids)
+
+
+###
+#   Template.allTilesControls
+###
+Template.allTilesControls.events
+  'click a[data-login]': ->
+    $('#login-modal').openModal()
+    $('#user-email').focus()
+  'click a[data-logout]': ->
+    Meteor.logout()
+    $('.toast').remove()
+    toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
