@@ -2,7 +2,7 @@
   {{> renderUserNavbar searchVar=searchVar }}
   <div id="tile-scroller">
     <div id="tile-container" class="flex-column">
-      {{> categories sortedCategories=sortedCategories sortedTiles=sortedTiles }}
+      {{> categories sortedCategories=sortedCategories sortedTiles=sortedTiles search=search }}
     </div>
     {{> allTilesControls }}
   </div>
@@ -10,7 +10,11 @@
 
 <template name="categories">
   {{#if emptyTiles}}
-    {{> noTiles}}
+    {{#if search}}
+      {{> noResults }}
+    {{else}}
+      {{> noTiles}}
+    {{/if}}
   {{else}}
     {{#each sortedCategories}}
       {{> category category=this tiles=../sortedTiles}}
@@ -87,7 +91,7 @@
 
 <template name="noResults">
   <div id="no-results" class="center">
-    Sorry, no results found for <span>{{searchQuery}}</span>
+    Sorry, no results found for <span>{{search}}</span>
     <div id="tile-container-inner"></div>
   </div>
 </template>

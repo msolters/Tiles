@@ -126,7 +126,6 @@ Template.allTiles.rendered = ->
   $(document).on "keydown", (event) ->
     for tagName in ["INPUT", "TEXTAREA"]
       return if event.target.tagName is tagName
-    $("#right-menu").sidebar 'hide'
     $("input#tile-search").focus()
 
   document.title = @user.get().profile.name # set the page title to be the user's name
@@ -157,6 +156,8 @@ Template.allTiles.helpers
     Template.instance().sortedCategories.get()
   sortedTiles: ->
     Template.instance().sortedTiles.get()
+  search: ->
+    Template.instance().search.get()
   searchVar: ->
     # This is not the value of the ReactiveVar `search`,
     # it is a reference to the variable itself.

@@ -139,6 +139,3 @@ Template.registerHelper 'getTile', (_id=null) ->
   console.log "No tile found." if _id?
   return false
 ###
-
-Template.registerHelper 'searchQuery', ->
-  Session.get 'search'
