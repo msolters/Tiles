@@ -171,6 +171,14 @@ Template.category.helpers
 ###
 #   Template.allTilesControls
 ###
+Template.allTilesControls.created = ->
+  @open = new ReactiveVar 0
+  @open.set false
+
+Template.allTilesControls.helpers
+  open: ->
+    return Template.instance().open.get()
+
 Template.allTilesControls.events
   'click a[data-login]': ->
     $('#login-modal').openModal()
@@ -180,6 +188,5 @@ Template.allTilesControls.events
     $('.toast').remove()
     toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
   'click a[data-toggle-menu]': (event, template) ->
-    actionList = $ template.find("ul")
-    actionList.toggleClass "open"
-    actionList.toggleClass "closed"
+    _currentState = template.open.get()
+    template.open.set !_currentState

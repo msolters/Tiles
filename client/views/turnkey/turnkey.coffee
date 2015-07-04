@@ -97,7 +97,7 @@ Template.loginForm.events
         toast "Welcome back, #{given_name}!", 7000, "success"
         if given_name is "Asshole"
           toast "Hey you should probably fill in your name (top left).", 7000, "info"
-        $(template.find('#login-modal')).closeModal()
+        $('#login-modal').closeModal()
     return false
 
 
