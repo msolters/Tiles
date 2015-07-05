@@ -140,8 +140,15 @@ Template.allTiles.rendered = ->
       return if event.target.tagName is tagName
     $("input#tile-search").focus()
 
+  #
+  # (?) Reactively update the page's title
+  #
   @autorun =>
-    document.title = @user.get().profile.name # set the page title to be the user's name
+    if @user.get()
+      _name = @user.get().profile.name
+    else
+      _name = "TilesJS"
+    document.title = _name
 
   @autorun =>
     _tileID = @tileID.get()
@@ -183,6 +190,8 @@ Template.allTiles.helpers
     # This is not the value of the ReactiveVar `search`,
     # it is a reference to the variable itself.
     Template.instance().search
+  user: ->
+    Template.instance().user.get()
 
 
 ###

@@ -1,11 +1,16 @@
 <template name="notFound">
-  <div id="notFound">
-    YOU'VE MET WITH A TERRIBLE FATE, HAVEN'T YOU?
-    <br/>
-    <br/>
-    U DUN 404'D KID
-    <br/>
-    <br/>
-    <a href="/">go home</a>
+  <div id="not-found-container" class="valign-wrapper">
+    <div class="valign">
+      <blockquote id="not-found-blockquote">
+        <h5 id="not-found-message">
+          These aren't the droids you're looking for.
+        </h5>
+        <div id="not-found-context">
+          {{> UI.contentBlock
+            context=__context__
+          }}
+        </div>
+      </blockquote>
+    </div>
   </div>
 </template>

@@ -1,10 +1,16 @@
 <template name="allTiles">
-  {{> renderUserNavbar searchVar=searchVar }}
-  <div id="tile-scroller">
-    <div id="tile-container" class="flex-column">
-      {{> categories sortedCategories=sortedCategories sortedTiles=sortedTiles search=search }}
+  {{#if user}}
+    {{> renderUserNavbar searchVar=searchVar }}
+    <div id="tile-scroller">
+      <div id="tile-container" class="flex-column">
+        {{> categories sortedCategories=sortedCategories sortedTiles=sortedTiles search=search }}
+      </div>
     </div>
-  </div>
+  {{else}}
+    {{#notFound}}
+      There's no user at this URL!
+    {{/notFound}}
+  {{/if}}
   {{> allTilesControls disableTileSort=underTwoTiles disableCategorySort=underTwoCategories }}
 </template>
 
