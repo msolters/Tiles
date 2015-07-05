@@ -1,56 +1,66 @@
 <template name="allTilesControls">
-  <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-    {{#if currentUser}}
-      <a data-toggle-menu class="btn-floating btn-large blue z-depth-2 menu-icon"  data-tooltip-direction="w" data-tooltip="Menu">
-        <i class="mdi-navigation-menu {{#if open}}open{{/if}}"></i>
-      </a>
-      <ul class="{{#if open}}open{{else}}closed{{/if}}">
-        <li>
-          <a data-logout class="btn-floating green darken-1" data-tooltip-direction="w" data-tooltip="Sign Out">
-            <i class="mdi-action-exit-to-app"></i>
-          </a>
-        </li>
-        {{#if verify currentUser}}
+  {{#if currentlySorting}}
+    {{#if currentlySortingTiles }}
+      {{> confirmTileSort sortingTiles=sortingTiles }}
+    {{/if}}
+    {{#if currentlySortingCategories }}
+      {{> confirmCategorySort sortingCategories=sortingCategories }}
+    {{/if}}
+  {{else}}
+    <!--  Generic Tile Menu  -->
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      {{#if currentUser}}
+        <a data-toggle-menu class="btn-floating btn-large blue z-depth-2 menu-icon"  data-tooltip-direction="w" data-tooltip="Menu">
+          <i class="mdi-navigation-menu {{#if open}}open{{/if}}"></i>
+        </a>
+        <ul class="{{#if open}}open{{else}}closed{{/if}}">
           <li>
-            <a class="btn-floating teal" data-tooltip-direction="w" data-tooltip="Sort Categories">
-              <i class="mdi-action-view-column"></i>
+            <a data-logout class="btn-floating green darken-1" data-tooltip-direction="w" data-tooltip="Sign Out">
+              <i class="mdi-action-exit-to-app"></i>
             </a>
           </li>
-          <li>
-            <a class="btn-floating cyan" data-tooltip-direction="w" data-tooltip="Sort Tiles">
-              <i class="mdi-action-view-module"></i>
-            </a>
-          </li>
-          <li>
-            <a href="/setup" class="btn-floating deep-orange lighten-1" data-tooltip-direction="w" data-tooltip="Change URL">
-              <i class="mdi-action-language"></i>
-            </a>
-          </li>
-          <li>
-            <a href="/edit/new" class="btn-floating red" data-tooltip-direction="w" data-tooltip="Add Tile">
-              <i class="mdi-content-create"></i>
-            </a>
-          </li>
-        {{else}}
-          {{#if currentUser.profile.public_url}}
+          {{#if verify currentUser}}
             <li>
-              <a href="/{{currentUser.profile.public_url}}" class="btn-floating red" data-tooltip-direction="w" data-tooltip="My Tiles">
-                <i class="mdi-action-home"></i>
+              <a data-category-sort class="btn-floating teal" data-tooltip-direction="w" data-tooltip="Sort Categories">
+                <i class="mdi-action-view-column"></i>
               </a>
             </li>
-          {{else}}
             <li>
-              <a href="/setup" class="btn-floating red" data-tooltip-direction="w" data-tooltip="Setup">
+              <a data-tile-sort class="btn-floating cyan" data-tooltip-direction="w" data-tooltip="Sort Tiles">
+                <i class="mdi-action-view-module"></i>
+              </a>
+            </li>
+            <li>
+              <a href="/setup" class="btn-floating deep-orange lighten-1" data-tooltip-direction="w" data-tooltip="Change URL">
                 <i class="mdi-action-language"></i>
               </a>
             </li>
+            <li>
+              <a href="/edit/new" class="btn-floating red" data-tooltip-direction="w" data-tooltip="Add Tile">
+                <i class="mdi-content-create"></i>
+              </a>
+            </li>
+          {{else}}
+            {{#if currentUser.profile.public_url}}
+              <li>
+                <a href="/{{currentUser.profile.public_url}}" class="btn-floating red" data-tooltip-direction="w" data-tooltip="My Tiles">
+                  <i class="mdi-action-home"></i>
+                </a>
+              </li>
+            {{else}}
+              <li>
+                <a href="/setup" class="btn-floating red" data-tooltip-direction="w" data-tooltip="Setup">
+                  <i class="mdi-action-language"></i>
+                </a>
+              </li>
+            {{/if}}
           {{/if}}
-        {{/if}}
-      </ul>
-    {{else}}
-      <a data-login class="btn-floating blue z-depth-2"  data-tooltip-direction="w" data-tooltip="Login">
-        <i class="mdi-communication-vpn-key"></i>
-      </a>
-    {{/if}}
-  </div>
+        </ul>
+      {{else}}
+        <a data-login class="btn-floating blue z-depth-2"  data-tooltip-direction="w" data-tooltip="Login">
+          <i class="mdi-communication-vpn-key"></i>
+        </a>
+      {{/if}}
+    </div>
+  {{/if}}
 </template>
