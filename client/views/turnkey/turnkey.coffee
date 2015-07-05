@@ -3,6 +3,14 @@
 #
 Template.register.created = ->
   @waiters = {} # used to store interval timer handles
+  @autorun ->  # kicks logged-in users to their homepage
+    ifLoggedIn ->
+      if Meteor.user().profile.public_url?
+        # If the logged-in user has setup a URL, take them there:
+        FlowRouter.redirect "/#{Meteor.user().profile.public_url}"
+      else
+        # If the logged-in user has no URL, take them to the setup page:
+        FlowRouter.redirect "/setup"
 
 Template.register.rendered = ->
   if !Meteor.user()
