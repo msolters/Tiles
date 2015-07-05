@@ -1,3 +1,7 @@
+# Only server can create a user!
+Accounts.config
+  forbidClientAccountCreation: true
+
 ###
 #   Only users with no matching e-mails in the user database can be created
 #   at this time.

@@ -1,15 +1,3 @@
-@Tiles = new Mongo.Collection 'Tiles'
-@Categories = new Mongo.Collection 'Categories'
-
-# Only server can create a user!
-Accounts.config
-  forbidClientAccountCreation: true
-
-# Create a handler for the tileEditModal.
-# Called on modal render.
-@instantiateTileEditModal = (template) =>
-  @tileEditModal = new TileEditModal template
-
 @_sort =
   sort:
     'pos': 1
