@@ -76,9 +76,6 @@ Template.login.created = ->
 #
 #   Template.loginForm
 #
-Template.loginForm.created = ->
-  console.log @
-
 Template.loginForm.events
   'submit form#login-form': (event, template) ->
     email = template.find('input#user-email').value
@@ -100,9 +97,8 @@ Template.loginForm.events
         toast "Welcome back, #{given_name}!", 7000, "success"
         if given_name is "Asshole"
           toast "Hey you should probably fill in your name (top left).", 7000, "info"
-        #$('#login-modal').closeModal()
+        MaterializeModal.close()
     return false
-
 
 #
 #     Template.socialLogin

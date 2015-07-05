@@ -137,7 +137,12 @@ Template.allTiles.rendered = ->
     if _tileID?
       MaterializeModal.message
         bodyTemplate: 'tileBig'
+        fullscreen: true
+        fixedFooter: true
+        title: null
+        message: null
         tile: @sortedTiles.get()[ _tileID ]
+        submitLabel: '<i class="mdi-action-done left"></i>Done'
         callback: (yesNo, rtn, event) =>
           FlowRouter.go "/#{@publicURL.get()}"
   ###
@@ -184,29 +189,29 @@ Template.category.helpers
 #   Template.allTilesControls
 ###
 Template.allTilesControls.created = ->
-  @open = new ReactiveVar 0
-  @open.set false
+  #@open = new ReactiveVar 0
+  #@open.set false
+  @autorun =>
+    ifLoggedIn ->
+      Session.set "menuOpen", true
 
 Template.allTilesControls.helpers
   open: ->
-    return Template.instance().open.get()
+    return Session.get "menuOpen"#Template.instance().open.get()
 
 Template.allTilesControls.events
   'click a[data-login]': ->
     #$('#login-modal').openModal()
-    MaterializeModal.form
+    MaterializeModal.custom
       title: 'Login'
       bodyTemplate: 'loginForm'
-      closeLabel: null#'<button id="cancel-tile-edit" type="button" class="btn waves-effect waves-grey modal-action modal-close grey">Cancel</button>'
-      submitLabel: null#'<button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign In</button>'
-      callback: (yesNo, rtn, event) ->
-        if yesNo
-          console.log("Form data", rtn)
+      modal: true
     $('#user-email').focus()
   'click a[data-logout]': ->
     Meteor.logout()
     $('.toast').remove()
     toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
   'click a[data-toggle-menu]': (event, template) ->
-    _currentState = template.open.get()
-    template.open.set !_currentState
+    _currentState = Session.get 'menuOpen'#template.open.get()
+    #template.open.set !_currentState
+    Session.set 'menuOpen', !_currentState

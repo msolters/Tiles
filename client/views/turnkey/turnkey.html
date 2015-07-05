@@ -53,15 +53,6 @@
   </div>
 </template>
 
-<template name="loginModal">
-  <div id="login-modal" class="modal">
-    <div class="modal-content">
-      <h4>Login</h4>
-      {{> loginForm modal=true }}
-    </div>
-  </div>
-</template>
-
 <template name="loginForm">
   <div class="turnkey-options">
     <div class="left valign-wrapper">
@@ -79,10 +70,10 @@
           <input id="user-password" type="password"/>
           <label for="user-password">Password</label>
         </div>
-        <!--<button id="save-tile-edit" type="submit" class="{{#if modal}}modal-login-button{{/if}} btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign In</button>
+        <button id="save-tile-edit" type="submit" class="{{#if modal}}modal-login-button{{/if}} btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign In</button>
         {{#if modal}}
           <button id="cancel-tile-edit" type="button" class="modal-login-button btn waves-effect waves-grey modal-action modal-close grey">Cancel</button>
-        {{/if}}-->
+        {{/if}}
       </form>
     </div>
     <div style="clear: both"></div>
