@@ -45,7 +45,7 @@ Template.register.events
           template.waiters.vanilla = Deps.autorun =>
             if Meteor.userId()?
               $(".toast").remove()
-              FlowRouter.go "/setup"
+              FlowRouter.redirect "/setup"
           return false
           ###
           toast "Nice work, bone daddy!  Can I call you #{name.split(' ')[0]}?", 15000, "success"
@@ -64,14 +64,14 @@ Template.register.events
 #   Template.login
 #
 Template.login.created = ->
-  @autorun ->  # kicks non-logged in users out
+  @autorun ->  # kicks logged-in users to their homepage
     ifLoggedIn ->
       if Meteor.user().profile.public_url?
         # If the logged-in user has setup a URL, take them there:
-        FlowRouter.go "/#{Meteor.user().profile.public_url}"
+        FlowRouter.redirect "/#{Meteor.user().profile.public_url}"
       else
         # If the logged-in user has no URL, take them to the setup page:
-        FlowRouter.go "/setup"
+        FlowRouter.redirect "/setup"
 
 #
 #   Template.loginForm
