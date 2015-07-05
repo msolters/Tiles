@@ -18,13 +18,10 @@ Template.allTiles.created = ->
   @autorun =>
     user_q =
       "profile.public_url": @publicURL.get()
-    user_filter =
-      fields:
-        profile: 1
-    user = Meteor.users.findOne( user_q, user_filter )
+    user = Meteor.users.findOne( user_q )
     if !user?
       # If there is no user with this URL, present the "Not Found" page:
-      FlowLayout.render 'notFound'
+      #FlowLayout.render 'notFound'
     else
       @user.set user
       ownership_q =
@@ -183,35 +180,3 @@ Template.categories.helpers
 Template.category.helpers
   tiles: ->
     return (Template.currentData().tiles[ tile_id ] for tile_id in Template.currentData().category.tile_ids)
-
-
-###
-#   Template.allTilesControls
-###
-Template.allTilesControls.created = ->
-  @autorun =>
-    ifLoggedIn ->
-      Meteor.setTimeout ->
-        Session.set "menuOpen", true
-      , 15
-    ifLoggedOut ->
-      Session.set "menuOpen", false
-
-Template.allTilesControls.helpers
-  open: ->
-    return Session.get "menuOpen"
-
-Template.allTilesControls.events
-  'click a[data-login]': ->
-    MaterializeModal.custom
-      title: 'Login'
-      bodyTemplate: 'loginForm'
-      modal: true
-    $('#user-email').focus()
-  'click a[data-logout]': ->
-    Meteor.logout()
-    $('.toast').remove()
-    toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
-  'click a[data-toggle-menu]': (event, template) ->
-    _currentState = Session.get 'menuOpen'
-    Session.set 'menuOpen', !_currentState

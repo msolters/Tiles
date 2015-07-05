@@ -51,6 +51,7 @@ FlowRouter.route '/setup',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'establishURL'
+      controls: 'confirmCancelControls'
 
 ###
 #     Edit Tile
@@ -65,6 +66,7 @@ FlowRouter.route '/edit/:tile_id',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'editTile'
+      controls: 'confirmCancelControls'
 
 
 ###
@@ -78,6 +80,7 @@ FlowRouter.route '/:publicURL',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'allTiles'
+      controls: 'allTilesControls'
 
 ###
 #     Render User, Tile Overlay
