@@ -27,6 +27,10 @@ Template.allTiles.created = ->
       FlowLayout.render 'notFound'
     else
       @user.set user
+      ownership_q =
+        owner: user._id
+      Meteor.subscribe 'Tiles', ownership_q
+      Meteor.subscribe 'Categories', ownership_q
 
   #
   # (2) Create Reactive Categories data structure:
@@ -119,9 +123,7 @@ Template.allTiles.rendered = ->
   ###
   Session.set "tileSortableDisabled", true
   Session.set "categorySortableDisabled", true
-  Session.set "currentlyEditing", null
   ###
-  #$('.toast').remove()
 
   # Trigger search field on key down:
   $(document).on "keydown", (event) ->

@@ -1,4 +1,13 @@
 ###
+#     Icon Directory (For Development Only)
+###
+FlowRouter.route '/icons',
+  name: 'MDI Icon Listing'
+  action: ->
+    FlowLayout.render 'icons'
+
+
+###
 #     FlowRouter mechanism for mapping URLs -> Templates
 ###
 
@@ -7,8 +16,6 @@
 ###
 FlowRouter.route '/',
   name: 'Home'
-  subscriptions: (params, qParams) ->
-    #@register "UserData", Meteor.subscribe "UserData"
   action: (params) ->
     FlowRouter.go "/login"
 
@@ -51,19 +58,14 @@ FlowRouter.route '/setup',
 FlowRouter.route '/edit/:tile_id',
   name: 'Edit Tile'
   subscriptions: (params, qParams) ->
-    @register 'Tiles', Meteor.subscribe 'Tiles'
-    @register 'Users', Meteor.subscribe 'Users'
+    @register 'Tiles', Meteor.subscribe 'Tiles',
+      _id: params.tile_id
+    @register 'Users', Meteor.subscribe 'Users',
+      _id: Meteor.userId()
   action: (params) ->
     FlowLayout.render 'app',
       main: 'editTile'
 
-###
-#     Show Icons (Development Only)
-###
-FlowRouter.route '/icons',
-  name: 'MDI Icon Listing'
-  action: ->
-    FlowLayout.render 'icons'
 
 ###
 #     Render User
@@ -71,9 +73,8 @@ FlowRouter.route '/icons',
 FlowRouter.route '/:publicURL',
   name: 'Render User'
   subscriptions: (params, qParams) ->
-    @register 'Tiles', Meteor.subscribe 'Tiles'
-    @register 'Categories', Meteor.subscribe 'Categories'
-    @register 'Users', Meteor.subscribe 'Users'
+    @register 'Users', Meteor.subscribe 'Users',
+      "profile.public_url": params.publicURL
   action: (params) ->
     FlowLayout.render 'app',
       main: 'allTiles'
@@ -84,13 +85,11 @@ FlowRouter.route '/:publicURL',
 FlowRouter.route '/:publicURL/:tileID',
   name: 'Render User'
   subscriptions: (params, qParams) ->
-    @register 'Tiles', Meteor.subscribe 'Tiles'
-    @register 'Categories', Meteor.subscribe 'Categories'
-    @register 'Users', Meteor.subscribe 'Users'
+    @register 'Users', Meteor.subscribe 'Users',
+      "profile.public_url": params.publicURL
   action: (params) ->
     FlowLayout.render 'app',
       main: 'allTiles'
-
 
 ###
 #     Triggers
