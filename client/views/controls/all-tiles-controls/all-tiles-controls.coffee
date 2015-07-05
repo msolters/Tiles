@@ -28,12 +28,8 @@ Template.allTilesControls.helpers
       return true
     else
       return false
-  sortingTiles: ->
-    return Template.instance().sortingTiles
   currentlySortingTiles: ->
     return Template.instance().sortingTiles.get()
-  sortingCategories: ->
-    return Template.instance().sortingCategories
   currentlySortingCategories: ->
     return Template.instance().sortingCategories.get()
 
@@ -74,3 +70,20 @@ Template.allTilesControls.events
     toast "Drag n' drop tiles to change their order.  Make sure to click Done to save your changes!", 3500, "success"
   'click a[data-category-sort]': (event, template) ->
     template.sortingCategories.set true
+    if !template.categorySortable? # if sortable hasn't been instantiated, instantiate it!
+      template.categorySortable = new Sortable $("#tile-container")[0],
+        group: "categorySortable"  # or { name: "...", pull: [true, false, clone], put: [true, false, array] }
+        sort: true  # sorting inside list
+        disabled: true # Disables the sortable if set to true.
+        store: null  # @see Store
+        animation: 150  # ms, animation speed moving items when sorting, `0` — without animation
+        #handle: ".tile-action-row"  # Drag handle selector within list items
+        filter: ".tile"  # Selectors that do not lead to dragging (String or Function)
+        draggable: ".category-title"  # Specifies which items inside the element should be sortable
+        ghostClass: "tile-placeholder"  # Class name for the drop placeholder
+        scroll: true # or HTMLElement
+        scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.
+        scrollSpeed: 10 # px
+    template.categorySortable.option "disabled", false
+    $('.tile').hide()
+    toast "Drag n' drop categories to change their order.  Make sure to click Done to save your changes!", 3500, "success"

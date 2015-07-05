@@ -1,3 +1,6 @@
+@resetTiles = new Deps.Dependency
+@reloadTiles = new Deps.Dependency
+
 ###
 #   Runs callback method cb if the user is not logged in.
 ###

@@ -2,6 +2,7 @@
 #   Template.allTiles
 ###
 Template.allTiles.created = ->
+
   #
   # (1) Create a ReactiveVar containing the current URL:
   #
@@ -90,6 +91,7 @@ Template.allTiles.created = ->
   @sortedCategories = new ReactiveVar 0
   @sortedTiles = new ReactiveVar 0
   @autorun =>
+    reloadTiles.depend()
     categories = {}
     tiles = {}
     _tiles = @tiles.get()
@@ -115,6 +117,11 @@ Template.allTiles.created = ->
     @sortedCategories.set category_list
     @sortedTiles.set tiles
 
+  @autorun =>
+    resetTiles.depend()
+    @sortedCategories.set null
+    @sortedTiles.set null
+    reloadTiles.changed()
 
 Template.allTiles.rendered = ->
   ###

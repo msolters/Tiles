@@ -1,10 +1,10 @@
 <template name="allTilesControls">
   {{#if currentlySorting}}
     {{#if currentlySortingTiles }}
-      {{> confirmTileSort sortingTiles=sortingTiles }}
+      {{> confirmTileSort }}
     {{/if}}
     {{#if currentlySortingCategories }}
-      {{> confirmCategorySort sortingCategories=sortingCategories }}
+      {{> confirmCategorySort }}
     {{/if}}
   {{else}}
     <!--  Generic Tile Menu  -->

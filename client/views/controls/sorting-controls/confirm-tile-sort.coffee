@@ -32,6 +32,9 @@ Template.confirmTileSort.events
             console.log pending
             if pending is 0
               toast "New arrangement committed to database successfully!", 4000, "success"
-    template.data.sortingTiles.set false
+    template.parent().tileSortable.option "disabled", true
+    template.parent().sortingTiles.set false
   'click a[data-cancel]': (event, template) ->
-    template.data.sortingTiles.set false
+    resetTiles.changed()
+    template.parent().tileSortable.option "disabled", true
+    template.parent().sortingTiles.set false
