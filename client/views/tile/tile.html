@@ -1,16 +1,18 @@
 <template name="tileSmall">
-  <div data-id="{{tile._id}}" class="card tile z-depth-2" style="border-color: {{tile.color}}; background-color: {{tile.color}};">
-    <div class="tile-content pointer">
-      <div class="tile-title">{{tile.title}}</div>
-      {{#if hasDates tile}}
-        <div class="tile-dates">
-          {{{formatTileDates tile.dates}}}
+  <div data-id="{{tile._id}}" class="card tile z-depth-1" style="border-color: {{tile.color}}; background-color: {{tile.color}};">
+    <a href="/{{publicURL}}/{{tile._id}}" class="tile-content-anchor">
+      <div class="tile-content pointer">
+        <div class="tile-title">{{tile.title}}</div>
+        {{#if hasDates tile}}
+          <div class="tile-dates">
+            {{{formatTileDates tile.dates}}}
+          </div>
+        {{/if}}
+        <div class="tile-body">
+          {{{textToHTML tile.preview}}}
         </div>
-      {{/if}}
-      <div class="tile-body">
-        {{{textToHTML tile.preview}}}
       </div>
-    </div>
+    </a>
     <div class="tile-action row">
       {{#unless preview}}
         {{#if verify currentUser}}

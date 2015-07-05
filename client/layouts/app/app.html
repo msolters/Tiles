@@ -1,20 +1,11 @@
 <template name="app">
   {{#if subsReady}}
 
-    <!-- {{> Template.dynamic template=rightMenu }} -->
-
     <div id="pusher-container" class="pusher">
-      <!-- {{> Template.dynamic template=navbar }}  -->
       {{> Template.dynamic template=main }}
     </div>
 
-    {{#if currentUser}}
-      {{#if verify currentUser }}
-        {{> deleteTileConfirmation }}
-      {{/if}}
-    {{/if}}
-
-    <!-- {{> loginModal }} -->
     {{> tooltips }}
+    
   {{/if}}
 </template>

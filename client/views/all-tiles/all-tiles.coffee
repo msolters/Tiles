@@ -135,22 +135,20 @@ Template.allTiles.rendered = ->
   @autorun =>
     _tileID = @tileID.get()
     if _tileID?
-      MaterializeModal.message
-        bodyTemplate: 'tileBig'
-        fullscreen: true
-        fixedFooter: true
-        title: null
-        message: null
-        tile: @sortedTiles.get()[ _tileID ]
-        submitLabel: '<i class="mdi-action-done left"></i>Done'
-        callback: (yesNo, rtn, event) =>
-          FlowRouter.go "/#{@publicURL.get()}"
-  ###
-  if @data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
-    console.log "Setting currentlyViewing: #{data.show_tile_id}"
-    Session.set "currentlyViewing", @data.show_tile_id
-  ###
-  #toast "The URL you're looking for no longer exists!", 5000, "danger"
+      _tile = Tiles.findOne( {_id: _tileID} )
+      if _tile?
+        _tile.color = @colours.get()[ _tile.category ]
+        MaterializeModal.close()
+        MaterializeModal.message
+          bodyTemplate: 'tileBig'
+          fullscreen: true
+          fixedFooter: true
+          title: null
+          message: null
+          tile: _tile
+          submitLabel: '<i class="mdi-action-done left"></i>Done'
+          callback: (yesNo, rtn, event) =>
+            FlowRouter.go "/#{@publicURL.get()}"
 
 
 Template.allTiles.helpers
@@ -189,19 +187,20 @@ Template.category.helpers
 #   Template.allTilesControls
 ###
 Template.allTilesControls.created = ->
-  #@open = new ReactiveVar 0
-  #@open.set false
   @autorun =>
     ifLoggedIn ->
-      Session.set "menuOpen", true
+      Meteor.setTimeout ->
+        Session.set "menuOpen", true
+      , 15
+    ifLoggedOut ->
+      Session.set "menuOpen", false
 
 Template.allTilesControls.helpers
   open: ->
-    return Session.get "menuOpen"#Template.instance().open.get()
+    return Session.get "menuOpen"
 
 Template.allTilesControls.events
   'click a[data-login]': ->
-    #$('#login-modal').openModal()
     MaterializeModal.custom
       title: 'Login'
       bodyTemplate: 'loginForm'
@@ -212,6 +211,5 @@ Template.allTilesControls.events
     $('.toast').remove()
     toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
   'click a[data-toggle-menu]': (event, template) ->
-    _currentState = Session.get 'menuOpen'#template.open.get()
-    #template.open.set !_currentState
+    _currentState = Session.get 'menuOpen'
     Session.set 'menuOpen', !_currentState
