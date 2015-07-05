@@ -22,7 +22,6 @@ service-configuration
 materialize:materialize
 mizzao:autocomplete
 sergeyt:typeahead
-lauricio:less-autoprefixer
 meteorhacks:flow-router
 meteorhacks:fast-render
 meteorhacks:flow-layout
@@ -30,3 +29,4 @@ reactive-var
 jagi:reactive-map
 lookback:tooltips
 pfafman:materialize-modal
+flemay:less-autoprefixer
