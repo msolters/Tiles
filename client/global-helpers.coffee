@@ -15,6 +15,13 @@ Template.registerHelper 'subsReady', (subscriptions=[]) ->
   return false
 
 ###
+#
+###
+Template.registerHelper 'publicURL', ->
+  FlowRouter.getParam 'publicURL'
+
+
+###
 #   Returns the user profile name of the page currently being
 #   viewed.  Note that it does not depend on if the current
 #   visitor is a user or not.

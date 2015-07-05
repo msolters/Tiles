@@ -6,8 +6,10 @@ Template.allTiles.created = ->
   # (1) Create a ReactiveVar containing the current URL:
   #
   @publicURL = new ReactiveVar 0
+  @tileID = new ReactiveVar 0
   @autorun =>
     @publicURL.set FlowRouter.getParam 'publicURL'
+    @tileID.set FlowRouter.getParam 'tileID'
 
   #
   # (1) Find the user whose page we're currently viewing:
@@ -129,6 +131,15 @@ Template.allTiles.rendered = ->
 
   @autorun =>
     document.title = @user.get().profile.name # set the page title to be the user's name
+
+  @autorun =>
+    _tileID = @tileID.get()
+    if _tileID?
+      MaterializeModal.message
+        bodyTemplate: 'tileBig'
+        tile: @sortedTiles.get()[ _tileID ]
+        callback: (yesNo, rtn, event) =>
+          FlowRouter.go "/#{@publicURL.get()}"
   ###
   if @data.show_tile_id? # if the user passed a hash, see if its a Tile and open it in the modal!
     console.log "Setting currentlyViewing: #{data.show_tile_id}"
@@ -182,7 +193,15 @@ Template.allTilesControls.helpers
 
 Template.allTilesControls.events
   'click a[data-login]': ->
-    $('#login-modal').openModal()
+    #$('#login-modal').openModal()
+    MaterializeModal.form
+      title: 'Login'
+      bodyTemplate: 'loginForm'
+      closeLabel: null#'<button id="cancel-tile-edit" type="button" class="btn waves-effect waves-grey modal-action modal-close grey">Cancel</button>'
+      submitLabel: null#'<button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign In</button>'
+      callback: (yesNo, rtn, event) ->
+        if yesNo
+          console.log("Form data", rtn)
     $('#user-email').focus()
   'click a[data-logout]': ->
     Meteor.logout()

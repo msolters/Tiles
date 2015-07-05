@@ -78,6 +78,19 @@ FlowRouter.route '/:publicURL',
     FlowLayout.render 'app',
       main: 'allTiles'
 
+###
+#     Render User, Tile Overlay
+###
+FlowRouter.route '/:publicURL/:tileID',
+  name: 'Render User'
+  subscriptions: (params, qParams) ->
+    @register 'Tiles', Meteor.subscribe 'Tiles'
+    @register 'Categories', Meteor.subscribe 'Categories'
+    @register 'Users', Meteor.subscribe 'Users'
+  action: (params) ->
+    FlowLayout.render 'app',
+      main: 'allTiles'
+
 
 ###
 #     Triggers
