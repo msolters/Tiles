@@ -159,7 +159,6 @@ Template.allTiles.rendered = ->
         MaterializeModal.close()
         MaterializeModal.message
           bodyTemplate: 'tileBig'
-          fullscreen: true
           fixedFooter: true
           title: null
           message: null
