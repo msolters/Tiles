@@ -83,7 +83,7 @@ Template.allTiles.created = ->
       else
         console.log "Retrieving all tiles..."
         _tiles = Tiles.find( tiles_q, _sort )
-    @tiles.set _tiles
+    @tiles.set _tiles.fetch()
 
   #
   # (5) Create a Reactive sortedTiles data structure:
@@ -97,7 +97,7 @@ Template.allTiles.created = ->
     _tiles = @tiles.get()
     colours = @colours.get()
     return unless _tiles?
-    for tile in _tiles.fetch()
+    for tile in _tiles
       category = tile.category
       tile.color = colours[category]
       tiles[tile._id] = tile
@@ -117,6 +117,11 @@ Template.allTiles.created = ->
     @sortedCategories.set category_list
     @sortedTiles.set tiles
 
+  #
+  # (6) Set a Reactive listener that will redraw the
+  #     categorise and tiles if the global Deps object
+  #     resetTiles is ever .changed()
+  #
   @autorun =>
     resetTiles.depend()
     @sortedCategories.set null
@@ -162,6 +167,16 @@ Template.allTiles.helpers
     Template.instance().sortedCategories.get()
   sortedTiles: ->
     Template.instance().sortedTiles.get()
+  underTwoTiles: ->
+    if Template.instance().tiles.get().length < 2
+      return true
+    else
+      return false
+  underTwoCategories: ->
+    if Template.instance().categories.get().length < 2
+      return true
+    else
+      return false
   search: ->
     Template.instance().search.get()
   searchVar: ->

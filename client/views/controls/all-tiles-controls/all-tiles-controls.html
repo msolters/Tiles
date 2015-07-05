@@ -10,46 +10,46 @@
     <!--  Generic Tile Menu  -->
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
       {{#if currentUser}}
-        <a data-toggle-menu class="btn-floating btn-large blue z-depth-2 menu-icon"  data-tooltip-direction="w" data-tooltip="Menu">
+        <a data-toggle-menu class="btn-floating blue btn-large {{#if open}}darken-1{{else}}accent-1{{/if}} z-depth-2 menu-icon"  data-tooltip-direction="w" data-tooltip="Menu">
           <i class="mdi-navigation-menu {{#if open}}open{{/if}}"></i>
         </a>
         <ul class="{{#if open}}open{{else}}closed{{/if}}">
           <li>
-            <a data-logout class="btn-floating green darken-1" data-tooltip-direction="w" data-tooltip="Sign Out">
+            <a data-logout class="btn-floating indigo z-depth-2" data-tooltip-direction="w" data-tooltip="Sign Out">
               <i class="mdi-action-exit-to-app"></i>
             </a>
           </li>
           {{#if verify currentUser}}
             <li>
-              <a data-category-sort class="btn-floating teal" data-tooltip-direction="w" data-tooltip="Sort Categories">
+              <a data-category-sort class="btn-floating teal z-depth-2 {{#if disableCategorySort}}disabled{{/if}}" data-tooltip-direction="w" data-tooltip="Sort Categories">
                 <i class="mdi-action-view-column"></i>
               </a>
             </li>
             <li>
-              <a data-tile-sort class="btn-floating cyan" data-tooltip-direction="w" data-tooltip="Sort Tiles">
+              <a data-tile-sort class="btn-floating cyan z-depth-2 {{#if disableTileSort}}disabled{{/if}}" data-tooltip-direction="w" data-tooltip="Sort Tiles">
                 <i class="mdi-action-view-module"></i>
               </a>
             </li>
             <li>
-              <a href="/setup" class="btn-floating deep-orange lighten-1" data-tooltip-direction="w" data-tooltip="Change URL">
+              <a href="/setup" class="btn-floating deep-orange lighten-1 z-depth-2" data-tooltip-direction="w" data-tooltip="Change URL">
                 <i class="mdi-action-language"></i>
               </a>
             </li>
             <li>
-              <a href="/edit/new" class="btn-floating red" data-tooltip-direction="w" data-tooltip="Add Tile">
+              <a href="/edit/new" class="btn-floating red z-depth-2" data-tooltip-direction="w" data-tooltip="Add Tile">
                 <i class="mdi-content-create"></i>
               </a>
             </li>
           {{else}}
             {{#if currentUser.profile.public_url}}
               <li>
-                <a href="/{{currentUser.profile.public_url}}" class="btn-floating red" data-tooltip-direction="w" data-tooltip="My Tiles">
+                <a href="/{{currentUser.profile.public_url}}" class="btn-floating red z-depth-2" data-tooltip-direction="w" data-tooltip="My Tiles">
                   <i class="mdi-action-home"></i>
                 </a>
               </li>
             {{else}}
               <li>
-                <a href="/setup" class="btn-floating red" data-tooltip-direction="w" data-tooltip="Setup">
+                <a href="/setup" class="btn-floating red z-depth-2" data-tooltip-direction="w" data-tooltip="Setup">
                   <i class="mdi-action-language"></i>
                 </a>
               </li>

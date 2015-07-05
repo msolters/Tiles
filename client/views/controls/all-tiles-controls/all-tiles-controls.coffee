@@ -51,6 +51,9 @@ Template.allTilesControls.events
   #   Buttons to begin the Tile & Category sorting algorithms:
   ###
   'click a[data-tile-sort]': (event, template) ->
+    if template.data.disableTileSort
+      toast "Add more Tiles to use the Tile sort feature!", 3500, "cyan"
+      return
     template.sortingTiles.set true
     if !template.tileSortable? # if sortable hasn't been instantiated, instantiate it!
       template.tileSortable = new Sortable $("#tile-container")[0],
@@ -69,6 +72,9 @@ Template.allTilesControls.events
     template.tileSortable.option "disabled", false
     toast "Drag n' drop tiles to change their order.  Make sure to click Done to save your changes!", 3500, "success"
   'click a[data-category-sort]': (event, template) ->
+    if template.data.disableCategorySort
+      toast "Add another Category to use the Category sort feature!", 3500, "teal"
+      return
     template.sortingCategories.set true
     if !template.categorySortable? # if sortable hasn't been instantiated, instantiate it!
       template.categorySortable = new Sortable $("#tile-container")[0],

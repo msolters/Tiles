@@ -53,7 +53,6 @@ Template.editTile.events
   'click a[data-cancel]': ->
     FlowRouter.go "/#{Meteor.user().profile.public_url}"
   'click a[data-confirm]': (event, template) ->
-    console.log "hi"
     _tile = template.tileMap.all()
     #_tile.category = $("input#tile-category").focusout().val() # focusout is necessary to force autocomplete (if active) to finish
     _errors = []
