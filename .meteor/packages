@@ -12,7 +12,6 @@ velocityjs:velocityjs
 chriswessels:hammer
 accounts-ui-unstyled
 accounts-base
-semantic:ui-sidebar
 momentjs:moment
 rubaxa:sortable
 simple:reactive-method
