@@ -39,8 +39,7 @@ Template.allTilesControls.events
     $('.toast').remove()
     toast "Take us out of orbit, Mr. Sulu.  Warp 1.", 3000, "success"
   'click a[data-login]': ->
-    MaterializeModal.custom
-      title: 'Login'
+    MaterializeModal.bare
       bodyTemplate: 'loginForm'
       modal: true
     $('#user-email').focus()
