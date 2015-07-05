@@ -37,7 +37,6 @@ Template.editTile.created = ->
         # edit dialog but who do not own the tile:
         FlowLayout.render 'notFound'
 
-
 Template.editTile.helpers
   tile: ->
     Template.instance().tileMap.all()

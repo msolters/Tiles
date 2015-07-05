@@ -129,11 +129,6 @@ Template.allTiles.created = ->
     reloadTiles.changed()
 
 Template.allTiles.rendered = ->
-  ###
-  Session.set "tileSortableDisabled", true
-  Session.set "categorySortableDisabled", true
-  ###
-
   # Trigger search field on key down:
   $(document).on "keydown", (event) ->
     for tagName in ["INPUT", "TEXTAREA"]

@@ -94,11 +94,7 @@ FlowRouter.route '/:publicURL/:tileID',
 ###
 #     Triggers
 ###
+
 ###
-clearTooltips = ->
-  btns = document.querySelectorAll( ".btn-floating:hover" )
-  $btns = $ btns
-  $btns.mouseleave()
-  $btns.mouseenter()
-FlowRouter.triggers.enter [ clearTooltips ]
+FlowRouter.triggers.enter [ ]
 ###

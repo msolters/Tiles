@@ -34,6 +34,8 @@ Template.allTilesControls.helpers
     return Template.instance().sortingCategories.get()
 
 Template.allTilesControls.events
+  'click a.btn-floating': (event, template) ->
+    $(event.currentTarget).mouseleave()
   'click a[data-logout]': ->
     Meteor.logout()
     $('.toast').remove()
