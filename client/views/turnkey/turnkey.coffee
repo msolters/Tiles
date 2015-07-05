@@ -114,7 +114,7 @@ Template.socialLogin.events
         toast "#{err_msg}", 4000, "danger"
         return
       else
-        $('#login-modal').closeModal() # in case this is from the login modal
+        MaterializeModal.close()
 
   'click button#google-account': (event, template) ->
     Meteor.loginWithGoogle {}, (err) ->
@@ -126,4 +126,4 @@ Template.socialLogin.events
         toast "#{err_msg}", 4000, "danger"
         return
       else
-        $('#login-modal').closeModal()  # in case this is from the login modal
+        MaterializeModal.close()
