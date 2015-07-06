@@ -18,14 +18,19 @@ Meteor.methods
   #   Check that the provided URL is not in use by another user already.:
   ###
   verifyURL: (url) ->
-    bannedURLs = ['register', 'loading', 'setup']
+    bannedURLs = ['login', 'register', 'loading', 'setup']
     for bannedURL in bannedURLs
       if bannedURL is url
         return false
-    if Meteor.users.find({"profile.public_url": url}).count() is 0
-      return true
-    else
-      return false
+    _user = Meteor.users.findOne(
+      "profile.public_url": url
+    )
+    if _user
+      if _user._id is Meteor.userId()
+        return true
+      else
+        return false
+    return true
 
   ###
   #   Create a user (the only user) who can create/edit tiles
