@@ -54,20 +54,6 @@ FlowRouter.route '/setup',
       main: 'establishURL'
 
 ###
-#     Edit Tile
-###
-FlowRouter.route '/edit/:tile_id',
-  name: 'Edit Tile'
-  subscriptions: (params, qParams) ->
-    @register 'Tiles', Meteor.subscribe 'Tiles',
-      _id: params.tile_id
-    @register 'Users', Meteor.subscribe 'Users',
-      _id: Meteor.userId()
-  action: (params) ->
-    FlowLayout.render 'app',
-      main: 'editTile'
-
-###
 #     Render User
 ###
 FlowRouter.route '/:publicURL',

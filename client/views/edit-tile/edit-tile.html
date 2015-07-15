@@ -18,32 +18,6 @@
   </div>
 </template>
 
-
-<template name="editTile">
-  {{> editTileNavbar }}
-  <div id="edit-panel">
-    <div class="left">
-      {{> tileEditForm tile=tile tileMap=tileMap}}
-    </div>
-    <div class="right">
-      {{#if minimumTile}}
-        <div id="preview-small">
-          {{> tileSmall tile=tile preview=true}}
-        </div>
-        <div id="preview-large">
-          {{> tileBig tile=tile preview=true}}
-        </div>
-      {{else}}
-        <div id="empty-preview" class="centered-container">
-          Start filling out the form to the left to see what your Tile will look like!
-        </div>
-      {{/if}}
-    </div>
-    {{> confirmCancelControls cancelCondition=1 }}
-  </div>
-</template>
-
-
 <template name="tileEditForm">
     <div class='title'>
       <div class='input-field'>

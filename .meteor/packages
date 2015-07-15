@@ -32,3 +32,7 @@ pfafman:materialize-modal
 flemay:less-autoprefixer
 summernote:standalone
 nemo64:bootstrap
+meteorhacks:npm
+
+
+npm-container
