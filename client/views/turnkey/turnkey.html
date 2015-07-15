@@ -1,11 +1,12 @@
 <template name="register">
   <div id="register-form-container" class="centered-container">
     <p>Welcome to TilesJS!  If you must burden us with your presence I suppose you ought to make an account or something.  <a href="/login">Already have an account?</a></p>
-    <div class="turnkey-options">
-      <div class="left valign-wrapper">
+    <div class="turnkey-options flex-row flex-around">
+      <div class="valign-wrapper">
         {{> socialLogin action="register" }}
       </div>
-      <div class="right">
+      <div class="vertical-divider"></div>
+      <div class="valign-wrapper">
         <form id="register-form">
           <div class="input-field">
             <i class="mdi-social-person prefix"></i>
@@ -30,7 +31,6 @@
           <button id="save-tile-edit" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Sign Up</button>
         </form>
       </div>
-      <div style="clear: both"></div>
     </div>
   </div>
 </template>
@@ -54,11 +54,12 @@
 </template>
 
 <template name="loginForm">
-  <div class="turnkey-options">
-    <div class="left valign-wrapper">
+  <div class="turnkey-options flex-row flex-around">
+    <div class="valign-wrapper">
       {{> socialLogin action="login" }}
     </div>
-    <div class="right">
+    <div class="vertical-divider"></div>
+    <div class="valign-wrapper">
       <form id="login-form">
         <div class="input-field">
           <i class="mdi-communication-email prefix"></i>
@@ -76,7 +77,6 @@
         {{/if}}
       </form>
     </div>
-    <div style="clear: both"></div>
   </div>
 </template>
 
