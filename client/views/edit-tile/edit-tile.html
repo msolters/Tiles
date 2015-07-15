@@ -1,3 +1,23 @@
+<template name="tileBigEdit">
+  <div id="big-tile-edit-pane">
+    <div class='input-field'>
+      <i class="mdi-content-create prefix"></i>
+      <input id='tile-title' type='text' class='tile-title' value="{{tile.title}}"/>
+      <label for='tile-title' class="{{activeOrNot tile.title}}">Title</label>
+    </div>
+    <div class='input-field'>
+      <i class="mdi-action-list prefix"></i>
+      <input id='tile-category' name="categoryresult" type='text' class='tile-category form-control typeahead' autocomplete="off" spellcheck="off" value="{{tile.category}}" data-source="categories"/>
+      <label for='tile-category' class="{{activeOrNot tile.category}}">Category</label>
+    </div>
+    <div id="tile-edit-content">{{{tile.content}}}</div>
+  </div>
+  <div class="modal-footer">
+    <button data-save-tile class="btn waves-effect waves-light modal-action red"><i class="mdi-content-save"></i>Save</button>
+  </div>
+</template>
+
+
 <template name="editTile">
   {{> editTileNavbar }}
   <div id="edit-panel">
@@ -22,16 +42,6 @@
   </div>
 </template>
 
-<template name="tileBigEdit">
-  <div id="big-tile-edit-pane">
-    <div class='input-field'>
-      <i class="mdi-content-create prefix"></i>
-      <input id='tile-title' type='text' class='tile-title' value="{{tile.title}}"/>
-      <label for='tile-title' class="{{activeOrNot tile.title}}">Title</label>
-    </div>
-    <div id="tile-edit-content">{{{tile.content}}}</div>
-  </div>
-</template>
 
 <template name="tileEditForm">
     <div class='title'>

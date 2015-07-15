@@ -60,7 +60,7 @@ Meteor.methods
   #   Upserts a tile specified by _id with the data in
   #   the _tile object argument.
   ###
-  saveTile: (_tile, _id=null) ->
+  saveTile: (_tile) ->
     _updateAdd =
       $set: {}
     _updateRemove =
@@ -76,12 +76,14 @@ Meteor.methods
         delete _tile.dates
 
     # (1)  insert/upsert/update Tile
-    if !_id?
+    if !_tile._id?
       _tile.owner = Meteor.userId()
       _id = Tiles.insert(
         _tile
       )
     else
+      _id = _tile._id
+      delete _tile['_id']
       _q =
         _id: _id
         owner: Meteor.userId()

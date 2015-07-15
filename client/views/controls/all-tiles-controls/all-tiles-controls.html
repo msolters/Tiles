@@ -14,20 +14,10 @@
           <i class="mdi-navigation-menu {{#if open}}open{{/if}}"></i>
         </a>
         <ul class="{{#if open}}open{{else}}closed{{/if}}">
-          <li>
-            <a data-logout class="btn-floating indigo z-depth-2" data-tooltip-direction="w" data-tooltip="Sign Out">
-              <i class="mdi-action-exit-to-app"></i>
-            </a>
-          </li>
           {{#if verify currentUser}}
             <li>
-              <a data-category-sort class="btn-floating teal z-depth-2 {{#if disableCategorySort}}disabled{{/if}}" data-tooltip-direction="w" data-tooltip="Sort Categories">
-                <i class="mdi-action-view-column"></i>
-              </a>
-            </li>
-            <li>
-              <a data-tile-sort class="btn-floating cyan z-depth-2 {{#if disableTileSort}}disabled{{/if}}" data-tooltip-direction="w" data-tooltip="Sort Tiles">
-                <i class="mdi-action-view-module"></i>
+              <a data-add-tile class="btn-floating red z-depth-2" data-tooltip-direction="w" data-tooltip="Add Tile">
+                <i class="mdi-content-create"></i>
               </a>
             </li>
             <li>
@@ -36,8 +26,13 @@
               </a>
             </li>
             <li>
-              <a href="/edit/new" class="btn-floating red z-depth-2" data-tooltip-direction="w" data-tooltip="Add Tile">
-                <i class="mdi-content-create"></i>
+              <a data-tile-sort class="btn-floating cyan z-depth-2 {{#if disableTileSort}}disabled{{/if}}" data-tooltip-direction="w" data-tooltip="Sort Tiles">
+                <i class="mdi-action-view-module"></i>
+              </a>
+            </li>
+            <li>
+              <a data-category-sort class="btn-floating teal z-depth-2 {{#if disableCategorySort}}disabled{{/if}}" data-tooltip-direction="w" data-tooltip="Sort Categories">
+                <i class="mdi-action-view-column"></i>
               </a>
             </li>
           {{else}}
@@ -55,6 +50,11 @@
               </li>
             {{/if}}
           {{/if}}
+          <li>
+            <a data-logout class="btn-floating indigo z-depth-2" data-tooltip-direction="w" data-tooltip="Sign Out">
+              <i class="mdi-action-exit-to-app"></i>
+            </a>
+          </li>
         </ul>
       {{else}}
         <a data-login class="btn-floating blue z-depth-2"  data-tooltip-direction="w" data-tooltip="Login">

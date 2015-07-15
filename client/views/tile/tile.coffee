@@ -1,9 +1,6 @@
 ###
 #   Template.tileSmall
 ###
-Template.tileSmall.created = ->
-  console.log @
-
 Template.tileSmall.events
   'click a[data-delete-tile]': ->
     MaterializeModal.confirm
@@ -19,24 +16,6 @@ Template.tileSmall.events
             else
               toast "Tile successfully deleted!", 4000, "success"
   'click a[data-edit-tile]': (event, template) ->
-    MaterializeModal.confirm
+    MaterializeModal.bare
       bodyTemplate: 'tileBigEdit'
-      fixedFooter: true
-      submitLabel: '<i class="mdi-action-save left"></i>Save'
-      cancelLabel: 'Cancel'
       tile: template.data.tile
-      callback: (yesNo) =>
-        if yesNo
-          #
-          # (1) First we construct & validate a _tile object.
-          #
-          
-          #
-          # (?) Save the Tile into the database.
-          #
-          Meteor.call "saveTile", _tile, _id, (error, response) ->
-            if error
-              toast "Error saving tile: #{error}", 6000, "danger"
-            else
-              toast "Tile saved successfully!", 4000, "success"
-              FlowRouter.go "/#{Meteor.user().profile.public_url}"

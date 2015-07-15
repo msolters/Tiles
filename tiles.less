@@ -10,6 +10,13 @@ html {
   height: 100%;
   font-size: inherit; /* overrides bootstrap  */
 }
+ul {
+  list-style-type: circle;
+  margin-left: 20px;
+}
+ul li {
+  list-style-type: inherit;
+}
 
 /*  Global classes  */
 #home-container {
@@ -72,13 +79,16 @@ html {
 
 
 .tooltip {
-  z-index: 10;
+  z-index: 1010;
   color: #fff;
   background-color: #263238;
   padding: 10px;
   border-radius: 5px;
 }
-
+.tooltip-arrow,
+.tooltip-inner {
+  background-color: transparent;
+}
 
 .red-btn {
   background-color: @lightRed;
