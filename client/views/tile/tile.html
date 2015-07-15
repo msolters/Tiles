@@ -17,10 +17,10 @@
       {{#unless preview}}
         {{#if verify currentUser}}
           <p class="delete-tile">
-            <a class="tile-delete" href="#"><i class="mdi-action-delete"></i></a>
+            <a data-delete-tile class="tile-delete pointer" href="#"><i class="mdi-action-delete"></i></a>
           </p>
           <p>
-            <a class="tile-edit" href="/edit/{{tile._id}}"><i class="mdi-editor-border-color right"></i>edit</a>
+            <a data-edit-tile class="tile-edit pointer"><i class="mdi-editor-border-color right"></i>edit</a>
           </p>
         {{/if}}
         <p>

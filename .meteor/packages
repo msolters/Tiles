@@ -30,4 +30,5 @@ jagi:reactive-map
 lookback:tooltips
 pfafman:materialize-modal
 flemay:less-autoprefixer
-summernote:summernote
+summernote:standalone
+nemo64:bootstrap

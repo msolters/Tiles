@@ -130,11 +130,13 @@ Template.allTiles.created = ->
 
 Template.allTiles.rendered = ->
   # Trigger search field on key down:
+  ###
   $(document).on "keydown", (event) ->
     for tagName in ["INPUT", "TEXTAREA"]
       return if event.target.tagName is tagName
     $("input#tile-search").focus()
-
+  ###
+  
   #
   # (?) Reactively update the page's title
   #

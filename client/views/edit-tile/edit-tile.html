@@ -22,6 +22,17 @@
   </div>
 </template>
 
+<template name="tileBigEdit">
+  <div id="big-tile-edit-pane">
+    <div class='input-field'>
+      <i class="mdi-content-create prefix"></i>
+      <input id='tile-title' type='text' class='tile-title' value="{{tile.title}}"/>
+      <label for='tile-title' class="{{activeOrNot tile.title}}">Title</label>
+    </div>
+    <div id="tile-edit-content">{{{tile.content}}}</div>
+  </div>
+</template>
+
 <template name="tileEditForm">
     <div class='title'>
       <div class='input-field'>
@@ -50,8 +61,8 @@
     <div class='content'>
       <div class='input-field'>
         <i class="mdi-action-subject prefix"></i>
-        <textarea id='tile-preview' class='materialize-textarea tile-content'>{{tile.preview}}</textarea>
-        <label for='tile-preview' class="{{activeOrNot tile.preview}}">Preview Content</label>
+          <textarea id='tile-preview' class='materialize-textarea tile-content'>{{tile.preview}}</textarea>
+          <label for='tile-preview' class="{{activeOrNot tile.preview}}">Preview Content</label>
       </div>
     </div>
     <div class='content'>
