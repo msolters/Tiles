@@ -1,6 +1,13 @@
 @resetTiles = new Deps.Dependency
 @reloadTiles = new Deps.Dependency
 
+@editTile = ->
+  MaterializeModal.bare
+    bodyTemplate: 'tileBigEdit'
+    fullscreen: true
+    fixedFooter: true
+    tile: @tile
+
 ###
 #   Runs callback method cb if the user is not logged in.
 ###

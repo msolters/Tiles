@@ -8,6 +8,8 @@ Template.tileBigEdit.rendered = ->
   $(@find('.note-editor')).addClass "z-depth-1"
 
 Template.tileBigEdit.events
+  'click button[data-cancel-tile]': (event, template) ->
+    MaterializeModal.close()
   'click button[data-save-tile]': (event, template) ->
     #
     # (1) First, define _tile as the Tile as we have it

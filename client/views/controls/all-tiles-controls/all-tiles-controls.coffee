@@ -46,9 +46,7 @@ Template.allTilesControls.events
       modal: true
     $('#user-email').focus()
   'click a[data-add-tile]': (event, template) ->
-    MaterializeModal.bare
-      bodyTemplate: 'tileBigEdit'
-      tile: {}
+    editTile.apply {tile: {}}
   'click a[data-toggle-menu]': (event, template) ->
     _currentState = Session.get 'menuOpen'
     Session.set 'menuOpen', !_currentState

@@ -16,6 +16,4 @@ Template.tileSmall.events
             else
               toast "Tile successfully deleted!", 4000, "success"
   'click a[data-edit-tile]': (event, template) ->
-    MaterializeModal.bare
-      bodyTemplate: 'tileBigEdit'
-      tile: template.data.tile
+    editTile.apply @
