@@ -80,8 +80,10 @@ softwarerero:accounts-t9n@1.1.2
 spacebars@1.0.6
 spacebars-compiler@1.0.6
 srp@1.0.3
+summernote:summernote@0.6.10
 templating@1.1.1
 tracker@1.0.7
+twbs:bootstrap@3.3.5
 twitter@1.1.4
 ui@1.0.6
 underscore@1.0.3

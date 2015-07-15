@@ -65,12 +65,19 @@ Template.allTilesControls.events
         animation: 150  # ms, animation speed moving items when sorting, `0` — without animation
         #handle: ".tile-action-row"  # Drag handle selector within list items
         filter: ".category-title"  # Selectors that do not lead to dragging (String or Function)
-        draggable: ".tile"  # Specifies which items inside the element should be sortable
+        draggable: ".z-depth-1"  # Specifies which items inside the element should be sortable
         ghostClass: "tile-placeholder"  # Class name for the drop placeholder
         scroll: true # or HTMLElement
         scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.
         scrollSpeed: 10 # px
     template.tileSortable.option "disabled", false
+    $('.tile-content')
+      .removeClass "pointer"
+      .addClass "grabbable"
+    $('.tile a')
+      .addClass "grabbable"
+    $('.tile')
+      .addClass "grabbable"
     toast "Drag n' drop tiles to change their order.  Make sure to click Done to save your changes!", 3500, "success"
   'click a[data-category-sort]': (event, template) ->
     if template.data.disableCategorySort
@@ -93,4 +100,5 @@ Template.allTilesControls.events
         scrollSpeed: 10 # px
     template.categorySortable.option "disabled", false
     $('.tile').hide()
+    $('.category-title').addClass "grabbable"
     toast "Drag n' drop categories to change their order.  Make sure to click Done to save your changes!", 3500, "success"
