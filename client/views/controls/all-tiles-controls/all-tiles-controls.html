@@ -10,7 +10,7 @@
     <!--  Generic Tile Menu  -->
     <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
       {{#if currentUser}}
-        <a data-toggle-menu class="btn-floating blue btn-large {{#if open}}darken-1{{else}}accent-1{{/if}} z-depth-2 menu-icon"  data-tooltip-direction="w" data-tooltip="Menu">
+        <a data-toggle-menu class="btn-floating deep-purple btn-large {{#if open}}darken-1{{else}}accent-1{{/if}} z-depth-2 menu-icon"  data-tooltip-direction="w" data-tooltip="Menu">
           <i class="mdi-navigation-menu {{#if open}}open{{/if}}"></i>
         </a>
         <ul class="{{#if open}}open{{else}}closed{{/if}}">
@@ -56,13 +56,13 @@
             {{/if}}
           {{/if}}
           <li>
-            <a data-logout class="btn-floating indigo z-depth-2" data-tooltip-direction="w" data-tooltip="Sign Out">
+            <a data-logout class="btn-floating purple z-depth-2" data-tooltip-direction="w" data-tooltip="Sign Out">
               <i class="mdi-action-exit-to-app"></i>
             </a>
           </li>
         </ul>
       {{else}}
-        <a data-login class="btn-floating blue z-depth-2"  data-tooltip-direction="w" data-tooltip="Login">
+        <a data-login class="btn-floating deep-purple z-depth-2"  data-tooltip-direction="w" data-tooltip="Login">
           <i class="mdi-communication-vpn-key"></i>
         </a>
       {{/if}}

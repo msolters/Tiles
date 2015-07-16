@@ -33,7 +33,7 @@ Meteor.methods
     user.ele 'name', _user.profile.name
 
     #
-    # (4) Construct a Category object for each Category
+    # (4) Construct an XML Category object for each Category
     #     belonging to the User.
     #
     categories = profile.ele 'categories'
@@ -47,9 +47,10 @@ Meteor.methods
           $in: _cat.tiles
       delete _cat['tiles']
       _tiles = Tiles.find(tiles_q, tiles_proj).fetch()
+
       #
-      # (6) Create an object for each element of the
-      #     current category _cat.
+      # (6) Populate the XML node for each Category with
+      #     Category data and also the Tiles belonging to it.
       #
       for k, v of _cat
         c.ele k, JSON.stringify v
@@ -58,15 +59,22 @@ Meteor.methods
         t = tiles.ele 'tile'
         for k, v of _tile
           t.ele k, JSON.stringify v
+
     #
-    # (?) Create an XML string.
+    # (7) Create an XML string.
     #
     xmlString = profile.end
       pretty: true
 
     #
-    # (?) Zip it up!
+    # (8) Zip it up!
     #
     zip.file 'profile.xml', xmlString
     zip.generate
       type: "base64"
+
+  importData: (content) ->
+    #parser = new xml2js.Parser()
+    results = xml2js.parseStringSync content
+    console.log results
+    return JSON.stringify results
