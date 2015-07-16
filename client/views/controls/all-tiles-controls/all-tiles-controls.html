@@ -35,6 +35,11 @@
                 <i class="mdi-action-view-column"></i>
               </a>
             </li>
+            <li>
+              <a data-manage-data class="btn-floating indigo z-depth-2 {{#if disableCategorySort}}disabled{{/if}}" data-tooltip-direction="w" data-tooltip="Manage Data">
+                <i class="mdi-content-archive"></i>
+              </a>
+            </li>
           {{else}}
             {{#if currentUser.profile.public_url}}
               <li>

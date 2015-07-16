@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "jszip": {
+      "version": "2.4.0",
+      "dependencies": {
+        "pako": {
+          "version": "0.2.7"
+        }
+      }
+    },
+    "xmlbuilder": {
+      "version": "2.4.4",
+      "dependencies": {
+        "lodash-node": {
+          "version": "2.4.1"
+        }
+      }
+    }
+  }
+}

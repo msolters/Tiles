@@ -47,6 +47,12 @@ Template.allTilesControls.events
     $('#user-email').focus()
   'click a[data-add-tile]': (event, template) ->
     editTile.apply {tile: {}}
+  'click a[data-manage-data]': (event, template) ->
+    MaterializeModal.alert
+      title: 'Manage Data'
+      bodyTemplate: 'manageData'
+      fixedFooter: true
+      closeLabel: 'Close'
   'click a[data-toggle-menu]': (event, template) ->
     _currentState = Session.get 'menuOpen'
     Session.set 'menuOpen', !_currentState
