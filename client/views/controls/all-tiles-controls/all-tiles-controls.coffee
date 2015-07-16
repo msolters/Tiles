@@ -73,7 +73,7 @@ Template.allTilesControls.events
         animation: 150  # ms, animation speed moving items when sorting, `0` — without animation
         #handle: ".tile-action-row"  # Drag handle selector within list items
         filter: ".category-title"  # Selectors that do not lead to dragging (String or Function)
-        draggable: ".z-depth-1"  # Specifies which items inside the element should be sortable
+        draggable: ".tile"  # Specifies which items inside the element should be sortable
         ghostClass: "tile-placeholder"  # Class name for the drop placeholder
         scroll: true # or HTMLElement
         scrollSensitivity: 30 # px, how near the mouse must be to an edge to start scrolling.

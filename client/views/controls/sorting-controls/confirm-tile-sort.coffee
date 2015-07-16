@@ -21,9 +21,10 @@ Template.confirmTileSort.events
     for cat, tileList of tilePositions
       for _id, i in tileList
         _tile =
+          _id: _id
           category: cat
           pos: i
-        Meteor.call "saveTile", _tile, _id, (err, resp) ->
+        Meteor.call "saveTile", _tile, (err, resp) ->
           if err?
             pending -= 1
             toast "Problem saving new position of tile #{_id}!  Skipping...", 4000, "danger"
