@@ -60,8 +60,6 @@ mizzao:autocomplete@0.5.1
 mobile-status-bar@1.0.3
 momentjs:moment@2.10.3
 mongo@1.1.0
-nemo64:bootstrap@3.3.5_1
-nemo64:bootstrap-data@3.3.5
 npm-bcrypt@0.7.8_2
 npm-container@1.0.0
 oauth@1.1.4
