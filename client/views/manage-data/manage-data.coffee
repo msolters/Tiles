@@ -2,6 +2,13 @@
 #   Template.manageData
 ###
 Template.manageData.rendered = ->
+  #
+  # (1) Active Tabs
+  #
+  $("#manage-data-tabs").tabs()
+  #
+  # (2) Active File Input (for Import)
+  #
   $('.file-field').each ->
     path_input = $(this).find 'input.file-path'
     $(this).find('input[type="file"]').change ->

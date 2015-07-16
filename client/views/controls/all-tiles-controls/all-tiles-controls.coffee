@@ -48,11 +48,11 @@ Template.allTilesControls.events
   'click a[data-add-tile]': (event, template) ->
     editTile.apply {tile: {}}
   'click a[data-manage-data]': (event, template) ->
-    MaterializeModal.alert
+    MaterializeModal.message
       title: 'Manage Data'
       bodyTemplate: 'manageData'
       fixedFooter: true
-      closeLabel: 'Close'
+      submitLabel: 'Close'
   'click a[data-toggle-menu]': (event, template) ->
     _currentState = Session.get 'menuOpen'
     Session.set 'menuOpen', !_currentState

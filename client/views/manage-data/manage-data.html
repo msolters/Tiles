@@ -1,9 +1,21 @@
 <template name="manageData">
-  <div>
-    <div>
-      <button data-export type="button">Export</button>
+  <div id="manage-data-tabs" class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s6">
+          <a href="#export-tools" class="active">Export</a>
+        </li>
+        <li class="tab col s6">
+          <a href="#import-tools">Import</a>
+        </li>
+      </ul>
     </div>
-    <div>
+    <div id="export-tools" class="col s12">
+      <div>
+        <button data-export type="button">Export</button>
+      </div>
+    </div>
+    <div id="import-tools" class="col s12">
       <div class="file-field input-field">
         <input class="file-path validate" type="text"/>
         <div class="btn">
@@ -14,4 +26,5 @@
       <button data-import type="button">Import</button>
     </div>
   </div>
+
 </template>
