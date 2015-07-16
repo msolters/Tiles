@@ -30,7 +30,6 @@ jagi:reactive-map
 lookback:tooltips
 pfafman:materialize-modal
 flemay:less-autoprefixer
-summernote:standalone
 nemo64:bootstrap
 meteorhacks:npm
 
@@ -38,3 +37,4 @@ meteorhacks:npm
 npm-container
 pfafman:filesaver
 peerlibrary:xml2js
+froala:editor

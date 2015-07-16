@@ -4,8 +4,8 @@
 
 Template.tileBigEdit.rendered = ->
   @contentEdit = $ @find "#tile-edit-content"
-  @contentEdit.summernote()
-  $(@find('.note-editor')).addClass "z-depth-1"
+  @contentEdit.editable
+    inlineMode: false
 
 Template.tileBigEdit.events
   'click button[data-cancel-tile]': (event, template) ->
@@ -41,7 +41,7 @@ Template.tileBigEdit.events
     # (3) Once we are sure there is a Title and a Category,
     #     convert content from HTML to searchable plaintext.
     #
-    _tile.content = template.contentEdit.code()
+    _tile.content = template.contentEdit.editable "getHTML"
     $("body").append("<div id='render-html'>#{_tile.content}</div>")
     _tile.searchableContent = $("#render-html").text()
     $("#render-html").remove()
