@@ -124,6 +124,13 @@ Template.allTiles.created = ->
   #
   @autorun =>
     resetTiles.depend()
+    $('.tile-content')
+      .addClass "pointer"
+      .removeClass "grabbable"
+    $('.tile a')
+      .removeClass "grabbable"
+    $('.tile')
+      .removeClass "grabbable"
     @sortedCategories.set null
     @sortedTiles.set null
     reloadTiles.changed()
@@ -136,7 +143,7 @@ Template.allTiles.rendered = ->
       return if event.target.tagName is tagName
     $("input#tile-search").focus()
   ###
-  
+
   #
   # (?) Reactively update the page's title
   #
