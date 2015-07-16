@@ -18,7 +18,6 @@ Template.manageData.events
         contents = e.target.result
         onLoadCallback contents
       reader.readAsText f
-
     f = $('input[data-import-file]')[0].files[0]
     readFile f, (content) ->
       Meteor.call 'importData', content, (err, resp) ->
@@ -29,16 +28,7 @@ Template.manageData.events
       if err
         Materialize.toast "An error occurred while exporting your data: #{err}", 4500, "danger"
       else
-        base64ToBlob = (base64String) ->
-          byteChars = atob base64String
-          byteNumbers = new Array byteChars.length
-          i = 0
-          while i < byteChars.length
-            byteNumbers[i] = byteChars.charCodeAt i
-            i++
-          byteArray = new Uint8Array byteNumbers
-          return blob = new Blob [byteArray],
-            type: 'zip'
-
-        blob = base64ToBlob resp
-        saveAs blob, 'export.zip'
+        blob = new Blob [resp],
+          type: 'text/xml'
+        now = moment().format "MM-DD-YYYY-hh-mma"
+        saveAs blob, "tiles-backup-#{Meteor.user().profile.public_url}-#{now}.xml"

@@ -1,15 +1,10 @@
-jsZip = Meteor.npmRequire 'jszip'
+#jsZip = Meteor.npmRequire 'jszip'
 xmlBuilder = Meteor.npmRequire 'xmlbuilder'
 
 Meteor.methods
   exportData: ->
     #
-    # (1) Create ZIP file destination.
-    #
-    zip = new jsZip()
-
-    #
-    # (2) Find user profile and all categories belonging.
+    # (1) Find user profile and all categories belonging.
     #
     userId = Meteor.userId()
     cat_q =
@@ -53,12 +48,12 @@ Meteor.methods
       #     Category data and also the Tiles belonging to it.
       #
       for k, v of _cat
-        c.ele k, JSON.stringify v
+        c.ele k, v
       tiles = c.ele 'tiles'
       for _tile in _tiles
         t = tiles.ele 'tile'
         for k, v of _tile
-          t.ele k, JSON.stringify v
+          t.ele k, v
 
     #
     # (7) Create an XML string.
@@ -66,15 +61,41 @@ Meteor.methods
     xmlString = profile.end
       pretty: true
 
-    #
-    # (8) Zip it up!
-    #
-    zip.file 'profile.xml', xmlString
-    zip.generate
-      type: "base64"
-
   importData: (content) ->
-    #parser = new xml2js.Parser()
-    results = xml2js.parseStringSync content
-    console.log results
-    return JSON.stringify results
+    results = xml2js.parseStringSync content,
+      explicitArray: false
+    _profile = results.profile
+    #
+    # (1) Update user's name
+    #
+    _user = _profile.user
+    user_q =
+      _id: Meteor.userId()
+    user_update =
+      $set:
+        "profile.name": _user.name
+    Meteor.users.update user_q, user_update
+    #
+    # (2) Iterate over Categories:
+    #
+    if !_profile.categories.category.length?
+      _profile.categories.category = [ _profile.categories.category ]
+    for cat in _profile.categories.category
+      if !cat.tiles.tile.length?
+        cat.tiles.tile = [ cat.tiles.tile ]
+      #
+      # (3) Insert New Tiles.
+      #
+      tile_ids = []
+      for t in cat.tiles.tile
+        t.owner = Meteor.userId()
+        console.log "insert #{t}"
+        tile_ids.push Tiles.insert t
+      console.log tile_ids
+      #
+      # (3) Create Category Object
+      #
+      cat.tiles = tile_ids
+      cat.owner = Meteor.userId()
+      Categories.insert cat
+    return results
