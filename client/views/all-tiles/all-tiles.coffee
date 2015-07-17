@@ -196,6 +196,9 @@ Template.allTiles.helpers
   user: ->
     Template.instance().user.get()
 
+Template.allTiles.events
+  'click a[data-add-tile]': ->
+    editTile.apply {tile: {}}
 
 ###
 #   Template.categories

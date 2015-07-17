@@ -48,7 +48,11 @@
 <template name="noTiles">
   <div id="no-results" class="center">
     {{#if verify currentUser}}
-      <a href="/edit/new">Why don't you make your first Tile?</a>
+      You can use the
+      <a data-add-tile class="btn-floating red z-depth-2" data-tooltip-direction="s" data-tooltip="Add Tile">
+        <i class="mdi-content-create"></i>
+      </a>
+      button to make a new Tile!
     {{else}}
       This user doesn't have any Tiles yet!
     {{/if}}

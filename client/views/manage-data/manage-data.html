@@ -1,30 +1,43 @@
 <template name="manageData">
-  <div id="manage-data-tabs" class="row">
-    <div class="col s12">
-      <ul class="tabs">
-        <li class="tab col s6">
-          <a href="#export-tools" class="active">Export</a>
+  <div class="row">
+    <div id="manage-data-tabs-col" class="col s12">
+      <ul id="manage-data-tabs" class="tabs">
+        <li class="tab col s4">
+          <a href="#backup-tools" class="active">Backup</a>
         </li>
-        <li class="tab col s6">
-          <a href="#import-tools">Import</a>
+        <li class="tab col s4">
+          <a href="#restore-tools">Restore</a>
+        </li>
+        <li class="tab col s4">
+          <a href="#merge-tools">Merge</a>
         </li>
       </ul>
     </div>
-    <div id="export-tools" class="col s12">
+    <div id="backup-tools" class="col s12">
       <div>
         <p>
-          Export your data as an .xml file using the download button below.
+          Backup and download your data to your local hard drive as an .xml file using the download button below:
         </p>
-        <button data-export type="button">Export</button>
+        <button data-backup type="button" class="waves-effect waves-light btn-large"><i class="mdi-file-file-download left"></i>Backup</button>
       </div>
     </div>
-    <div id="import-tools" class="col s12">
-      <div class="file-field input-field">
-        <div class="btn">
-          <span>Upload</span>
-          <input data-import-file type="file" />
+    <div id="restore-tools" class="col s12">
+      <div>
+        <p>
+          Restoring from backup will erase all your current data, and replace it with the backup data.  Your login information and URL will remain the same, however.
+        </p>
+        <div class="file-field input-field">
+          <div class="waves-effect waves-light btn-large">
+            <span><i class="mdi-file-file-upload left"></i>Upload</span>
+            <input data-restore type="file" />
+          </div>
         </div>
       </div>
+    </div>
+    <div id="merge-tools" class="col s12">
+      <p>
+        Coming soon :)
+      </p>
     </div>
   </div>
 

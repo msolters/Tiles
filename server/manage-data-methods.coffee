@@ -62,11 +62,21 @@ Meteor.methods
       pretty: true
 
   importData: (content) ->
+    #
+    # (1) Clear all old data:
+    #
+    Tiles.remove({owner: Meteor.userId()})
+    Categories.remove({owner: Meteor.userId()})
+
+    #
+    # (2) Parse incoming XML data to JSON
+    #
     results = xml2js.parseStringSync content,
       explicitArray: false
     _profile = results.profile
+
     #
-    # (1) Update user's name
+    # (3) Update user's name
     #
     _user = _profile.user
     user_q =
@@ -75,8 +85,9 @@ Meteor.methods
       $set:
         "profile.name": _user.name
     Meteor.users.update user_q, user_update
+
     #
-    # (2) Iterate over Categories:
+    # (4) Iterate over Categories:
     #
     if !_profile.categories.category.length?
       _profile.categories.category = [ _profile.categories.category ]
@@ -84,7 +95,7 @@ Meteor.methods
       if !cat.tiles.tile.length?
         cat.tiles.tile = [ cat.tiles.tile ]
       #
-      # (3) Insert New Tiles.
+      # (5) Insert New Tiles.
       #
       tile_ids = []
       for t in cat.tiles.tile
@@ -93,9 +104,11 @@ Meteor.methods
         tile_ids.push Tiles.insert t
       console.log tile_ids
       #
-      # (3) Create Category Object
+      # (6) Create Category Object
       #
       cat.tiles = tile_ids
       cat.owner = Meteor.userId()
       Categories.insert cat
-    return results
+    return {
+      success: true
+    }
