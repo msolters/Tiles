@@ -199,6 +199,12 @@ Template.allTiles.helpers
 Template.allTiles.events
   'click a[data-add-tile]': ->
     editTile.apply {tile: {}}
+  'click a[data-manage-data]': ->
+    MaterializeModal.message
+      title: 'Manage Data'
+      bodyTemplate: 'manageData'
+      fixedFooter: true
+      submitLabel: 'Close'
 
 ###
 #   Template.categories
