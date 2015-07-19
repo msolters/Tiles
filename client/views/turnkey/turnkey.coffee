@@ -27,6 +27,7 @@ Template.register.events
     email = template.find('input#user-email').value
     password = template.find('input#user-password').value
     passwordConfirm = template.find('input#user-password-confirm').value
+    url = template.find("input#user-public-url").value
     if name.length is 0
       toast "Please enter a name!  Seriously, this is going to be your website.  That's your name up there.  Don't you even care?", 5000, "danger"
       return false
@@ -40,8 +41,19 @@ Template.register.events
       if password isnt passwordConfirm
         toast "Those passwords don't match!", 5000, "danger"
         return false
+    if url.length is 0
+      toast "You must choose a URL to proceed!  Don't make this harder than it has to be.", 5000, "danger"
+      return false
+    if RegExp(/[\\/]/).test url is true
+      toast "Sorry, no slashes!", 6500, "danger"
+      return false
+    url_encoded = encodeURIComponent url
+    if url isnt url_encoded
+      toast "People would have to type http://#{window.location.hostname}/#{url_encoded} to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
+      return false
+    url = url_encoded
 
-    Meteor.call "createNewUser", email, password, name, (error, response) ->
+    Meteor.call "createNewUser", email, password, name, url, (error, response) ->
       if error?
         console.log error
         toast "Ya fucked up now!  #{error.reason}", 5000, "danger"

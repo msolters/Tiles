@@ -45,6 +45,12 @@ Template.allTilesControls.events
       bodyTemplate: 'loginForm'
       modal: true
     $('#user-email').focus()
+  'click a[data-settings]': ->
+    MaterializeModal.message
+      title: 'Settings'
+      bodyTemplate: 'settings'
+      fixedFooter: true
+      submitLabel: 'Close'
   ###
   'click a[data-add-tile]': (event, template) ->
     editTile.apply {tile: {}}

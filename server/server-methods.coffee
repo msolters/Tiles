@@ -38,12 +38,19 @@ Meteor.methods
   #   e-mail and password (i.e. not Google, FB, etc.)
   ###
   createNewUser: (email, password, name) ->
-    userId = Accounts.createUser
-      email: email
-      password: password
-      profile:
-        name: name
-    return {success: true}
+    Meteor.call "verifyURL", url, (error, response) ->
+      if error?
+        return {
+          success: false
+          msg: "Ya fucked up now!  #{error.reason}", 5000, "danger"
+        }
+      else
+        userId = Accounts.createUser
+          email: email
+          password: password
+          profile:
+          name: name
+        return {success: true}
 
   ###
   #
