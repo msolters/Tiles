@@ -7,6 +7,9 @@ Accounts.config
 #   at this time.
 ###
 Accounts.validateNewUser (user) ->
+  #
+  # (1) Validate user's email
+  #
   email =
     $in: []
   if user.emails?
@@ -30,6 +33,16 @@ Accounts.validateNewUser (user) ->
   console.log query
   if Meteor.users.findOne(query)
     throw new Meteor.Error 500, 'Could not create new user; e-mail already taken.', 'E-mail already taken.'
+
+  #
+  # (2) Validate user's URL
+  #
+  if user.profile.public_url?
+    verifyURL = Meteor.call "verifyURL", user.profile.public_url
+    if verifyURL.success
+      return true
+    else
+      throw new Meteor.Error 500, verifyURL.msg, verifyURL.msg
   else
     return true
 

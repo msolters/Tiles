@@ -55,27 +55,15 @@ Template.register.events
 
     Meteor.call "createNewUser", email, password, name, url, (error, response) ->
       if error?
-        console.log error
-        toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
+        toast "Error:  #{error.reason}", 5000, "danger"
         return false
       else
-        if response.success is true
-          Meteor.loginWithPassword email, password
-          template.waiters.vanilla.stop() if template.waiters.vanilla?
-          template.waiters.vanilla = Deps.autorun =>
-            if Meteor.userId()?
-              $(".toast").remove()
-              FlowRouter.redirect "/setup"
-          return false
-          ###
-          toast "Nice work, bone daddy!  Can I call you #{name.split(' ')[0]}?", 15000, "success"
-          setTimeout =>
-            toast "(Simply click or swipe these messages to dismiss)", 15000, "info"
-          , 1500
-          ###
-        else
-          toast response.msg, 6500, "danger"
-          return false
+        Meteor.loginWithPassword email, password
+        template.waiters.vanilla.stop() if template.waiters.vanilla?
+        template.waiters.vanilla = Deps.autorun =>
+          if Meteor.userId()?
+            $(".toast").remove()
+        return false
     return false
 
 

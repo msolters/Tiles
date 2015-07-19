@@ -21,37 +21,39 @@ Meteor.methods
     bannedURLs = ['login', 'register', 'loading', 'setup']
     for bannedURL in bannedURLs
       if bannedURL is url
-        return false
+        return {
+          success: false
+          msg: "Sorry, you cannot use that as a personal URL."
+        }
     _user = Meteor.users.findOne(
       "profile.public_url": url
     )
     if _user
       if _user._id is Meteor.userId()
-        return true
+        return {
+          success: true
+        }
       else
-        return false
-    return true
+        return {
+          success: false
+          msg: "Sorry, that URL is already taken."
+        }
+    return {
+      success: true
+    }
 
   ###
   #   Create a user (the only user) who can create/edit tiles
   #   This is only used if the user wants to specify their own
   #   e-mail and password (i.e. not Google, FB, etc.)
   ###
-  createNewUser: (email, password, name) ->
-    Meteor.call "verifyURL", url, (error, response) ->
-      if error?
-        return {
-          success: false
-          msg: "Ya fucked up now!  #{error.reason}", 5000, "danger"
-        }
-      else
-        userId = Accounts.createUser
-          email: email
-          password: password
-          profile:
-            name: name
-            public_url: url
-        return {success: true}
+  createNewUser: (email, password, name, url) ->
+    userId = Accounts.createUser
+      email: email
+      password: password
+      profile:
+        name: name
+        public_url: url
 
   ###
   #
