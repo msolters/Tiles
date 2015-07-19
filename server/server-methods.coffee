@@ -49,7 +49,8 @@ Meteor.methods
           email: email
           password: password
           profile:
-          name: name
+            name: name
+            public_url: url
         return {success: true}
 
   ###
