@@ -160,7 +160,6 @@ Template.allTiles.rendered = ->
       _tile = Tiles.findOne( {_id: _tileID} )
       if _tile?
         _tile.color = @colours.get()[ _tile.category ]
-        MaterializeModal.close()
         MaterializeModal.message
           bodyTemplate: 'tileBig'
           fixedFooter: true
@@ -199,14 +198,6 @@ Template.allTiles.helpers
 Template.allTiles.events
   'click a[data-add-tile]': ->
     editTile.apply {tile: {}}
-  ###
-  'click a[data-manage-data]': ->
-    MaterializeModal.message
-      title: 'Manage Data'
-      bodyTemplate: 'manageData'
-      fixedFooter: true
-      submitLabel: 'Close'
-  ###
 
 ###
 #   Template.categories
