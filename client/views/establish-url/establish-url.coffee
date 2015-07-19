@@ -43,19 +43,19 @@ Template.establishURL.events
         url = url_encoded
         Meteor.call "verifyURL", url, (error, response) ->
           if error?
-            toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
+            toast "Error:  #{error.reason}", 5000, "danger"
             return false
           else
-            if response is true
+            if response.success
               Meteor.call "updateUser", {"profile.public_url": url}, (error, response) ->
                 if error?
                   console.log error
-                  toast "Ya fucked up now!  #{error.reason}", 5000, "danger"
+                  toast "Error:  #{error.reason}", 5000, "danger"
                   return false
                 else
                   if response is true
-                    FlowRouter.go "/#{url}"
+                    FlowRouter.redirect "/#{url}"
                   return false
             else
-              toast "Sorry, that URL is already taken!  Please try to be more creative.  For fuck's sake.", 5000, "danger"
+              toast response.msg, 5000, "danger"
     return false

@@ -4,24 +4,20 @@
       {{ > UI.contentBlock
           context=__context__ }}
       <div class="right">
-        <div class='input-field'>
-          <i id="tile-search-prefix" class="mdi-action-search prefix"></i>
-          <input type="text" id="tile-search" class="text-input" placeholder="Search" value="{{searchQuery}}"/>
-        </div>
+        {{#unless noSearch}}
+          <div class='input-field'>
+            <i id="tile-search-prefix" class="mdi-action-search prefix"></i>
+            <input type="text" id="tile-search" class="text-input" placeholder="Search" value="{{searchQuery}}"/>
+          </div>
+        {{/unless}}
       </div>
     </div>
   </nav>
 </template>
 
 <template name="setupNavbar">
-  {{#navbar}}
-    <div class="nav-left-text"><i class="mdi-action-language left"> Setup URL</i></div>
-  {{/navbar}}
-</template>
-
-<template name="editTileNavbar">
-  {{#navbar}}
-    <div class="nav-left-text">Edit Tile</div>
+  {{#navbar noSearch=true}}
+    <div class="nav-left-text"><i class="mdi-action-language left"></i>Setup URL</div>
   {{/navbar}}
 </template>
 

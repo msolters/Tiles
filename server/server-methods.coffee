@@ -29,6 +29,7 @@ Meteor.methods
       "profile.public_url": url
     )
     if _user
+      console.log _user
       if _user._id is Meteor.userId()
         return {
           success: true
