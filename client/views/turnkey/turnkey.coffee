@@ -3,6 +3,7 @@
 #
 Template.register.created = ->
   @waiters = {} # used to store interval timer handles
+  MaterializeModal.close()
   @autorun ->  # kicks logged-in users to their homepage
     ifLoggedIn ->
       if Meteor.user().profile.public_url?
@@ -44,18 +45,9 @@ Template.register.events
     if url.length is 0
       toast "You must choose a URL to proceed!  Don't make this harder than it has to be.", 5000, "danger"
       return false
-    if RegExp(/[\\/]/).test url is true
-      toast "Sorry, no slashes!", 6500, "danger"
-      return false
-    url_encoded = encodeURIComponent url
-    if url isnt url_encoded
-      toast "People would have to type http://#{window.location.hostname}/#{url_encoded} to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
-      return false
-    url = url_encoded
-
     Meteor.call "createNewUser", email, password, name, url, (error, response) ->
       if error?
-        toast "Error:  #{error.reason}", 5000, "danger"
+        toast "#{error.reason}", 5000, "danger"
         return false
       else
         Meteor.loginWithPassword email, password
