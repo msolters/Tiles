@@ -18,11 +18,12 @@ Template.establishURL.events
     return unless event.currentTarget.value.length > 0
     template.urlTimer = setTimeout =>
       _url = event.currentTarget.value
-      url_encoded = encodeURIComponent _url
-      if _url isnt url_encoded
-        toast "People would have to type http://#{window.location.hostname}/#{url_encoded} to get to your page!!  Are you out of your magnificient mind?  Pick a better URL!  (Avoid spaces, slashes and weird characters.)", 6500, "danger"
-      else
-        toast "Your URL will be: http://#{window.location.hostname}/#{_url}", 3000
+      Meteor.call 'verifyURL', _url, (err, resp) ->
+        if err
+          Materialize.toast err, 5000, "red"
+        else
+          if !resp.success
+            Materialize.toast resp.msg, 5000, "red"
     , 400
   'click a[data-cancel]': (event, template) ->
     FlowRouter.go "/#{Meteor.user().profile.public_url}"
@@ -35,18 +36,14 @@ Template.establishURL.events
       Meteor.call "verifyURL", url, (error, response) ->
         if error?
           toast "Error:  #{error.reason}", 5000, "danger"
-          return false
         else
           if response.success
             Meteor.call "updateUser", {"profile.public_url": url}, (error, response) ->
               if error?
-                console.log error
                 toast "Error:  #{error.reason}", 5000, "danger"
-                return false
               else
                 if response is true
                   FlowRouter.redirect "/#{url}"
-                return false
           else
             toast response.msg, 5000, "danger"
     return false

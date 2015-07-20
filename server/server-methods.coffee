@@ -19,7 +19,15 @@ Meteor.methods
   ###
   verifyURL: (url) ->
     #
-    # (1) Test for slashes.
+    # (1) Make sure the URL exists!
+    #
+    if url.length is 0
+      return {
+        success: false
+        msg: "Please enter a URL."
+      }
+    #
+    # (2) Test for slashes.
     #
     if RegExp(/[\\/]/).test url is true
       return {
@@ -27,7 +35,7 @@ Meteor.methods
         msg: "Sorry, no slashes!"
       }
     #
-    # (2) Test for URI encoding mismatches.
+    # (3) Test for URI encoding mismatches.
     #
     url_encoded = encodeURIComponent url
     if url isnt url_encoded
@@ -36,7 +44,7 @@ Meteor.methods
         msg: "#{url} cannot used be as a URL.  (Avoid spaces, slashes, symbols or other weird characters.)"
       }
     #
-    # (3) Test for banned URLs
+    # (4) Test for banned URLs
     #
     bannedURLs = ['login', 'register', 'loading', 'setup']
     for bannedURL in bannedURLs
@@ -46,7 +54,7 @@ Meteor.methods
           msg: "Sorry, you cannot use that as a personal URL."
         }
     #
-    # (4) Make sure no other users have the URL already.
+    # (5) Make sure no other users have the URL already.
     #
     _user = Meteor.users.findOne(
       "profile.public_url": url

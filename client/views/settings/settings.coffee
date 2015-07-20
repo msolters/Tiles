@@ -49,8 +49,39 @@ Template.settingsURL.created = ->
 
 Template.settingsURL.helpers
   urlIs: (urlState) ->
-    return true if Template.currentInstance().urlState.get() is urlState
+    return true if Template.instance().urlState.get() is urlState
     return false
 
 Template.settingsURL.events
-  'keydown input#user-public-url': (event, template) ->
+  'input input#user-public-url': (event, template) ->
+    template.urlState.set "pending"
+    url = event.currentTarget.value
+    Meteor.call 'verifyURL', url, (err, resp) ->
+      if err
+        Materialize.toast err, 5000, "red"
+        template.urlState.set "invalid"
+      else
+        if resp.success
+          template.urlState.set "valid"
+        else
+          Materialize.toast resp.msg, 5000, "red"
+          template.urlState.set "invalid"
+  'submit form#update-url': (event, template) ->
+    url = template.find("input#user-public-url").value
+    Meteor.call 'verifyURL', url, (err, resp) ->
+      if err
+        Materialize.toast err, 5000, "red"
+        template.urlState.set "invalid"
+      else
+        if resp.success
+          Meteor.call "updateUser", {"profile.public_url": url}, (error, response) ->
+            if error?
+              toast "Error:  #{error.reason}", 5000, "danger"
+            else
+              if response is true
+                FlowRouter.redirect "/#{url}"
+                MaterializeModal.close()
+        else
+          Materialize.toast resp.msg, 5000, "red"
+          template.urlState.set "invalid"
+    return false

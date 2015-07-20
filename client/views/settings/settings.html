@@ -1,5 +1,5 @@
 <template name="settings">
-  <div class="row">
+  <div class="settings-modal row">
     <div id="settings-tabs-col" class="col s12">
       <ul id="settings-tabs" class="tabs">
         <li class="tab col s6">
@@ -47,10 +47,56 @@
 <template name="settingsURL">
   <form id="update-url">
     <div class="input-field">
-      <i class="mdi-action-language prefix"></i>
+      {{#if urlIs "pending"}}
+        <i class="prefix">
+          <div class="preloader-wrapper small active">
+            <div class="spinner-layer spinner-blue">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </i>
+      {{else}}
+        <i class="mdi-action-language prefix"></i>
+      {{/if}}
       <input id="user-public-url" type="text" value="{{currentUser.profile.public_url}}"/>
       <label for="user-public-url" class="active">Your URL</label>
     </div>
-    <button id="" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Save</button>
+    <button type="submit" class="btn waves-effect waves-light modal-action red {{#unless urlIs "valid"}}disabled{{/unless}}"><i class="mdi-content-send right"></i>Save</button>
   </form>
 </template>
