@@ -1,0 +1,9 @@
+<template name="users">
+  <ul>
+    {{#each users}}
+      <li>
+        <a href="{{profile.public_url}}">{{profile.name}}</a>
+      </li>
+    {{/each}}
+  </ul>
+</template>

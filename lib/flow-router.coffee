@@ -19,6 +19,16 @@ FlowRouter.route '/',
   action: (params) ->
     FlowRouter.go "/login"
 
+###
+#     List of Users
+###
+FlowRouter.route '/users',
+  name: 'Users'
+  action: (params) ->
+    FlowLayout.render 'app',
+      main: 'users'
+      controls: null
+
 
 ###
 #     Register
