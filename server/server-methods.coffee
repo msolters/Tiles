@@ -18,6 +18,26 @@ Meteor.methods
   #   Check that the provided URL is not in use by another user already.:
   ###
   verifyURL: (url) ->
+    #
+    # (1) Test for slashes.
+    #
+    if RegExp(/[\\/]/).test url is true
+      return {
+        success: false
+        msg: "Sorry, no slashes!"
+      }
+    #
+    # (2) Test for URI encoding mismatches.
+    #
+    url_encoded = encodeURIComponent url
+    if url isnt url_encoded
+      return {
+        success: false
+        msg: "#{url} cannot used be as a URL.  (Avoid spaces, slashes, symbols or other weird characters.)"
+      }
+    #
+    # (3) Test for banned URLs
+    #
     bannedURLs = ['login', 'register', 'loading', 'setup']
     for bannedURL in bannedURLs
       if bannedURL is url
@@ -25,16 +45,14 @@ Meteor.methods
           success: false
           msg: "Sorry, you cannot use that as a personal URL."
         }
+    #
+    # (4) Make sure no other users have the URL already.
+    #
     _user = Meteor.users.findOne(
       "profile.public_url": url
     )
     if _user
-      console.log _user
-      if _user._id is Meteor.userId()
-        return {
-          success: true
-        }
-      else
+      if _user._id isnt Meteor.userId()
         return {
           success: false
           msg: "Sorry, that URL is already taken."

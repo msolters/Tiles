@@ -16,10 +16,10 @@
     </div>
     <div id="profile-settings" class="col s12">
       <div>
-        
-      </div>
-      <div>
-        
+        <p>
+          Update your page's URL:
+        </p>
+        {{> settingsURL }}
       </div>
     </div>
     <div id="data-settings" class="col s12">
@@ -42,4 +42,15 @@
       </div>
     </div>
   </div>
+</template>
+
+<template name="settingsURL">
+  <form id="update-url">
+    <div class="input-field">
+      <i class="mdi-action-language prefix"></i>
+      <input id="user-public-url" type="text" value="{{currentUser.profile.public_url}}"/>
+      <label for="user-public-url" class="active">Your URL</label>
+    </div>
+    <button id="" type="submit" class="btn waves-effect waves-light modal-action red"><i class="mdi-content-send right"></i>Save</button>
+  </form>
 </template>

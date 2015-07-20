@@ -36,5 +36,21 @@ Template.settings.events
         blob = new Blob [resp],
           type: 'text/xml'
         now = moment().format "MM-DD-YYYY-hh-mma"
-        saveAs blob, "tiles-backup-#{Meteor.user().profile.public_url}-#{now}.xml"
         Materialize.toast "Data successfully exported to .xml!", 4500, "green"
+        saveAs blob, "tiles-backup-#{Meteor.user().profile.public_url}-#{now}.xml"
+
+
+###
+#   Template.settingsURL
+###
+Template.settingsURL.created = ->
+  @urlState = new ReactiveVar 0
+  @urlState.set "valid"
+
+Template.settingsURL.helpers
+  urlIs: (urlState) ->
+    return true if Template.currentInstance().urlState.get() is urlState
+    return false
+
+Template.settingsURL.events
+  'keydown input#user-public-url': (event, template) ->

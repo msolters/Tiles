@@ -18,7 +18,7 @@ Accounts.validateNewUser (user) ->
   if user.services?
     for serviceName, service of user.services
       email.$in.push service.email if service.email?
-  console.log email
+  #console.log email
   query =
     $or: []
   _.each Accounts.oauth.serviceNames(), (name) ->
@@ -30,7 +30,7 @@ Accounts.validateNewUser (user) ->
       query.$or.push q
   query.$or.push
     'emails.address': email
-  console.log query
+  #console.log query
   if Meteor.users.findOne(query)
     throw new Meteor.Error 500, 'Could not create new user; e-mail already taken.', 'E-mail already taken.'
 
