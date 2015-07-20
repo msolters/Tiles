@@ -24,6 +24,8 @@ FlowRouter.route '/',
 ###
 FlowRouter.route '/users',
   name: 'Users'
+  subscriptions: ->
+    @register "Users", Meteor.subscribe "Users"
   action: (params) ->
     FlowLayout.render 'app',
       main: 'users'
@@ -46,7 +48,6 @@ FlowRouter.route '/register',
 ###
 FlowRouter.route '/login',
   name: 'Login'
-  subscriptions: (params, qParams) ->
   action: (params) ->
     FlowLayout.render 'app',
       main: 'login'
@@ -57,8 +58,6 @@ FlowRouter.route '/login',
 ###
 FlowRouter.route '/setup',
   name: 'Setup'
-  subscriptions: (params, qParams) ->
-    #@register "UserData", Meteor.subscribe "UserData"
   action: (params) ->
     FlowLayout.render 'app',
       main: 'establishURL'
@@ -86,11 +85,3 @@ FlowRouter.route '/:publicURL/:tileID',
   action: (params) ->
     FlowLayout.render 'app',
       main: 'allTiles'
-
-###
-#     Triggers
-###
-
-###
-FlowRouter.triggers.enter [ ]
-###
