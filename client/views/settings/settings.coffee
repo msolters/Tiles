@@ -55,17 +55,20 @@ Template.settingsURL.helpers
 Template.settingsURL.events
   'input input#user-public-url': (event, template) ->
     template.urlState.set "pending"
-    url = event.currentTarget.value
-    Meteor.call 'verifyURL', url, (err, resp) ->
-      if err
-        Materialize.toast err, 5000, "red"
-        template.urlState.set "invalid"
-      else
-        if resp.success
-          template.urlState.set "valid"
-        else
-          Materialize.toast resp.msg, 5000, "red"
+    clearTimeout template.urlTimer if template.urlTimer?
+    template.urlTimer = setTimeout =>
+      url = event.currentTarget.value
+      Meteor.call 'verifyURL', url, (err, resp) ->
+        if err
+          Materialize.toast err, 5000, "red"
           template.urlState.set "invalid"
+        else
+          if resp.success
+            template.urlState.set "valid"
+          else
+            Materialize.toast resp.msg, 5000, "red"
+            template.urlState.set "invalid"
+    , 300
   'submit form#update-url': (event, template) ->
     url = template.find("input#user-public-url").value
     Meteor.call 'verifyURL', url, (err, resp) ->

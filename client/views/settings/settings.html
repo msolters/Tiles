@@ -92,7 +92,7 @@
           </div>
         </i>
       {{else}}
-        <i class="mdi-action-language prefix"></i>
+        <i class="mdi-action-language prefix" style="color: {{#if urlIs "valid"}}#4CAF50{{else}}#F44336{{/if}}"></i>
       {{/if}}
       <input id="user-public-url" type="text" value="{{currentUser.profile.public_url}}"/>
       <label for="user-public-url" class="active">Your URL</label>
