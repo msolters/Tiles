@@ -45,22 +45,6 @@ Template.allTilesControls.events
       bodyTemplate: 'loginForm'
       modal: true
     $('#user-email').focus()
-  'click a[data-settings]': ->
-    MaterializeModal.message
-      title: 'Settings'
-      bodyTemplate: 'settings'
-      fixedFooter: true
-      submitLabel: 'Close'
-  ###
-  'click a[data-add-tile]': (event, template) ->
-    editTile.apply {tile: {}}
-  'click a[data-manage-data]': (event, template) ->
-    MaterializeModal.message
-      title: 'Manage Data'
-      bodyTemplate: 'manageData'
-      fixedFooter: true
-      submitLabel: 'Close'
-  ###
   'click a[data-toggle-menu]': (event, template) ->
     _currentState = Session.get 'menuOpen'
     Session.set 'menuOpen', !_currentState

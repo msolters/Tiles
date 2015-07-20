@@ -198,6 +198,12 @@ Template.allTiles.helpers
 Template.allTiles.events
   'click a[data-add-tile]': ->
     editTile.apply {tile: {}}
+  'click a[data-settings]': ->
+    MaterializeModal.message
+      title: 'Settings'
+      bodyTemplate: 'settings'
+      fixedFooter: true
+      submitLabel: 'Close'
 
 ###
 #   Template.categories
