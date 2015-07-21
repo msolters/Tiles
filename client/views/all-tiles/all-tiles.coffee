@@ -204,6 +204,8 @@ Template.allTiles.events
       bodyTemplate: 'settings'
       fixedFooter: true
       submitLabel: 'Close'
+  'mousewheel #tile-scroller': (event, template) ->
+    event.currentTarget.scrollLeft += event.originalEvent.deltaY
 
 ###
 #   Template.categories
@@ -214,7 +216,6 @@ Template.categories.helpers
       return true
     else
       return false
-
 
 ###
 #   Template.category
