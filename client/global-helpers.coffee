@@ -38,29 +38,6 @@ Template.registerHelper 'profileName', ->
   return false
 
 ###
-#   Simple returns true if the tile object has at least one
-#   date associated with it.
-###
-Template.registerHelper 'hasDates', (tile) ->
-  if tile?
-    if tile.dates?
-      if (d for d of tile.dates).length > 0
-        return true
-  return false
-
-###
-#   Depending on if the dates argument object has none, one
-#   or two children, renders an appropriate date or date range.
-###
-Template.registerHelper 'formatTileDates', (dates) ->
-  if dates.dateOne? and dates.dateTwo?
-    return "#{moment.utc(dates.dateOne).format('MMMM Do, YYYY')} &ndash; #{moment.utc(dates.dateTwo).format('MMMM Do, YYYY')}"
-  else if dates.dateOne?
-    return "#{moment.utc(dates.dateOne).format('MMMM Do, YYYY')}"
-  else
-    return "#{moment.utc(dates.dateTwo).format('MMMM Do, YYYY')}"
-
-###
 #   Taking a Date object or string representing one, return a string acceptable
 #   as an input to an input[type=date].
 ###
