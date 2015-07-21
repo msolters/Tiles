@@ -1,23 +1,4 @@
 ###
-#   Template.partialDatePickerSandbox
-###
-Template.partialDatePickerSandbox.created = ->
-  @dateObj = new ReactiveVar 0
-  @dateObj.set null
-
-Template.partialDatePickerSandbox.helpers
-  dateObj: ->
-    Template.instance().dateObj
-  dateObjPreview: ->
-    _dateObj = Template.instance().dateObj.get()
-    if _dateObj.precision?
-      return "Timestamp: #{moment(_dateObj.timestamp).format()}<br>Precision:#{_dateObj.precision}"
-    else
-      return "No date selected."
-
-
-
-###
 #   Template.partialDatePicker
 ###
 Template.partialDatePicker.created = ->
@@ -77,7 +58,7 @@ Template.partialDatePicker.created = ->
 
 Template.partialDatePicker.helpers
   dateParts: ->
-    Template.instance().dateParts.all()
+    Template.instance().dateParts
   precisionGTE: (_precision) ->
     return true if Template.instance().precision.get() >= _precision
     return false
@@ -115,12 +96,15 @@ Template.partialDatePickerYear.rendered = ->
   # (1) Initialize Material Dropdown Selector
   #
   @$selector.material_select()
+  if !Template.instance().data.dateParts.get('year')?
+    Template.instance().data.dateParts.set
+      year: @$selector.val()
 
 Template.partialDatePickerYear.helpers
   yearOptions: ->
     [moment().get('year')..1900]
   selectedYear: (_year) ->
-    return true if Template.instance().data.dateParts.year is parseInt _year
+    return true if Template.instance().data.dateParts.all().year is parseInt _year
     return false
 
 Template.partialDatePickerYear.destroyed = ->
@@ -137,12 +121,15 @@ Template.partialDatePickerMonth.rendered = ->
   # (1) Initialize Material Dropdown Selector
   #
   @$selector.material_select()
+  if !Template.instance().data.dateParts.get('month')?
+    Template.instance().data.dateParts.set
+      month: @$selector.val()
 
 Template.partialDatePickerMonth.helpers
   monthOptions: ->
     [{"index":0,"month":"January"},{"index":1,"month":"February"},{"index":2,"month":"March"},{"index":3,"month":"April"},{"index":4,"month":"May"},{"index":5,"month":"June"},{"index":6,"month":"July"},{"index":7,"month":"August"},{"index":8,"month":"September"},{"index":9,"month":"October"},{"index":10,"month":"November"},{"index":11,"month":"December"}]
   selectedMonth: (_month) ->
-    return true if Template.instance().data.dateParts.month is parseInt _month
+    return true if Template.instance().data.dateParts.all().month is parseInt _month
     return false
 
 Template.partialDatePickerMonth.destroyed = ->
@@ -159,12 +146,15 @@ Template.partialDatePickerDay.rendered = ->
   # (1) Initialize Material Dropdown Selector
   #
   @$selector.material_select()
+  if !Template.instance().data.dateParts.get('day')?
+    Template.instance().data.dateParts.set
+      day: @$selector.val()
 
 Template.partialDatePickerDay.helpers
   dayOptions: ->
     [1..31]
   selectedDay: (_day) ->
-    return true if Template.instance().data.dateParts.day is parseInt _day
+    return true if Template.instance().data.dateParts.all().day is parseInt _day
     return false
 
 Template.partialDatePickerDay.destroyed = ->
