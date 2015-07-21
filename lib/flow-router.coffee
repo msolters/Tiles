@@ -2,9 +2,14 @@
 #     Icon Directory (For Development Only)
 ###
 FlowRouter.route '/icons',
-  name: 'MDI Icon Listing'
+  name: 'dev::MDI Icon Listing'
   action: ->
     FlowLayout.render 'icons'
+
+FlowRouter.route '/datePicker',
+  name: 'dev::Partial Date Picker'
+  action: ->
+    FlowLayout.render 'partialDatePickerSandbox'
 
 
 ###

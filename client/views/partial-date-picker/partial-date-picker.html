@@ -1,0 +1,65 @@
+<template name="partialDatePickerSandbox">
+  {{> partialDatePicker date=dateObj}}
+  {{{ dateObjPreview }}}
+</template>
+
+<template name="partialDatePicker">
+  <div class="row">
+    {{#with dateParts=dateParts}}
+      {{#if precisionGTE 1}}
+        {{> partialDatePickerYear }}
+        {{#if precisionGTE 2}}
+          {{> partialDatePickerMonth }}
+          {{#if precisionGTE 3}}
+            {{> partialDatePickerDay }}
+          {{else}}
+            <a data-partial-date-choose>Add a Day</a>
+          {{/if}}
+        {{else}}
+          <a data-partial-date-choose>Add a Month</a>
+        {{/if}}
+      {{else}}
+        <a data-partial-date-choose>Add a Year</a>
+      {{/if}}
+    {{/with}}
+    <a data-partial-date-delete>
+      <i class="mdi-content-clear"></i>
+    </a>
+  </div>
+</template>
+
+<template name="partialDatePickerYear">
+  <select class="partial-date-picker-years">
+    {{#each yearOptions}}
+      {{#if selectedYear this}}
+        <option value="{{this}}" selected>{{this}}</option>
+      {{else}}
+        <option value="{{this}}">{{this}}</option>
+      {{/if}}
+    {{/each}}
+  </select>
+</template>
+
+<template name="partialDatePickerMonth">
+  <select class="partial-date-picker-months">
+    {{#each monthOptions}}
+      {{#if selectedMonth index}}
+        <option value="{{index}}" selected>{{month}}</option>
+      {{else}}
+        <option value="{{index}}">{{month}}</option>
+      {{/if}}
+    {{/each}}
+  </select>
+</template>
+
+<template name="partialDatePickerDay">
+  <select class="partial-date-picker-days">
+    {{#each dayOptions}}
+      {{#if selectedDay this}}
+        <option value="{{this}}" selected>{{this}}</option>
+      {{else}}
+        <option value="{{this}}">{{this}}</option>
+      {{/if}}
+    {{/each}}
+  </select>
+</template>
