@@ -10,6 +10,16 @@
       <input id='tile-category' name="categoryresult" type='text' class='tile-category form-control typeahead' autocomplete="off" spellcheck="off" value="{{tile.category}}" data-source="categories"/>
       <label for='tile-category' class="{{activeOrNot tile.category}}">Category</label>
     </div>
+    <div class='input-field'>
+      <i class="mdi-action-label-outline prefix"></i>
+      {{> partialDatePicker date=t0}}
+      <label for='tile-t0' class="active">Start Date</label>
+    </div>
+    <div class='input-field'>
+      <i class="mdi-action-label-outline prefix"></i>
+      {{> partialDatePicker date=t1}}
+      <label for='tile-t1' class="active">End Date</label>
+    </div>
     <div id="tile-edit-content">{{{tile.content}}}</div>
   </div>
   <div class="modal-footer">

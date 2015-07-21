@@ -4,7 +4,7 @@
 </template>
 
 <template name="partialDatePicker">
-  <div class="row">
+  <div class="flex-row partial-date-picker">
     {{#with dateParts=dateParts}}
       {{#if precisionGTE 1}}
         {{> partialDatePickerYear }}
@@ -22,9 +22,11 @@
         <a data-partial-date-choose>Add a Year</a>
       {{/if}}
     {{/with}}
-    <a data-partial-date-delete>
-      <i class="mdi-content-clear"></i>
-    </a>
+    {{#if precisionGTE 0}}
+      <a data-partial-date-delete>
+        <i class="mdi-content-clear"></i>
+      </a>
+    {{/if}}
   </div>
 </template>
 

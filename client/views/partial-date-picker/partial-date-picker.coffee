@@ -3,17 +3,17 @@
 ###
 Template.partialDatePickerSandbox.created = ->
   @dateObj = new ReactiveVar 0
-  @dateObj.set
-    precision: 'days'
-    timestamp: moment().toDate()
+  @dateObj.set null
 
 Template.partialDatePickerSandbox.helpers
   dateObj: ->
     Template.instance().dateObj
   dateObjPreview: ->
     _dateObj = Template.instance().dateObj.get()
-    return "Timestamp: #{moment(_dateObj.timestamp).format()}<br>Precision:#{_dateObj.precision}"
-
+    if _dateObj.precision?
+      return "Timestamp: #{moment(_dateObj.timestamp).format()}<br>Precision:#{_dateObj.precision}"
+    else
+      return "No date selected."
 
 
 
@@ -36,7 +36,7 @@ Template.partialDatePicker.created = ->
   # (2) Check if the passed-in date already has been configured.
   #
   _date = @data.date.get()
-  if _date is null
+  if !_date?
     # No pre-existing date, configure blank picker.
     @precision.set 0
   else
@@ -60,8 +60,8 @@ Template.partialDatePicker.created = ->
           day: _timestamp.get 'date'
 
   #
-  # (3) Assign Reactive changes to Precision and dateParts, to recompute
-  #     and set the data.date ReactiveVar.
+  # (3) Assign Reactive changes to this.precision and this.dateParts, to recompute
+  #     and set the output ReactiveVar data.date.
   #
   @autorun =>
     _date =
@@ -83,10 +83,16 @@ Template.partialDatePicker.helpers
     return false
 
 Template.partialDatePicker.events
+  ###
+  #   Event callbacks affecting timestamp precision:
+  ###
   'click a[data-partial-date-choose]': (event, template) ->
     template.precision.set ( template.precision.get() + 1 )
   'click a[data-partial-date-delete]': (event, template) ->
     template.precision.set ( template.precision.get() - 1 )
+  ###
+  #   Event callbacks for selecting different dateParts:
+  ###
   'change select.partial-date-picker-years': (event, template) ->
     template.dateParts.set
       year: parseInt event.currentTarget.value
@@ -112,7 +118,7 @@ Template.partialDatePickerYear.rendered = ->
 
 Template.partialDatePickerYear.helpers
   yearOptions: ->
-    [1900..2020]
+    [moment().get('year')..1900]
   selectedYear: (_year) ->
     return true if Template.instance().data.dateParts.year is parseInt _year
     return false

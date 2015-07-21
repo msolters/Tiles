@@ -1,11 +1,20 @@
 ###
 #   Template.tileBigEdit
 ###
+Template.tileBigEdit.created = ->
+  @t0 = new ReactiveVar 0
+  @t0.set @data.tile.t0
+  @t1 = new ReactiveVar 0
+  @t1.set @data.tile.t1
 
 Template.tileBigEdit.rendered = ->
   @contentEdit = $ @find "#tile-edit-content"
   @contentEdit.editable
     inlineMode: false
+
+Template.tileBigEdit.helpers
+  t0: -> Template.instance().t0
+  t1: -> Template.instance().t1
 
 Template.tileBigEdit.events
   'click button[data-cancel-tile]': (event, template) ->
@@ -45,6 +54,11 @@ Template.tileBigEdit.events
     $("body").append("<div id='render-html'>#{_tile.content}</div>")
     _tile.searchableContent = $("#render-html").text()
     $("#render-html").remove()
+    #
+    # (5) Get dates!
+    #
+    _tile.t0 = template.t0.get()
+    _tile.t1 = template.t1.get()
     #
     # (4) Save the Tile!
     #

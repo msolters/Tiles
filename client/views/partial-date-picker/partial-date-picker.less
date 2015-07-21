@@ -1,0 +1,26 @@
+@import "global-less";
+
+.partial-date-picker {
+  height: 3rem;
+  padding-left: 3rem;
+  line-height: 3rem;
+}
+.partial-date-picker .select-wrapper {
+  max-width: 150px;
+}
+.partial-date-picker .select-wrapper:hover {
+  background-color: @lightGrey;
+}
+.partial-date-picker .dropdown-content {
+  z-index: 3;
+}
+.partial-date-picker a {
+  cursor: pointer;
+  color: @darkGrey;
+}
+.partial-date-picker a[data-partial-date-delete] {
+  margin-left: 10px;
+}
+.partial-date-picker a[data-partial-date-delete]:hover {
+  color: @darkRed;
+}
