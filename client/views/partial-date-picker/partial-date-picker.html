@@ -18,15 +18,13 @@
         {{else}}
           <a data-partial-date-choose>Add a Month</a>
         {{/if}}
+        <a data-partial-date-delete>
+          <i class="mdi-content-clear"></i>
+        </a>
       {{else}}
         <a data-partial-date-choose>Add a Year</a>
       {{/if}}
     {{/with}}
-    {{#if precisionGTE 0}}
-      <a data-partial-date-delete>
-        <i class="mdi-content-clear"></i>
-      </a>
-    {{/if}}
   </div>
 </template>
 

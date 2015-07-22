@@ -19,7 +19,7 @@ Template.partialDatePicker.created = ->
   _date = @data.date.get()
   if !_date?
     # No pre-existing date, configure blank picker.
-    @precision.set 0
+    @precision.set parseInt 0
   else
     # There already exists a date configuration render whatever that date is.
     _timestamp = moment _date.timestamp

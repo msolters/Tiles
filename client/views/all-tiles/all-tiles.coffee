@@ -165,6 +165,7 @@ Template.allTiles.rendered = ->
           fixedFooter: true
           title: null
           message: null
+          fullscreen: true
           tile: _tile
           submitLabel: '<i class="mdi-action-done left"></i>Done'
           callback: (yesNo, rtn, event) =>

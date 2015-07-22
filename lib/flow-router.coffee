@@ -6,12 +6,6 @@ FlowRouter.route '/icons',
   action: ->
     FlowLayout.render 'icons'
 
-FlowRouter.route '/datePicker',
-  name: 'dev::Partial Date Picker'
-  action: ->
-    FlowLayout.render 'partialDatePickerSandbox'
-
-
 ###
 #     FlowRouter mechanism for mapping URLs -> Templates
 ###
