@@ -4,7 +4,6 @@
 # 'meteor add' and 'meteor remove' will edit this file for you,
 # but you can also edit it by hand.
 
-meteor-platform
 coffeescript
 accounts-password
 fortawesome:fontawesome
@@ -19,7 +18,7 @@ accounts-google
 accounts-facebook
 accounts-twitter
 service-configuration
-materialize:materialize
+materialize:materialize@=0.97.0
 mizzao:autocomplete
 sergeyt:typeahead
 meteorhacks:flow-router
@@ -28,12 +27,30 @@ meteorhacks:flow-layout
 reactive-var
 jagi:reactive-map
 lookback:tooltips
-pfafman:materialize-modal
 flemay:less-autoprefixer
+
+
+pfafman:filesaver
+peerlibrary:xml2js
+froala:editor
+
+
+standard-minifiers
+meteor-base
+mobile-experience
+mongo
+blaze-html-templates
+session
+jquery
+tracker
+logging
+reload
+random
+ejson
+spacebars
+check
+meteorstuff:materialize-modal
 meteorhacks:npm
 
 
 npm-container
-pfafman:filesaver
-peerlibrary:xml2js
-froala:editor
