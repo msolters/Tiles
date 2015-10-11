@@ -2,7 +2,7 @@
 @reloadTiles = new Deps.Dependency
 
 @editTile = ->
-  MaterializeModal.bare
+  MaterializeModal.display
     bodyTemplate: 'tileBigEdit'
     fullscreen: true
     fixedFooter: true
