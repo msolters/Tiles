@@ -83,7 +83,10 @@ Template.allTiles.created = ->
       else
         console.log "Retrieving all tiles..."
         _tiles = Tiles.find( tiles_q, _sort )
-    @tiles.set _tiles.fetch()
+    if _tiles?
+      @tiles.set _tiles.fetch()
+    else
+      @tiles.set []
 
   #
   # (5) Create a Reactive sortedTiles data structure:
