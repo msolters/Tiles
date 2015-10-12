@@ -1,0 +1,12 @@
+<template name="confirmDeleteTile">
+  {{#modalizeBody}}
+    <p>
+      Are you sure you want to permanently erase this Tile? You will not be able to recover or restore any of its data by proceeding.
+    </p>
+  {{/modalizeBody}}
+
+  {{#modalizeFooter}}
+    <button data-modalize-close class="btn waves-effect waves-light grey">Cancel</button>
+    <button data-delete-tile class="btn waves-effect waves-light red"><i class="mdi-action-delete left"></i>Delete</button>
+  {{/modalizeFooter}}
+</template>

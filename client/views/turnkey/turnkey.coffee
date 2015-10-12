@@ -3,7 +3,7 @@
 #
 Template.register.created = ->
   @waiters = {} # used to store interval timer handles
-  MaterializeModal.close()
+  Materialize.modalize.close()
   @autorun ->  # kicks logged-in users to their homepage
     ifLoggedIn ->
       if Meteor.user().profile.public_url?
@@ -97,7 +97,7 @@ Template.loginForm.events
         toast "Welcome back, #{given_name}!", 7000, "success"
         if given_name is "Asshole"
           toast "Hey you should probably fill in your name (top left).", 7000, "info"
-        MaterializeModal.close()
+        Materialize.modalize.close()
     return false
 
 #
@@ -114,7 +114,7 @@ Template.socialLogin.events
         toast "#{err_msg}", 4000, "danger"
         return
       else
-        MaterializeModal.close()
+        Materialize.modalize.close()
 
   'click button#google-account': (event, template) ->
     Meteor.loginWithGoogle {}, (err) ->
@@ -126,4 +126,4 @@ Template.socialLogin.events
         toast "#{err_msg}", 4000, "danger"
         return
       else
-        MaterializeModal.close()
+        Materialize.modalize.close()

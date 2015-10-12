@@ -154,20 +154,21 @@ Template.allTiles.rendered = ->
       _name = "TilesJS"
     document.title = _name
 
+  #
+  # If @tileID.get() has a value, open a modal showing
+  # that tile.
+  #
   @autorun =>
     _tileID = @tileID.get()
     if _tileID?
       _tile = Tiles.findOne( {_id: _tileID} )
       if _tile?
         _tile.color = @colours.get()[ _tile.category ]
-        MaterializeModal.message
-          bodyTemplate: 'tileBig'
+        Materialize.modalize.display
+          template: 'tileBig'
           fixedFooter: true
-          title: null
-          message: null
-          fullscreen: true
+          fullScreen: true
           tile: _tile
-          submitLabel: '<i class="mdi-action-done left"></i>Done'
           callback: (yesNo, rtn, event) =>
             FlowRouter.go "/#{@publicURL.get()}"
 
@@ -200,11 +201,10 @@ Template.allTiles.events
   'click a[data-add-tile]': ->
     editTile.apply {tile: {}}
   'click a[data-settings]': ->
-    MaterializeModal.message
+    Materialize.modalize.display
       title: 'Settings'
-      bodyTemplate: 'settings'
+      template: 'settings'
       fixedFooter: true
-      submitLabel: 'Close'
   'mousewheel #tile-scroller': (event, template) ->
     event.currentTarget.scrollLeft += event.originalEvent.deltaY
 

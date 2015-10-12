@@ -28,17 +28,23 @@
 </template>
 
 <template name="tileBig">
-  <div id="tile-big" style="border-color: {{tile.color}}">
-    <div class="">
-      <div class='title'>
-        {{tile.title}}
-      </div>
-      {{> tileDates }}
-      <div class='content'>
-        {{{tile.content}}}
+  {{#modalizeBody}}
+    <div id="tile-big" style="border-color: {{tile.color}}">
+      <div class="">
+        <div class='title'>
+          {{tile.title}}
+        </div>
+        {{> tileDates }}
+        <div class='content'>
+          {{{tile.content}}}
+        </div>
       </div>
     </div>
-  </div>
+  {{/modalizeBody}}
+
+  {{#modalizeFooter}}
+    <button data-modalize-close class="btn waves-effect waves-light modal-action grey"><i class="mdi-action-done left"></i>Done</button>
+  {{/modalizeFooter}}
 </template>
 
 <template name="tileDates">

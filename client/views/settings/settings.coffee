@@ -26,7 +26,7 @@ Template.settings.events
           Materialize.toast "An error occurred while restoring your data: #{err}", 4000, "red"
         else
           Materialize.toast "Data successfully restored!", 4500, "green"
-          MaterializeModal.close()
+          Materialize.modalize.close()
 
   'click button[data-backup]': ->
     Meteor.call 'exportData', (err, resp) ->
@@ -83,7 +83,7 @@ Template.settingsURL.events
             else
               if response is true
                 FlowRouter.redirect "/#{url}"
-                MaterializeModal.close()
+                Materialize.modalize.close()
         else
           Materialize.toast resp.msg, 5000, "red"
           template.urlState.set "invalid"

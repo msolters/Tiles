@@ -17,9 +17,8 @@ Template.tileBigEdit.helpers
   t1: -> Template.instance().t1
 
 Template.tileBigEdit.events
-  'click button[data-cancel-tile]': (event, template) ->
-    MaterializeModal.close()
   'click button[data-save-tile]': (event, template) ->
+    console.log template
     #
     # (1) First, define _tile as the Tile as we have it
     #     currently in the database.
@@ -67,4 +66,4 @@ Template.tileBigEdit.events
         toast "Error saving tile: #{error}", 6000, "danger"
       else
         toast "Tile saved successfully!", 4000, "success"
-        MaterializeModal.close()
+        Materialize.modalize.close()
