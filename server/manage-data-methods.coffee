@@ -26,7 +26,6 @@ Meteor.methods
     profile = xmlBuilder.create 'profile'
     user = profile.ele 'user'
     user.ele 'name', _user.profile.name
-
     #
     # (4) Construct an XML Category object for each Category
     #     belonging to the User.
@@ -53,6 +52,7 @@ Meteor.methods
       for _tile in _tiles
         t = tiles.ele 'tile'
         for k, v of _tile
+          console.log k, v
           t.ele k, v
 
     #

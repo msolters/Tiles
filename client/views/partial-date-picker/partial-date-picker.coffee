@@ -6,7 +6,7 @@ Template.partialDatePicker.created = ->
   # (1) Initialize Variables
   #
   @precisionMap =
-    0: null
+    0: false
     1: 'years'
     2: 'months'
     3: 'days'
