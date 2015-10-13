@@ -41,6 +41,20 @@ Template.settings.events
 
 
 ###
+#   Template.settingsName
+###
+Template.settingsName.events
+  'input input#user-profile-name': (event, template) ->
+    clearTimeout template.nameTimer if template.nameTimer?
+    _profile_name = event.currentTarget.value
+    _user =
+      "profile.name": _profile_name
+    template.nameTimer = setTimeout =>
+      Meteor.call "updateUser", _user
+    , 200
+
+
+###
 #   Template.settingsURL
 ###
 Template.settingsURL.created = ->

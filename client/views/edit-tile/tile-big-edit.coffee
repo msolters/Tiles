@@ -18,7 +18,6 @@ Template.tileBigEdit.helpers
 
 Template.tileBigEdit.events
   'click button[data-save-tile]': (event, template) ->
-    console.log template
     #
     # (1) First, define _tile as the Tile as we have it
     #     currently in the database.

@@ -9,6 +9,7 @@ html {
   margin: 0;
   height: 100%;
   font-size: inherit; /* overrides bootstrap  */
+  overflow: hidden;
 }
 body {
   background-color: #F9F9F9;
@@ -182,11 +183,11 @@ i.left {
   font-size: 16px;
   color: #000;
 }
-.text-input:hover,
+/*.text-input:hover,
 .text-input:focus {
   background: @hoverGrey;
   color: #000;
-}
+}*/
 /* Hide up/down buttons on datepickers   */
 input[type=date]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -216,7 +217,7 @@ input[type=date]::-webkit-inner-spin-button {
 }
 #tile-container {
   position: relative;
-  top: @navbarHeight;
+  top: 0;
   width: 0;
   height: calc(~"100% - @{navbarHeight}");
   overflow: visible;

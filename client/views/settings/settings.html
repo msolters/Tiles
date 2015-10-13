@@ -18,6 +18,12 @@
       <div id="profile-settings" class="col s12">
         <div>
           <p>
+            Update your name:
+          </p>
+          {{> settingsName }}
+        </div>
+        <div>
+          <p>
             Update your page's URL:
           </p>
           {{> settingsURL }}
@@ -45,9 +51,16 @@
     </div>
   {{/modalizeBody}}
 
-  {{#modalizeFooter}}
+  <!--{{#modalizeFooter}}
     <button data-modalize-close class="btn waves-effect waves-light modal-action grey">Close</button>
-  {{/modalizeFooter}}
+  {{/modalizeFooter}}-->
+</template>
+
+<template name="settingsName">
+  <div class='input-field'>
+    <i class="mdi-social-person prefix {{activeOrNot currentUser.profile.name}}"></i>
+    <input type="text" id="user-profile-name" class="text-input nav-left-text" placeholder="Your Name" value="{{profileName}}"/>
+  </div>
 </template>
 
 <template name="settingsURL">

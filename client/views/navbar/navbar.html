@@ -1,12 +1,14 @@
 <template name="navbar">
   <nav class="z-depth-1">
     <div class="nav-wrapper">
-      {{ > UI.contentBlock
-          context=__context__ }}
-      <div class="right">
+      <div class="nav-left-content">
+        {{ > UI.contentBlock
+            context=__context__ }}
+      </div>
+      <div class="nav-right-content">
         {{#unless noSearch}}
-          <div class='input-field'>
-            <i id="tile-search-prefix" class="mdi-action-search prefix"></i>
+          <div class='search-bar flex flex-row'>
+            <i id="tile-search-prefix" class="mdi-action-search"></i>
             <input type="text" id="tile-search" class="text-input" placeholder="Search" value="{{searchQuery}}"/>
           </div>
         {{/unless}}
@@ -17,19 +19,12 @@
 
 <template name="setupNavbar">
   {{#navbar noSearch=true}}
-    <div class="nav-left-text"><i class="mdi-action-language left"></i>Setup URL</div>
+    <i class="mdi-action-language left"></i>Setup URL
   {{/navbar}}
 </template>
 
 <template name="renderUserNavbar">
   {{#navbar}}
-    {{#if verify currentUser}}
-      <div class='input-field'>
-        <i class="mdi-social-person prefix {{activeOrNot currentUser.profile.name}}"></i>
-        <input type="text" id="user-profile-name" class="text-input nav-left-text" placeholder="Your Name" value="{{profileName}}"/>
-      </div>
-    {{else}}
-      <a class="nav-left-text">{{profileName}}</a>
-    {{/if}}
+    {{profileName}}
   {{/navbar}}
 </template>

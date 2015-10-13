@@ -8,6 +8,7 @@ nav {
   color: #000;
   z-index: 10;
 }
+/*
 nav:hover {
   border-color: @darkRed;
 }
@@ -40,16 +41,106 @@ nav input#tile-search {
 nav input#user-profile-name {
   max-width: 350px;
 }
-/*nav input#user-profile-name:focus {
-  border-right: 2px solid @lightRed;
-}*/
 nav input#tile-search {
   padding-right: 64px;
   box-sizing: content-box;
 }
-/*nav input#tile-search:focus {
-  border-left: 2px solid @lightRed;
-}*/
 nav .nav-wrapper i {
   line-height: inherit;
+}*/
+
+nav {
+  height: auto;
+  position: relative;
+  top: 0;
+}
+nav .nav-left-content,
+nav .nav-right-content,
+.search-bar {
+  transition: all 0.3s ease-in-out;
+}
+.search-bar {
+  height: 100%;
+}
+.search-bar i {
+  position: absolute;
+}
+.search-bar input {
+  margin: 0;
+  border: none;
+  text-align: left;
+  padding-left: 2.2em;
+  height: 100%;
+}
+.search-bar input:hover,
+.search-bar input:focus {
+  background-color: initial;
+}
+
+/*  Large Screen Layout */
+@media only screen and (min-width: 600px) {
+  nav .nav-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: space-between;
+  }
+  nav .nav-left-content,
+  nav .nav-right-content {
+    font-size: 34px;
+    max-width: 50%;
+  }
+  nav .nav-left-content {
+    padding-left: 0.2em;
+  }
+  nav .nav-right-content {
+    flex-grow: 1;
+  }
+  .search-bar {
+    height: 64px;
+  }
+  .search-bar input {
+    font-size: 24px;
+  }
+}
+
+/*  Mobile Screen Layout  */
+@media only screen and (max-width: 600px) {
+  nav .nav-left-content,
+  nav .nav-right-content {
+    display: block;
+    width: 100%;
+    line-height: initial;
+    height: 1.2em;
+  }
+  nav .nav-left-content {
+    font-size: 18px;
+    padding: 0.1em;
+    text-align: center;
+  }
+  nav .nav-right-content {
+    font-size: 26px;
+    height: 1.4em;
+  }
+  .search-bar {
+    max-width: 100%;
+  }
+  .search-bar i {
+    width: 1.2em;
+    height: 1.2em !important;
+    font-size: 1.2em !important;
+    line-height: 1em !important;
+    padding: 0.1em;
+  }
+  .search-bar input {
+    width: 100%;
+    padding-top: 0.2em;
+    line-height: 100%;
+    height: calc(~"100% - 0.2em");
+    text-align: center;
+    padding-left: 0;
+  }
+  .search-bar:not(.active) i.mdi-action-search {
+    display: none;
+  }
 }

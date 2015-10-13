@@ -148,6 +148,16 @@ Template.allTiles.rendered = ->
   ###
 
   #
+  # Make the #tile-container 100% height, minus
+  # whatever the current height of the navbar is.
+  #
+  resizeTileContainer = ->
+    $("#tile-container").css
+      "height": "calc(100% - #{$('nav').height()}px)"
+  $(window).resize resizeTileContainer
+  resizeTileContainer()
+
+  #
   # (?) Reactively update the page's title
   #
   @autorun =>
@@ -205,9 +215,8 @@ Template.allTiles.events
     editTile.apply {tile: {}}
   'click a[data-settings]': ->
     Materialize.modalize.display
-      title: 'Settings'
       template: 'settings'
-      fixedFooter: true
+      bottomSheet: true
   'mousewheel #tile-scroller': (event, template) ->
     event.currentTarget.scrollLeft += event.originalEvent.deltaY
 
