@@ -1,1 +1,1 @@
-FlowLayout.setRoot 'body'
+BlazeLayout.setRoot 'body'
