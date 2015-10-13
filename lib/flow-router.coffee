@@ -4,7 +4,7 @@
 FlowRouter.route '/icons',
   name: 'dev::MDI Icon Listing'
   action: ->
-    FlowLayout.render 'icons'
+    BlazeLayout.render 'icons'
 
 ###
 #     FlowRouter mechanism for mapping URLs -> Templates
@@ -26,7 +26,7 @@ FlowRouter.route '/users',
   subscriptions: ->
     @register "Users", Meteor.subscribe "Users"
   action: (params) ->
-    FlowLayout.render 'app',
+    BlazeLayout.render 'app',
       main: 'users'
       controls: null
 
@@ -38,7 +38,7 @@ FlowRouter.route '/register',
   name: 'Register'
   subscriptions: (params, qParams) ->
   action: (params) ->
-    FlowLayout.render 'app',
+    BlazeLayout.render 'app',
       main: 'register'
       controls: null
 
@@ -48,7 +48,7 @@ FlowRouter.route '/register',
 FlowRouter.route '/login',
   name: 'Login'
   action: (params) ->
-    FlowLayout.render 'app',
+    BlazeLayout.render 'app',
       main: 'login'
 
 
@@ -58,7 +58,7 @@ FlowRouter.route '/login',
 FlowRouter.route '/setup',
   name: 'Setup'
   action: (params) ->
-    FlowLayout.render 'app',
+    BlazeLayout.render 'app',
       main: 'establishURL'
 
 ###
@@ -70,7 +70,7 @@ FlowRouter.route '/:publicURL',
     @register 'Users', Meteor.subscribe 'Users',
       "profile.public_url": params.publicURL
   action: (params) ->
-    FlowLayout.render 'app',
+    BlazeLayout.render 'app',
       main: 'allTiles'
 
 ###
@@ -82,5 +82,5 @@ FlowRouter.route '/:publicURL/:tileID',
     @register 'Users', Meteor.subscribe 'Users',
       "profile.public_url": params.publicURL
   action: (params) ->
-    FlowLayout.render 'app',
+    BlazeLayout.render 'app',
       main: 'allTiles'

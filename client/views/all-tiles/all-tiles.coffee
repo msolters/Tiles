@@ -22,7 +22,7 @@ Template.allTiles.created = ->
     user = Meteor.users.findOne( user_q )
     if !user?
       # If there is no user with this URL, present the "Not Found" page:
-      #FlowLayout.render 'notFound'
+      #BlazeLayout.render 'notFound'
     else
       @user.set user
       ownership_q =

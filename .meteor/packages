@@ -21,9 +21,7 @@ service-configuration
 materialize:materialize@=0.97.0
 mizzao:autocomplete
 sergeyt:typeahead
-meteorhacks:flow-router
 meteorhacks:fast-render
-meteorhacks:flow-layout
 reactive-var
 jagi:reactive-map
 lookback:tooltips
@@ -54,3 +52,5 @@ meteorhacks:npm
 
 npm-container
 msolters:modalize
+kadira:flow-router
+kadira:blaze-layout

@@ -4,11 +4,11 @@
 Template.tileEditForm.created = ->
   @autorun =>
     ifLoggedOut ->
-      FlowLayout.render 'notFound'
+      BlazeLayout.render 'notFound'
     if Meteor.userId() isnt Template.currentData().owner
       # If users are somehow viewing a tile
       # edit dialog but who do not own the tile:
-      FlowLayout.render 'notFound'
+      BlazeLayout.render 'notFound'
 
 Template.tileEditForm.rendered = ->
   Meteor.typeahead.inject() # configure category autocomplete
