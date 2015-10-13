@@ -48,12 +48,29 @@ Meteor.methods
       #
       for k, v of _cat
         c.ele k, v
+
+      #
+      # mapToXML: A helper method that recursively generates
+      #           appropriate XML tree nodes from complex JSON
+      #           objects.
+      #           For example, t0 and t1 are complex objects
+      #           with a variable number of possible parameters.
+      #
+      mapToXML = (name, o, xml=null) ->
+        if typeof o is "object"
+          props = (k for k, v of o)
+          if props.length > 0
+            _xml = xml.ele name
+            for k, v of o
+              mapToXML k, v, _xml
+            return
+        xml.ele name, o
+
       tiles = c.ele 'tiles'
       for _tile in _tiles
         t = tiles.ele 'tile'
         for k, v of _tile
-          console.log k, v
-          t.ele k, v
+          mapToXML k, v, t
 
     #
     # (7) Create an XML string.
@@ -73,6 +90,7 @@ Meteor.methods
     #
     results = xml2js.parseStringSync content,
       explicitArray: false
+    console.dir results
     _profile = results.profile
 
     #
@@ -100,7 +118,14 @@ Meteor.methods
       tile_ids = []
       for t in cat.tiles.tile
         t.owner = Meteor.userId()
-        console.log "insert #{t}"
+        # If there's timestamps, turn them from ints -> Date objects
+        if t.t0?
+          if t.t0.timestamp?
+            t.t0.timestamp = new Date parseInt t.t0.timestamp
+        if t.t1?
+          if t.t1.timestamp?
+            t.t1.timestamp = new Date parseInt t.t1.timestamp
+        console.log "insert ", t
         tile_ids.push Tiles.insert t
       console.log tile_ids
       #
